@@ -960,7 +960,7 @@
 }
 
 .footer__col {
-  top: 46.8px;
+  top: 47.8px;
 }
 
 .footer__heading {
@@ -976,6 +976,10 @@
   line-height: 24px;
   color: rgba(247, 249, 252, 0.55);
   white-space: nowrap;
+}
+
+.footer__links a {
+  position: static;
 }
 
 .footer__links a:hover {
