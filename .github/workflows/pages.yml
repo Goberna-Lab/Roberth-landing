@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+# Copia en GitHub Pages (https://goberna-lab.github.io/Roberth-landing/), en
+# paralelo al deploy a vps2 (deploy.yml). Pages sirve desde /Roberth-landing/,
+# así que se construye con ese base sin tocar vite.config.ts (base '/').
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Build
+        run: npx tsc -b && npx vite build --base=/Roberth-landing/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
