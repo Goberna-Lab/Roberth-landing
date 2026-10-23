@@ -223,7 +223,7 @@ export const CONTACT = {
   leadStrong: 'Cuando la decisión importa,',
   lead: 'comprender mejor cambia el resultado.',
   cta: 'SOLICITAR UNA CONVERSACIÓN ESTRATÉGICA',
-  portrait: a('/img/roberto-retrato.webp'),
+  portrait: a('/img/contacto-conferencia.webp'),
 }
 
 export const FOOTER = {

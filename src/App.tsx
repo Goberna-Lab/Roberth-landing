@@ -581,7 +581,7 @@ function Contact() {
     <section className="contact" id="conversemos" ref={root}>
       <div className="stage">
         <div className="contact__photo">
-          <img src={asset('/img/roberto-retrato.webp')} alt="Roberto Bazán" loading="lazy" />
+          <img src={asset('/img/contacto-conferencia.webp')} alt="Roberto Bazán en una conferencia" loading="lazy" />
         </div>
         <div className="contact__shade" />
         <div className="contact__panel" />

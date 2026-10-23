@@ -127,14 +127,14 @@
   position: fixed;
   inset: 0 0 auto;
   z-index: 50;
-  height: 80px;
+  height: 76px;
   background: #fff;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.161);
 }
 
 .header__logo {
   left: 198px;
-  top: 19.2px;
+  top: 15.2px;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 39px;
@@ -148,9 +148,10 @@
   inset: 0;
 }
 
+/* x de NAV es el centro de cada enlace: el li se ajusta al texto y se centra. */
 .header .header__link {
   position: absolute;
-  top: 21px;
+  top: 17px;
   transform: translateX(-50%);
   font-size: 15px;
   line-height: 37px;
@@ -158,7 +159,8 @@
   white-space: nowrap;
 }
 
-.header__link a {
+.header .header__link a {
+  position: static;
   transition: color 0.2s;
 }
 
@@ -168,7 +170,7 @@
 
 .header__cta {
   left: 1509px;
-  top: 16px;
+  top: 12px;
   width: 211px;
   height: 48px;
   border-color: #d4a755;
@@ -177,10 +179,10 @@
 /* ---------- Hero ---------- */
 
 .hero {
-  --hero-h: clamp(720px, calc(var(--vh) - 80px), 880px);
+  --hero-h: clamp(720px, calc(var(--vh) - 76px), 880px);
   position: relative;
   height: var(--hero-h);
-  margin-top: 80px;
+  margin-top: 76px;
   overflow: hidden;
   background: #010a13;
 }
@@ -1056,12 +1058,14 @@
   overflow: hidden;
 }
 
+/* Foto de la conferencia del prototipo: llena el panel, apoyada abajo. */
 .contact__photo img {
   position: absolute;
-  left: 0;
-  top: -129px;
+  inset: 0;
   width: 960px;
-  height: 1440px;
+  height: 888px;
+  object-fit: cover;
+  object-position: 50% 100%;
 }
 
 .contact__shade {
