@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
 import {
   AUDIOBOOKS,
+  BOOK_AUTOSCROLL_SPEED,
   BOOK_STEP,
   BOOKS,
   EXPERIENCE,
@@ -16,6 +20,8 @@ import { SIGNATURE_STROKES, SIGNATURE_VIEWBOX } from './signature.ts'
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`
 import './App.css'
+
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 /** Convierte "linea 1\nlinea 2" en líneas con <br />. */
 function Lines({ text }: { text: string }) {
@@ -139,30 +145,40 @@ function Hero() {
   )
 }
 
-/** Marca el elemento con `is-in` la primera vez que entra en pantalla. */
-function useRevealOnScroll<T extends HTMLElement>() {
+/**
+ * Marca con `is-in` la primera vez que entran en pantalla: el propio elemento
+ * o, si se da `selector`, cada descendiente que coincida por separado.
+ */
+function useRevealOnScroll<T extends HTMLElement>(selector?: string, options: IntersectionObserverInit = { threshold: 0.25 }) {
   const ref = useRef<T>(null)
+  const { threshold, rootMargin } = options
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
+    const targets = selector ? [...el.querySelectorAll(selector)] : [el]
     const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return
-        el.classList.add('is-in')
-        io.disconnect()
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          entry.target.classList.add('is-in')
+          io.unobserve(entry.target)
+        }
       },
-      { threshold: 0.25 },
+      { threshold, rootMargin },
     )
-    io.observe(el)
+    targets.forEach((t) => io.observe(t))
     return () => io.disconnect()
-  }, [])
+  }, [selector, threshold, rootMargin])
 
   return ref
 }
 
+/** Cada foto encaja cuando ella misma ya está bien dentro de la pantalla. */
+const ABOUT_PHOTO_REVEAL = { threshold: 0.6, rootMargin: '0px 0px -10% 0px' }
+
 function About() {
-  const sectionRef = useRevealOnScroll<HTMLElement>()
+  const sectionRef = useRevealOnScroll<HTMLElement>('.about__photo', ABOUT_PHOTO_REVEAL)
 
   return (
     <section className="about" id="roberth" ref={sectionRef}>
@@ -299,15 +315,84 @@ function Books() {
     return () => el.removeEventListener('scroll', update)
   }, [])
 
+  /*
+   * Scroll automático lento. Se detiene mientras el mouse está sobre los
+   * libros o las flechas, con foco de teclado, mientras se arrastra o
+   * fuera de pantalla. Al llegar al final espera y vuelve al inicio.
+   */
+  const carousel = useRef<HTMLElement>(null)
+  const resumeAt = useRef(0)
+
+  useEffect(() => {
+    const el = viewport.current
+    const area = carousel.current
+    if (!el || !area || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let hovered = false
+    let visible = false
+    let raf = 0
+    let last = 0
+    // scrollLeft se redondea en algunos navegadores; acumulamos aparte.
+    let pos = el.scrollLeft
+
+    const tick = (now: number) => {
+      raf = requestAnimationFrame(tick)
+      const dt = last ? Math.min(now - last, 100) : 0
+      last = now
+      const paused = hovered || !visible || !!area.querySelector(':focus-visible') || now < resumeAt.current
+      if (paused) {
+        pos = el.scrollLeft
+        return
+      }
+      const end = el.scrollWidth - el.clientWidth
+      if (pos >= end - 1) {
+        resumeAt.current = now + 2500
+        el.scrollTo({ left: 0, behavior: 'smooth' })
+        return
+      }
+      pos = Math.min(end, pos + (BOOK_AUTOSCROLL_SPEED * dt) / 1000)
+      el.scrollLeft = pos
+    }
+
+    const pauseFor = (ms: number) => {
+      resumeAt.current = performance.now() + ms
+    }
+    const onOver = (e: PointerEvent) => {
+      hovered = !!(e.target as Element).closest('.books__viewport, .books__arrow')
+    }
+    const onLeave = () => (hovered = false)
+    const onUserScroll = () => pauseFor(3000)
+
+    const io = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting))
+    io.observe(el)
+    area.addEventListener('pointerover', onOver)
+    area.addEventListener('pointerleave', onLeave)
+    el.addEventListener('pointerdown', onUserScroll)
+    el.addEventListener('wheel', onUserScroll, { passive: true })
+    el.addEventListener('touchstart', onUserScroll, { passive: true })
+    raf = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      io.disconnect()
+      area.removeEventListener('pointerover', onOver)
+      area.removeEventListener('pointerleave', onLeave)
+      el.removeEventListener('pointerdown', onUserScroll)
+      el.removeEventListener('wheel', onUserScroll)
+      el.removeEventListener('touchstart', onUserScroll)
+    }
+  }, [])
+
   const move = (dir: 1 | -1) => {
     const el = viewport.current
     if (!el) return
+    resumeAt.current = performance.now() + 4000
     const index = Math.round(el.scrollLeft / BOOK_STEP) + dir
     el.scrollTo({ left: Math.max(0, index * BOOK_STEP), behavior: 'smooth' })
   }
 
   return (
-    <section className="books" id="publicaciones">
+    <section className="books" id="publicaciones" ref={carousel}>
       <div className="stage">
         <div className="books__bg">
           <img src={asset('/img/pilares.webp')} alt="" loading="lazy" />
@@ -408,18 +493,78 @@ function Audiobooks() {
   )
 }
 
+/** Separa un texto en palabras animables, conservando los espacios (mismo ajuste de línea). */
+function Words({ text }: { text: string }) {
+  return text.split(' ').map((w, i, all) => (
+    <span key={i}>
+      <span className="talks__word">{w}</span>
+      {i < all.length - 1 ? ' ' : ''}
+    </span>
+  ))
+}
+
+/**
+ * Mismo revelado que "El propósito" de la landing de Goberna: la foto flota con
+ * un parallax mínimo y el contenido aparece en secuencia ligado al scroll
+ * — etiqueta → título que se "entinta" palabra por palabra → párrafo → botón.
+ */
 function Talks() {
+  const root = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const q = gsap.utils.selector(root)
+
+        // Foto: deriva lenta de ±25px mientras la sección cruza la pantalla.
+        // La escala 1.06 cubre ese margen sin dejar ver los bordes.
+        gsap.fromTo(
+          q('.talks__bg'),
+          { y: -25, scale: 1.06 },
+          {
+            y: 25,
+            scale: 1.06,
+            ease: 'none',
+            scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+          },
+        )
+
+        // Estados iniciales explícitos: en un timeline con scrub, los tweens con
+        // stagger solo aplican el estado inicial al primer elemento.
+        gsap.set(q('.talks__label'), { autoAlpha: 0, x: -12 })
+        gsap.set(q('.talks__word'), { opacity: 0.25 })
+        gsap.set(q('.talks__p'), { autoAlpha: 0, y: 12 })
+        gsap.set(q('.talks__btn'), { autoAlpha: 0, y: 10 })
+
+        gsap
+          .timeline({
+            defaults: { ease: 'sine.out' },
+            // scrub 1.5: la animación alcanza al scroll con suavidad ("flota")
+            scrollTrigger: { trigger: root.current, start: 'top 75%', end: 'top 10%', scrub: 1.5 },
+          })
+          .to(q('.talks__label'), { autoAlpha: 1, x: 0, duration: 0.6 }, 0)
+          .to(q('.talks__word'), { opacity: 1, duration: 0.5, stagger: 0.08, ease: 'none' }, 0.15)
+          .to(q('.talks__p'), { autoAlpha: 1, y: 0, duration: 0.8 }, '-=0.4')
+          .to(q('.talks__btn'), { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.5')
+      })
+    },
+    { scope: root },
+  )
+
   return (
-    <section className="talks" id="conferencias">
+    <section className="talks" id="conferencias" ref={root}>
       <div className="stage">
         <img className="talks__bg" src={asset('/img/conferencias.webp')} alt="" loading="lazy" />
         <div className="talks__shade-x" />
         <div className="talks__shade-y" />
         <p className="label talks__label">PENSAMIENTO EN VOZ ALTA</p>
         <h2 className="talks__title">
-          <span className="talks__title-light">Ideas que salen del</span>
+          <span className="talks__title-light">
+            <Words text="Ideas que salen del" />
+          </span>
           <br />
-          escritorio.
+          <Words text="escritorio." />
         </h2>
         <p className="body18 talks__p">
           Conferencias, medios, masterclasses y espacios especializados

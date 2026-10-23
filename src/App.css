@@ -459,12 +459,12 @@
   transition: transform 1500ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay);
 }
 
-.about.is-in .about__photo {
+.about .about__photo.is-in {
   opacity: 1;
   transform: none;
 }
 
-.about.is-in .about__photo img {
+.about .about__photo.is-in img {
   transform: none;
 }
 
@@ -481,7 +481,7 @@
   --from-x: 90px;
   --from-y: -70px;
   --from-r: 5deg;
-  --delay: 150ms;
+  --delay: 180ms;
   left: 1250px;
   top: 160px;
   width: 469px;
@@ -499,7 +499,7 @@
   --from-x: -90px;
   --from-y: 70px;
   --from-r: 4deg;
-  --delay: 300ms;
+  --delay: 0ms;
   left: 959px;
   top: 434px;
   width: 399px;
@@ -535,7 +535,7 @@
   --from-x: 80px;
   --from-y: 90px;
   --from-r: -4deg;
-  --delay: 450ms;
+  --delay: 180ms;
   left: 1377.8px;
   top: 434px;
   width: 291.4px;
@@ -1017,6 +1017,14 @@
 
 .talks__title-light {
   color: var(--paper);
+}
+
+.talks__bg {
+  will-change: transform;
+}
+
+.talks__word {
+  will-change: opacity;
 }
 
 .talks__p {

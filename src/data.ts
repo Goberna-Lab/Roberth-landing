@@ -87,6 +87,9 @@ export const BOOKS: Book[] = [
 /** Desplazamiento del carrusel por clic (distancia entre libros). */
 export const BOOK_STEP = 442
 
+/** Velocidad del scroll automático del carrusel (px de diseño por segundo). */
+export const BOOK_AUTOSCROLL_SPEED = 28
+
 export const AUDIOBOOKS = [
   {
     title: 'AUDIOLIBRO EL PODER DE LA ORATORIA E\nIMAGEN POLÍTICA',
