@@ -130,3 +130,107 @@ export const SOCIALS = [
   { label: 'roberth.estratega', icon: a('/svg/ico-ig.svg'), href: 'https://www.instagram.com/roberth.estratega', name: 'Instagram', iconTop: 91, textTop: 92.4 },
   { label: 'robazfer', icon: a('/svg/ico-in.svg'), href: 'https://www.linkedin.com/in/robazfer/', name: 'LinkedIn', iconTop: 134.71, textTop: 134.4 },
 ]
+
+/*
+ * ---------- Textos por sección ----------
+ * Contenido sin medidas ni saltos de línea de escritorio: lo usa la versión
+ * mobile (src/mobile/). El escritorio aún tiene estos textos en su JSX.
+ */
+
+export const HEADER = { logo: 'Roberth Estratega', cta: 'CONVERSEMOS' }
+
+export const HERO = {
+  name: 'Roberto Bazán',
+  roles: ['Consultor político', 'Asesor legal', 'Escritor conferencista'],
+  person: a('/img/hero-roberto.webp'),
+  background: a('/img/hero-bg.webp'),
+  ctaBooks: { label: 'Ver libros', href: '#publicaciones' },
+  ctaTalks: { label: 'Cotiza conferencias', href: '#conversemos' },
+}
+
+export const ABOUT = {
+  label: 'UNA MIRADA MULTIDIMENSIONAL',
+  titleTop: 'Roberth',
+  titleBottom: 'Estratega',
+  lead: 'Es consultor político, abogado de políticos',
+  text: 'Su carrera la desarrolla como escritor y conferencista en materia de tecnología, inteligencia y operaciones psicológicas, y Lawfare.',
+  ctas: [
+    { label: 'LEER MIS ARTÍCULOS', href: '#blog' },
+    { label: 'VER MIS LIBROS', href: '#publicaciones' },
+  ],
+  icon: a('/svg/ico-columnas.svg'),
+  background: a('/img/about-bg.webp'),
+  photos: [
+    { src: a('/img/about-1.webp'), alt: 'Roberto Bazán junto a autoridades y consultores', width: 972, height: 652 },
+    { src: a('/img/about-3.webp'), alt: 'Roberto Bazán exponiendo', width: 612, height: 411 },
+    { src: a('/img/about-4.webp'), alt: 'Roberto Bazán en un encuentro internacional', width: 1024, height: 769 },
+    { src: a('/img/about-2.webp'), alt: 'Conferencia ante un auditorio', width: 888, height: 570 },
+  ],
+}
+
+export const POWER = {
+  lead: 'El poder se construye con',
+  word: 'CONOCIMIENTO',
+  background: a('/img/capitolio.webp'),
+}
+
+export const EXPERIENCE_INTRO = {
+  label: 'TRAYECTORIA ESTRATÉGICA',
+  title: 'Experiencia aplicada donde la decisión importa',
+  areas: [
+    'Consultoría política',
+    'Estrategia',
+    'Gobierno',
+    'Campañas electorales',
+    'Inteligencia',
+    'Operaciones psicológicas',
+    'Trabajo internacional',
+    'Producción de conocimiento',
+  ],
+  cta: { label: 'CONVERSAR SOBRE UN PROYECTO', href: '#conversemos' },
+}
+
+export const BOOKS_INTRO = {
+  label: 'PUBLICACIONES · LIBROS FÍSICOS',
+  title: 'Ideas que se convierten en libros.',
+  text: 'Una producción editorial especializada en estrategia política, campañas electorales, inteligencia, comunicación y los nuevos escenarios de disputa por el poder.',
+  background: a('/img/pilares.webp'),
+}
+
+/** Portada de un libro del carrusel. */
+export const bookCover = (book: Book) => a(`/img/${book.cover}.webp`)
+
+export const AUDIOBOOKS_INTRO = {
+  label: 'PUBLICACIONES · AUDIOLIBROS',
+  title: 'El conocimiento también se escucha.',
+  text: 'Una forma de explorar ideas, ampliar perspectivas y profundizar en el pensamiento político y estratégico.',
+  cta: 'CONOCER PUBLICACIÓN',
+  /** Los audiolibros aún no tienen página de destino. */
+  href: '#',
+}
+
+export const TALKS = {
+  label: 'PENSAMIENTO EN VOZ ALTA',
+  titleLight: 'Ideas que salen del',
+  titleGold: 'escritorio.',
+  text: 'Conferencias, medios, masterclasses y espacios especializados donde comparte análisis y herramientas para comprender los nuevos escenarios del poder y la toma de decisiones.',
+  cta: { label: 'Cotiza conferencias', href: '#conversemos' },
+  background: a('/img/conferencias.webp'),
+}
+
+export const CONTACT = {
+  label: 'CONVERSEMOS',
+  leadStrong: 'Cuando la decisión importa,',
+  lead: 'comprender mejor cambia el resultado.',
+  cta: 'SOLICITAR UNA CONVERSACIÓN ESTRATÉGICA',
+  portrait: a('/img/roberto-retrato.webp'),
+}
+
+export const FOOTER = {
+  signature: a('/svg/firma-footer.svg'),
+  qr: a('/img/qr.png'),
+  /** Destino de cada columna del pie. */
+  columnHref: { CONFERENCIAS: '#conferencias', LIBROS: '#publicaciones' } as Record<string, string>,
+}
+
+export const WHATSAPP_ICON = a('/img/whatsapp.webp')

@@ -16,7 +16,10 @@ import {
   WHATSAPP_URL,
 } from './data.ts'
 import { CarouselArrow } from './icons.tsx'
-import { SIGNATURE_STROKES, SIGNATURE_VIEWBOX } from './signature.ts'
+import { HeroSignature } from './shared/HeroSignature.tsx'
+import { useIsMobile } from './shared/useIsMobile.ts'
+import { Words } from './shared/Words.tsx'
+import MobileApp from './mobile/MobileApp.tsx'
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`
 import './App.css'
@@ -55,53 +58,6 @@ function Header() {
         </a>
       </div>
     </header>
-  )
-}
-
-/** Ritmo de la escritura: unidades de contorno por milisegundo. */
-const INK_SPEED = 1.3
-/** La firma empieza a escribirse mientras Roberto entra al banner. */
-const INK_START = 600
-
-/**
- * El siguiente trazo arranca cuando el anterior va a la mitad, porque el
- * contorno de cada letra da ida y vuelta sobre ella.
- */
-const SIGNATURE_TIMED = SIGNATURE_STROKES.reduce<{ delay: number; strokes: (typeof SIGNATURE_STROKES[number] & { timing: React.CSSProperties })[] }>(
-  (acc, s) => {
-    const duration = Math.max(240, s.len / INK_SPEED)
-    const timing = { animationDuration: `${duration}ms`, animationDelay: `${acc.delay}ms` }
-    return { delay: acc.delay + duration * 0.55, strokes: [...acc.strokes, { ...s, timing }] }
-  },
-  { delay: INK_START, strokes: [] },
-).strokes
-
-/**
- * Firma escrita a mano alzada. Cada trazo relleno se descubre con una máscara:
- * un trazo grueso que recorre el contorno del mismo path (pathLength=1), así el
- * "lápiz" avanza por donde va la letra.
- */
-function HeroSignature() {
-  const strokes = SIGNATURE_TIMED
-
-  return (
-    <svg
-      className="signature"
-      viewBox={SIGNATURE_VIEWBOX}
-      width={662.94}
-      height={138.58}
-      role="img"
-      aria-label="Roberto Bazán"
-    >
-      {strokes.map((s, i) => (
-        <g key={i} transform={`translate(${s.x} ${s.y})`}>
-          <mask id={`signature-ink-${i}`} maskUnits="userSpaceOnUse">
-            <path className="signature__ink" d={s.d} pathLength={1} style={s.timing} />
-          </mask>
-          <path d={s.d} fill="#f7f9fc" mask={`url(#signature-ink-${i})`} />
-        </g>
-      ))}
-    </svg>
   )
 }
 
@@ -493,16 +449,6 @@ function Audiobooks() {
   )
 }
 
-/** Separa un texto en palabras animables, conservando los espacios (mismo ajuste de línea). */
-function Words({ text }: { text: string }) {
-  return text.split(' ').map((w, i, all) => (
-    <span key={i}>
-      <span className="talks__word">{w}</span>
-      {i < all.length - 1 ? ' ' : ''}
-    </span>
-  ))
-}
-
 /**
  * Mismo revelado que "El propósito" de la landing de Goberna: la foto flota con
  * un parallax mínimo y el contenido aparece en secuencia ligado al scroll
@@ -561,10 +507,10 @@ function Talks() {
         <p className="label talks__label">PENSAMIENTO EN VOZ ALTA</p>
         <h2 className="talks__title">
           <span className="talks__title-light">
-            <Words text="Ideas que salen del" />
+            <Words text="Ideas que salen del" className="talks__word" />
           </span>
           <br />
-          <Words text="escritorio." />
+          <Words text="escritorio." className="talks__word" />
         </h2>
         <p className="body18 talks__p">
           Conferencias, medios, masterclasses y espacios especializados
@@ -716,7 +662,7 @@ function WhatsApp() {
   )
 }
 
-export default function App() {
+function DesktopApp() {
   return (
     <div className="page">
       <Header />
@@ -734,4 +680,9 @@ export default function App() {
       <WhatsApp />
     </div>
   )
+}
+
+/** Escritorio (lienzo de 1920px) desde 1024px; por debajo, la versión mobile. */
+export default function App() {
+  return useIsMobile() ? <MobileApp /> : <DesktopApp />
 }

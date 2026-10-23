@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "qa:mobile": "npm run build && node scripts/qa-mobile.mjs",
+    "capturas": "node scripts/capturas.mjs",
+    "comparar": "node scripts/comparar.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
@@ -27,6 +30,9 @@
     "@vitejs/plugin-react": "^6.1.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "oxlint": "^1.88.0",
+    "pixelmatch": "^8.0.0",
+    "playwright": "^1.64.1",
+    "pngjs": "^7.0.0",
     "typescript": "~6.0.3",
     "vite": "^8.3.4"
   }
