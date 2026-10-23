@@ -1,50 +1,40 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
+# Deploy de Roberth-landing a vps2 (roberthestratega.com). El runner
+# (label "roberth") corre EN vps2, así que el rsync al docroot es LOCAL (sin red).
+# Mismo patrón que landing-lucy. CI (ci.yml) valida el build en el PR; acá solo
+# se hace el build del merge commit + rsync.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: "pages"
-  cancel-in-progress: true
+  group: deploy-roberth
+  cancel-in-progress: false
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: [self-hosted, roberth]
+    timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
+          node-version: 22
 
       - name: Build
-        run: npm run build
+        run: |
+          set -euo pipefail
+          npm ci --prefer-offline --no-audit --no-fund
+          npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Guard dist + rsync local al docroot
+        run: |
+          set -euo pipefail
+          DOCROOT=/srv/nexus-containers/roberth/public
+          # GUARD: rsync --delete con dist/ sin index.html borraría el sitio.
+          [ -f dist/index.html ] || { echo "::error::falta dist/index.html -> abort"; exit 1; }
+          sudo rsync -rl --delete --chmod=D755,F644 dist/ "$DOCROOT/"
+          echo "deploy OK -> $DOCROOT"
