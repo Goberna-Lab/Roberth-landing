@@ -1,6 +1,8 @@
 // Contenido de la landing (textos tomados del prototipo XD).
 
 /** Reemplazar con el número real (formato internacional, sin "+"). */
+const a = (p: string)=>`${import.meta.env.BASE_URL}${p.replace(/^\//,'')}`
+
 export const WHATSAPP_URL = 'https://wa.me/'
 
 export const NAV = [
@@ -16,37 +18,37 @@ export const EXPERIENCE = [
     title: 'Consultoría estratégica',
     strong: 'Acompañamiento',
     text: ' frente a decisiones de alto impacto y escenarios\ncomplejos.',
-    icon: { kind: 'svg', src: '/svg/ico-puzzle.svg', x: 968, y: 103.89, w: 50.31, h: 50.23 },
+    icon: { kind: 'svg', src: a('/svg/ico-puzzle.svg'), x: 968, y: 103.89, w: 50.31, h: 50.23 },
   },
   {
     title: 'Inteligencia y análisis',
     strong: 'Información,',
     text: ' actores, intereses, riesgos y construcción de escenarios.',
-    icon: { kind: 'img', src: '/img/ico-inteligencia.webp', x: 969, y: 247, w: 48, h: 48 },
+    icon: { kind: 'img', src: a('/img/ico-inteligencia.webp'), x: 969, y: 247, w: 48, h: 48 },
   },
   {
     title: 'Estrategia política',
     strong: 'Campañas, liderazgos,',
     text: ' organizaciones políticas y contextos de gobierno.',
-    icon: { kind: 'img', src: '/img/ico-estrategia.webp', x: 968, y: 360, w: 50, h: 50 },
+    icon: { kind: 'img', src: a('/img/ico-estrategia.webp'), x: 968, y: 360, w: 50, h: 50 },
   },
   {
     title: 'Poder y toma de decisiones',
     strong: 'Relaciones de poder,',
     text: ' incentivos, conflictos, intereses y comportamiento\nde actores.',
-    icon: { kind: 'svg', src: '/svg/ico-handshake.svg', x: 968, y: 475.58, w: 50.31, h: 28.42 },
+    icon: { kind: 'svg', src: a('/svg/ico-handshake.svg'), x: 968, y: 475.58, w: 50.31, h: 28.42 },
   },
   {
     title: 'Formación estratégica',
     strong: 'Conferencias,',
     text: ' masterclasses y programas especializados.',
-    icon: { kind: 'img', src: '/img/ico-formacion.webp', x: 968, y: 611, w: 50, h: 50 },
+    icon: { kind: 'img', src: a('/img/ico-formacion.webp'), x: 968, y: 611, w: 50, h: 50 },
   },
   {
     title: 'Investigación y conocimiento',
     strong: 'Análisis,',
     text: ' metodologías, publicaciones y modelos aplicados.',
-    icon: { kind: 'img', src: '/img/ico-investigacion.webp', x: 968, y: 718, w: 50, h: 50 },
+    icon: { kind: 'img', src: a('/img/ico-investigacion.webp'), x: 968, y: 718, w: 50, h: 50 },
   },
 ] as const
 
@@ -83,13 +85,13 @@ export const BOOK_STEP = 442
 export const AUDIOBOOKS = [
   {
     title: 'AUDIOLIBRO EL PODER DE LA ORATORIA E\nIMAGEN POLÍTICA',
-    cover: '/img/audio-oratoria.webp',
+    cover: a('/img/audio-oratoria.webp'),
     img: { x: 960, y: 90, w: 175, h: 219 },
     top: 134.5,
   },
   {
     title: 'AUDIOLIBRO MANUAL DE INTELIGENCIA\nY CONTRAINTELIGENCIA',
-    cover: '/img/audio-inteligencia.webp',
+    cover: a('/img/audio-inteligencia.webp'),
     img: { x: 960, y: 370, w: 185, h: 277 },
     top: 455.5,
   },
@@ -116,7 +118,7 @@ export const FOOTER_COLUMNS = [
 ]
 
 export const SOCIALS = [
-  { label: 'robazfer', icon: '/svg/ico-fb.svg', href: 'https://www.facebook.com/robazfer', name: 'Facebook', iconTop: 46, textTop: 48.4 },
-  { label: 'roberth.estratega', icon: '/svg/ico-ig.svg', href: 'https://www.instagram.com/roberth.estratega', name: 'Instagram', iconTop: 91, textTop: 92.4 },
-  { label: 'robazfer', icon: '/svg/ico-in.svg', href: 'https://www.linkedin.com/in/robazfer', name: 'LinkedIn', iconTop: 134.71, textTop: 134.4 },
+  { label: 'robazfer', icon: a('/svg/ico-fb.svg'), href: 'https://www.facebook.com/robazfer', name: 'Facebook', iconTop: 46, textTop: 48.4 },
+  { label: 'roberth.estratega', icon: a('/svg/ico-ig.svg'), href: 'https://www.instagram.com/roberth.estratega', name: 'Instagram', iconTop: 91, textTop: 92.4 },
+  { label: 'robazfer', icon: a('/svg/ico-in.svg'), href: 'https://www.linkedin.com/in/robazfer', name: 'LinkedIn', iconTop: 134.71, textTop: 134.4 },
 ]

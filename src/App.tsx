@@ -304,7 +304,7 @@ function Books() {
               <li key={book.cover} className="book" style={{ left: book.x }}>
                 <img
                   className="book__cover"
-                  src={`/img/${book.cover}.webp`}
+                  src={typeof book.cover === "string" && book.cover.startsWith("/") ? asset(book.cover) : asset(`/img/${book.cover}.webp`)}
                   alt={book.title.replace('\n', ' ')}
                   loading="lazy"
                   width={317}
