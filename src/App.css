@@ -231,6 +231,65 @@
   top: 257px;
 }
 
+.signature {
+  display: block;
+  overflow: visible;
+}
+
+.signature__ink {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+  animation: signature-write linear both;
+}
+
+@keyframes signature-write {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Entrada: el fondo se asienta y Roberto entra al banner desde la derecha. */
+.hero__bg {
+  animation: hero-settle 1800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero__person {
+  animation: hero-enter 1400ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+}
+
+@keyframes hero-settle {
+  from {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateX(140px);
+    filter: blur(6px) brightness(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature__ink,
+  .hero__bg,
+  .hero__person {
+    animation: none;
+  }
+
+  .signature__ink {
+    stroke-dasharray: none;
+  }
+}
+
 .hero__roles li {
   position: absolute;
   top: 441.6px;
@@ -383,7 +442,46 @@
   position: absolute;
 }
 
+/*
+ * Mosaico: cada foto llega desde su esquina, girada, y encaja en su lugar
+ * como una pieza. La imagen interior hace un leve zoom inverso al asentarse.
+ */
+.about .about__photo {
+  opacity: 0;
+  transform: translate(var(--from-x), var(--from-y)) rotate(var(--from-r)) scale(0.9);
+  transition:
+    opacity 600ms ease var(--delay),
+    transform 1100ms cubic-bezier(0.34, 1.32, 0.5, 1) var(--delay);
+}
+
+.about .about__photo img {
+  transform: scale(1.18);
+  transition: transform 1500ms cubic-bezier(0.22, 1, 0.36, 1) var(--delay);
+}
+
+.about.is-in .about__photo {
+  opacity: 1;
+  transform: none;
+}
+
+.about.is-in .about__photo img {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about .about__photo,
+  .about .about__photo img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .about__photo--1 {
+  --from-x: 90px;
+  --from-y: -70px;
+  --from-r: 5deg;
+  --delay: 150ms;
   left: 1250px;
   top: 160px;
   width: 469px;
@@ -398,6 +496,10 @@
 }
 
 .about__photo--2 {
+  --from-x: -90px;
+  --from-y: 70px;
+  --from-r: 4deg;
+  --delay: 300ms;
   left: 959px;
   top: 434px;
   width: 399px;
@@ -412,6 +514,10 @@
 }
 
 .about__photo--3 {
+  --from-x: -80px;
+  --from-y: -60px;
+  --from-r: -6deg;
+  --delay: 0ms;
   left: 1041px;
   top: 230px;
   width: 189px;
@@ -426,6 +532,10 @@
 }
 
 .about__photo--4 {
+  --from-x: 80px;
+  --from-y: 90px;
+  --from-r: -4deg;
+  --delay: 450ms;
   left: 1377.8px;
   top: 434px;
   width: 291.4px;
@@ -453,16 +563,23 @@
   width: 1672px;
   height: 700px;
   overflow: hidden;
+  /* Recorta también a la imagen fija (overflow no recorta position: fixed). */
+  clip-path: inset(0);
 }
 
+/*
+ * Parallax fijo sin JS: la imagen queda clavada a la pantalla y la sección
+ * pasa por encima como una ventana. left = 248 - 121 del diseño, más el
+ * centrado del lienzo en pantallas de más de 1920px.
+ */
 .power__img img {
-  position: absolute;
-  left: -121px;
+  position: fixed;
+  left: calc(127px + max(0px, (100vw - 1920px) / 2));
   top: 0;
   width: 1930px;
-  height: 1080px;
+  height: max(1080px, var(--vh, 0px));
+  object-fit: cover;
   opacity: 0.63;
-  will-change: transform;
 }
 
 .power__title {
@@ -572,6 +689,68 @@
 
 .exp__item-text strong {
   font-weight: 700;
+}
+
+/*
+ * Entrada de la columna: la línea dorada baja y cada elemento aparece en
+ * cascada (--i = posición en la lista).
+ */
+.exp {
+  --exp-step: 140ms;
+}
+
+.exp__timeline {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 1200ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.exp__dot {
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    opacity 300ms ease,
+    transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--i) * var(--exp-step) + 150ms);
+}
+
+.exp__divider {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * var(--exp-step) + 100ms);
+}
+
+.exp__icon,
+.exp__item-title,
+.exp__item-text {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms ease,
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * var(--exp-step) + 200ms);
+}
+
+.exp__item-title {
+  transition-delay: calc(var(--i) * var(--exp-step) + 260ms);
+}
+
+.exp__item-text {
+  transition-delay: calc(var(--i) * var(--exp-step) + 320ms);
+}
+
+.exp.is-in :is(.exp__timeline, .exp__dot, .exp__divider, .exp__icon, .exp__item-title, .exp__item-text) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exp :is(.exp__timeline, .exp__dot, .exp__divider, .exp__icon, .exp__item-title, .exp__item-text) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ---------- Libros ---------- */

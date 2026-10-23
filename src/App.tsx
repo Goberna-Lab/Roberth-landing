@@ -12,6 +12,7 @@ import {
   WHATSAPP_URL,
 } from './data.ts'
 import { CarouselArrow } from './icons.tsx'
+import { SIGNATURE_STROKES, SIGNATURE_VIEWBOX } from './signature.ts'
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`
 import './App.css'
@@ -51,6 +52,53 @@ function Header() {
   )
 }
 
+/** Ritmo de la escritura: unidades de contorno por milisegundo. */
+const INK_SPEED = 1.3
+/** La firma empieza a escribirse mientras Roberto entra al banner. */
+const INK_START = 600
+
+/**
+ * El siguiente trazo arranca cuando el anterior va a la mitad, porque el
+ * contorno de cada letra da ida y vuelta sobre ella.
+ */
+const SIGNATURE_TIMED = SIGNATURE_STROKES.reduce<{ delay: number; strokes: (typeof SIGNATURE_STROKES[number] & { timing: React.CSSProperties })[] }>(
+  (acc, s) => {
+    const duration = Math.max(240, s.len / INK_SPEED)
+    const timing = { animationDuration: `${duration}ms`, animationDelay: `${acc.delay}ms` }
+    return { delay: acc.delay + duration * 0.55, strokes: [...acc.strokes, { ...s, timing }] }
+  },
+  { delay: INK_START, strokes: [] },
+).strokes
+
+/**
+ * Firma escrita a mano alzada. Cada trazo relleno se descubre con una máscara:
+ * un trazo grueso que recorre el contorno del mismo path (pathLength=1), así el
+ * "lápiz" avanza por donde va la letra.
+ */
+function HeroSignature() {
+  const strokes = SIGNATURE_TIMED
+
+  return (
+    <svg
+      className="signature"
+      viewBox={SIGNATURE_VIEWBOX}
+      width={662.94}
+      height={138.58}
+      role="img"
+      aria-label="Roberto Bazán"
+    >
+      {strokes.map((s, i) => (
+        <g key={i} transform={`translate(${s.x} ${s.y})`}>
+          <mask id={`signature-ink-${i}`} maskUnits="userSpaceOnUse">
+            <path className="signature__ink" d={s.d} pathLength={1} style={s.timing} />
+          </mask>
+          <path d={s.d} fill="#f7f9fc" mask={`url(#signature-ink-${i})`} />
+        </g>
+      ))}
+    </svg>
+  )
+}
+
 function Hero() {
   return (
     <section className="hero" id="inicio">
@@ -68,7 +116,7 @@ function Hero() {
         </div>
 
         <h1 className="hero__title">
-          <img src={asset('/svg/firma-hero.svg')} alt="Roberto Bazán" width={662.94} height={138.58} />
+          <HeroSignature />
         </h1>
         <ul className="hero__roles">
           <li style={{ left: 200 }}>Consultor Político</li>
@@ -91,9 +139,33 @@ function Hero() {
   )
 }
 
+/** Marca el elemento con `is-in` la primera vez que entra en pantalla. */
+function useRevealOnScroll<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        el.classList.add('is-in')
+        io.disconnect()
+      },
+      { threshold: 0.25 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return ref
+}
+
 function About() {
+  const sectionRef = useRevealOnScroll<HTMLElement>()
+
   return (
-    <section className="about" id="roberth">
+    <section className="about" id="roberth" ref={sectionRef}>
       <div className="stage">
         <img className="about__bg" src={asset('/img/about-bg.webp')} alt="" loading="lazy" />
         <p className="label about__label">UNA MIRADA MULTIDIMENSIONAL</p>
@@ -136,44 +208,11 @@ function About() {
 }
 
 function Power() {
-  const imgRef = useRef<HTMLImageElement>(null)
-
-  useEffect(() => {
-    const img = imgRef.current
-    const clip = img?.parentElement
-    if (!img || !clip) return
-    let raf = 0
-
-    const update = () => {
-      raf = 0
-      const rect = clip.getBoundingClientRect()
-      if (rect.top > window.innerHeight || rect.bottom < 0) {
-        img.style.transform = 'translate3d(0, 0, 0)'
-        return
-      }
-      const scale = rect.width / 1672 || 1
-      img.style.transform = `translate3d(0, ${-rect.top / scale}px, 0)`
-    }
-
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
-
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      if (raf) cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [])
-
   return (
     <section className="power">
       <div className="stage">
         <div className="power__img">
-          <img ref={imgRef} src={asset('/img/capitolio.webp')} alt="" loading="lazy" />
+          <img src={asset('/img/capitolio.webp')} alt="" loading="lazy" />
         </div>
         <h2 className="power__title">
           <span className="power__line-1">El poder se construye con </span>
@@ -186,8 +225,10 @@ function Power() {
 
 function Experience() {
   const L = EXPERIENCE_LAYOUT
+  const sectionRef = useRevealOnScroll<HTMLElement>()
+
   return (
-    <section className="exp" id="experiencia">
+    <section className="exp" id="experiencia" ref={sectionRef}>
       <div className="stage">
         <p className="label exp__label">TRAYECTORIA ESTRATÉGICA</p>
         <h2 className="h2 exp__title">
@@ -210,15 +251,15 @@ function Experience() {
         </a>
 
         <span className="exp__timeline" />
-        {L.dotTop.map((top) => (
-          <span key={top} className="exp__dot" style={{ top }} />
+        {L.dotTop.map((top, i) => (
+          <span key={top} className="exp__dot" style={{ top, '--i': i } as React.CSSProperties} />
         ))}
-        {L.dividerTop.map((top) => (
-          <span key={top} className="exp__divider" style={{ top }} />
+        {L.dividerTop.map((top, i) => (
+          <span key={top} className="exp__divider" style={{ top, '--i': i + 1 } as React.CSSProperties} />
         ))}
         <ul>
           {EXPERIENCE.map((item, i) => (
-            <li key={item.title}>
+            <li key={item.title} style={{ '--i': i } as React.CSSProperties}>
               <img
                 className="exp__icon"
                 src={item.icon.src}
@@ -314,7 +355,7 @@ function Books() {
                 <h3 className="book__title">
                   <Lines text={book.title} />
                 </h3>
-                <a href="#" className="more-link book__link">
+                <a href={book.url} className="more-link book__link" target="_blank" rel="noopener noreferrer">
                   {book.cta}
                   <img src={asset('/svg/link-conocer.svg')} alt="" width={13.18} height={10.98} />
                 </a>

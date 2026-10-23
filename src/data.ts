@@ -60,23 +60,28 @@ export const EXPERIENCE_LAYOUT = {
   dividerTop: [217, 331, 444, 586, 700],
 }
 
+/** Tienda donde se venden los libros. */
+const GOBERNA_STORE = 'https://grupogoberna.com/'
+
 export type Book = {
   title: string
   cover: string
   cta: string
+  /** página de la publicación en la tienda de Grupo Goberna */
+  url: string
   /** posición horizontal dentro del carrusel (px de diseño) */
   x: number
 }
 
 export const BOOKS: Book[] = [
-  { title: 'EL PODER DE LA ORATORIA E\nIMAGEN POLÍTICA', cover: 'libro-oratoria', cta: 'CONOCER PUBLICACIÓN', x: 1 },
-  { title: 'LAWFARE GUERRA JURÍDICA\nEN LA POLÍTICA', cover: 'libro-lawfare', cta: 'CONOCER PUBLICACIÓN', x: 457 },
-  { title: 'GUERRA ELECTORAL-EL PODER\nEN LAS SOMBRAS', cover: 'libro-guerra-electoral', cta: 'CONOCER PUBLICACIÓN', x: 899 },
-  { title: 'MANUAL DEL CONSULTOR\nPOLÍTICO', cover: 'libro-consultor', cta: 'CONOCER PUBLICACIÓN', x: 1341 },
-  { title: 'MÁQUINA\nELECTORAL', cover: 'libro-maquina-electoral', cta: 'CONOCER PUBLICACIÓN', x: 1797 },
-  { title: 'MANUAL DE OPERACIONES\nPSICOLÓGICAS Y PSICOSOCIALES', cover: 'libro-psyops', cta: 'VER EDICIÓN', x: 2239 },
-  { title: 'WAR ROOM EN CAMPAÑAS\nELECTORALES', cover: 'libro-war-room', cta: 'VER EDICIÓN', x: 2681 },
-  { title: 'MANUAL DE INTELIGENCIA Y\nCONTRA INTELIGENCIA', cover: 'libro-inteligencia', cta: 'VER EDICIÓN', x: 3123 },
+  { title: 'EL PODER DE LA ORATORIA E\nIMAGEN POLÍTICA', cover: 'libro-oratoria', url: GOBERNA_STORE + 'el-poder-de-la-oratoria-e-imagen-politica/', cta: 'CONOCER PUBLICACIÓN', x: 1 },
+  { title: 'LAWFARE GUERRA JURÍDICA\nEN LA POLÍTICA', cover: 'libro-lawfare', url: GOBERNA_STORE + 'lawfare-guerra-juridica-en-la-politica-edicion-especial/', cta: 'CONOCER PUBLICACIÓN', x: 457 },
+  { title: 'GUERRA ELECTORAL-EL PODER\nEN LAS SOMBRAS', cover: 'libro-guerra-electoral', url: GOBERNA_STORE + 'guerra-electoral-el-poder-en-las-sombras-2/', cta: 'CONOCER PUBLICACIÓN', x: 899 },
+  { title: 'MANUAL DEL CONSULTOR\nPOLÍTICO', cover: 'libro-consultor', url: GOBERNA_STORE + 'manual-del-consultor-politico/', cta: 'CONOCER PUBLICACIÓN', x: 1341 },
+  { title: 'MÁQUINA\nELECTORAL', cover: 'libro-maquina-electoral', url: GOBERNA_STORE + 'maquina-electoral-aprenda-a-ganar-elecciones/', cta: 'CONOCER PUBLICACIÓN', x: 1797 },
+  { title: 'MANUAL DE OPERACIONES\nPSICOLÓGICAS Y PSICOSOCIALES', cover: 'libro-psyops', url: GOBERNA_STORE + 'manual-de-operaciones-psicologicas-y-psicosociales/', cta: 'VER EDICIÓN', x: 2239 },
+  { title: 'WAR ROOM EN CAMPAÑAS\nELECTORALES', cover: 'libro-war-room', url: GOBERNA_STORE + 'war-room-en-campanas-electorales-edicion-especial/', cta: 'VER EDICIÓN', x: 2681 },
+  { title: 'MANUAL DE INTELIGENCIA Y\nCONTRA INTELIGENCIA', cover: 'libro-inteligencia', url: GOBERNA_STORE + 'manual-de-inteligencia-y-contrainteligencia-2da-edicion/', cta: 'VER EDICIÓN', x: 3123 },
 ]
 
 /** Desplazamiento del carrusel por clic (distancia entre libros). */
