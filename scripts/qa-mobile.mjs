@@ -155,6 +155,7 @@ async function checkInteractions(browser, url, w) {
   if (!locked.focusIn) fail(where, 'el foco no entra al menú')
   for (let i = 0; i < 14; i++) await page.keyboard.press('Tab')
   if (!(await page.evaluate(() => !!document.activeElement?.closest('#m-menu')))) fail(where, 'el foco escapa del menú con Tab')
+  await sleep(900) // entrada del menú
   await page.screenshot({ path: `${SHOTS}/menu-${w}.png` })
   await page.keyboard.press('Escape')
   await sleep(100)
