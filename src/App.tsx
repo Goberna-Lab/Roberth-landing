@@ -68,7 +68,7 @@ function Hero() {
         </div>
 
         <h1 className="hero__title">
-          <img src="{asset('/svg/firma-hero.svg')}" alt="Roberto Bazán" width={662.94} height={138.58} />
+          <img src={asset('/svg/firma-hero.svg')} alt="Roberto Bazán" width={662.94} height={138.58} />
         </h1>
         <ul className="hero__roles">
           <li style={{ left: 200 }}>Consultor Político</li>
@@ -80,11 +80,11 @@ function Hero() {
 
         <a href="#publicaciones" className="btn btn--gold hero__btn hero__btn--books">
           <span className="hero__btn-label">Ver libros</span>
-          <img className="btn__icons" src="{asset('/svg/btn-verlibros-icons.svg')}" alt="" />
+          <img className="btn__icons" src={asset('/svg/btn-verlibros-icons.svg')} alt="" />
         </a>
         <a href="#conversemos" className="btn btn--light hero__btn hero__btn--talks">
           <span className="hero__btn-label">Cotiza conferencias</span>
-          <img className="btn__icons" src="{asset('/svg/btn-cotiza-icons.svg')}" alt="" />
+          <img className="btn__icons" src={asset('/svg/btn-cotiza-icons.svg')} alt="" />
         </a>
       </div>
     </section>
@@ -95,9 +95,9 @@ function About() {
   return (
     <section className="about" id="roberth">
       <div className="stage">
-        <img className="about__bg" src="{asset('/img/about-bg.webp')}" alt="" loading="lazy" />
+        <img className="about__bg" src={asset('/img/about-bg.webp')} alt="" loading="lazy" />
         <p className="label about__label">UNA MIRADA MULTIDIMENSIONAL</p>
-        <img className="about__icon" src="{asset('/svg/ico-columnas.svg')}" alt="" width={47.61} height={44.36} />
+        <img className="about__icon" src={asset('/svg/ico-columnas.svg')} alt="" width={47.61} height={44.36} />
         <h2 className="about__title">
           <span className="about__title-1">Roberth</span>
           <span className="about__title-2">Estratega</span>
@@ -119,16 +119,16 @@ function About() {
         <span className="about__hr" />
 
         <figure className="about__photo about__photo--1">
-          <img src="{asset('/img/about-1.webp')}" alt="Roberto Bazán junto a autoridades y consultores" loading="lazy" />
+          <img src={asset('/img/about-1.webp')} alt="Roberto Bazán junto a autoridades y consultores" loading="lazy" />
         </figure>
         <figure className="about__photo about__photo--2">
-          <img src="{asset('/img/about-2.webp')}" alt="Conferencia ante un auditorio" loading="lazy" />
+          <img src={asset('/img/about-2.webp')} alt="Conferencia ante un auditorio" loading="lazy" />
         </figure>
         <figure className="about__photo about__photo--3">
-          <img src="{asset('/img/about-3.webp')}" alt="Roberto Bazán exponiendo" loading="lazy" />
+          <img src={asset('/img/about-3.webp')} alt="Roberto Bazán exponiendo" loading="lazy" />
         </figure>
         <figure className="about__photo about__photo--4">
-          <img src="{asset('/img/about-4.webp')}" alt="Roberto Bazán en un encuentro internacional" loading="lazy" />
+          <img src={asset('/img/about-4.webp')} alt="Roberto Bazán en un encuentro internacional" loading="lazy" />
         </figure>
       </div>
     </section>
@@ -152,7 +152,7 @@ function Power() {
         return
       }
       const scale = rect.width / 1672 || 1
-      img.style.transform = `translate3d(0, ${(-rect.top / scale) * 0.25}px, 0)`
+      img.style.transform = `translate3d(0, ${-rect.top / scale}px, 0)`
     }
 
     const onScroll = () => {
@@ -173,7 +173,7 @@ function Power() {
     <section className="power">
       <div className="stage">
         <div className="power__img">
-          <img ref={imgRef} src="{asset('/img/capitolio.webp')}" alt="" loading="lazy" />
+          <img ref={imgRef} src={asset('/img/capitolio.webp')} alt="" loading="lazy" />
         </div>
         <h2 className="power__title">
           <span className="power__line-1">El poder se construye con </span>
@@ -269,7 +269,7 @@ function Books() {
     <section className="books" id="publicaciones">
       <div className="stage">
         <div className="books__bg">
-          <img src="{asset('/img/pilares.webp')}" alt="" loading="lazy" />
+          <img src={asset('/img/pilares.webp')} alt="" loading="lazy" />
         </div>
         <p className="label books__label">PUBLICACIONES · LIBROS FÍSICOS</p>
         <h2 className="h2 books__title">Ideas que se convierten en libros.</h2>
@@ -316,7 +316,7 @@ function Books() {
                 </h3>
                 <a href="#" className="more-link book__link">
                   {book.cta}
-                  <img src="{asset('/svg/link-conocer.svg')}" alt="" width={13.18} height={10.98} />
+                  <img src={asset('/svg/link-conocer.svg')} alt="" width={13.18} height={10.98} />
                 </a>
               </li>
             ))}
@@ -358,7 +358,7 @@ function Audiobooks() {
             </h3>
             <a href="#" className="more-link book__link">
               CONOCER PUBLICACIÓN
-              <img src="{asset('/svg/link-conocer.svg')}" alt="" width={13.18} height={10.98} />
+              <img src={asset('/svg/link-conocer.svg')} alt="" width={13.18} height={10.98} />
             </a>
           </article>
         ))}
@@ -371,7 +371,7 @@ function Talks() {
   return (
     <section className="talks" id="conferencias">
       <div className="stage">
-        <img className="talks__bg" src="{asset('/img/conferencias.webp')}" alt="" loading="lazy" />
+        <img className="talks__bg" src={asset('/img/conferencias.webp')} alt="" loading="lazy" />
         <div className="talks__shade-x" />
         <div className="talks__shade-y" />
         <p className="label talks__label">PENSAMIENTO EN VOZ ALTA</p>
@@ -389,7 +389,7 @@ function Talks() {
         </p>
         <a href="#conversemos" className="btn btn--light talks__btn">
           <span className="hero__btn-label">Cotiza conferencias</span>
-          <img className="btn__icons" src="{asset('/svg/btn-cotiza-icons.svg')}" alt="" />
+          <img className="btn__icons" src={asset('/svg/btn-cotiza-icons.svg')} alt="" />
         </a>
       </div>
     </section>
@@ -401,7 +401,7 @@ function Contact() {
     <section className="contact" id="conversemos">
       <div className="stage">
         <div className="contact__photo">
-          <img src="{asset('/img/roberto-retrato.webp')}" alt="Roberto Bazán" loading="lazy" />
+          <img src={asset('/img/roberto-retrato.webp')} alt="Roberto Bazán" loading="lazy" />
         </div>
         <div className="contact__shade" />
         <div className="contact__panel" />
@@ -416,7 +416,7 @@ function Contact() {
             <li key={service}>
               <img
                 className="contact__arrow"
-                src="{asset('/svg/ico-diag.svg')}"
+                src={asset('/svg/ico-diag.svg')}
                 alt=""
                 style={{ top: 323.5 + [0, 85, 171, 256][i] }}
               />
@@ -441,7 +441,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="stage">
-        <img className="footer__sign" src="{asset('/svg/firma-footer.svg')}" alt="Roberto Bazán" width={346.84} height={72.5} />
+        <img className="footer__sign" src={asset('/svg/firma-footer.svg')} alt="Roberto Bazán" width={346.84} height={72.5} />
         {FOOTER_COLUMNS.map((col) => (
           <div key={col.title} className="footer__col" style={{ left: col.x }}>
             <p className="footer__heading">{col.title}</p>
@@ -467,7 +467,7 @@ function Footer() {
           ))}
         </ul>
         <div className="footer__qr">
-          <img src="{asset('/img/qr.png')}" alt="Código QR de contacto" width={110} height={110} />
+          <img src={asset('/img/qr.png')} alt="Código QR de contacto" width={110} height={110} />
         </div>
       </div>
     </footer>
@@ -477,7 +477,7 @@ function Footer() {
 function WhatsApp() {
   return (
     <a className="whatsapp" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Escríbenos por WhatsApp">
-      <img src="{asset('/img/whatsapp.webp')}" alt="" width={108} height={108} />
+      <img src={asset('/img/whatsapp.webp')} alt="" width={108} height={108} />
     </a>
   )
 }
