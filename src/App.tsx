@@ -582,9 +582,57 @@ function Talks() {
   )
 }
 
+/**
+ * Mismo revelado ligado al scroll que "Pensamiento en voz alta": etiqueta →
+ * frase → servicios que se entintan uno tras otro mientras se dibujan sus
+ * líneas → botón.
+ */
 function Contact() {
+  const root = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const q = gsap.utils.selector(root)
+        const lines = q('.contact__line')
+        const arrows = q('.contact__arrow')
+        const services = q('.contact__service')
+
+        // Estados iniciales explícitos: en un timeline con scrub, los tweens con
+        // stagger solo aplican el estado inicial al primer elemento.
+        gsap.set(q('.contact__label'), { autoAlpha: 0, x: -12 })
+        gsap.set(q('.contact__lead'), { autoAlpha: 0, y: 12 })
+        gsap.set(lines, { scaleX: 0, transformOrigin: 'left center' })
+        gsap.set(arrows, { autoAlpha: 0, x: -10, y: 10 })
+        gsap.set(services, { opacity: 0.25, x: -8 })
+        gsap.set(q('.contact__btn'), { autoAlpha: 0, y: 10 })
+
+        const tl = gsap
+          .timeline({
+            defaults: { ease: 'sine.out' },
+            scrollTrigger: { trigger: root.current, start: 'top 75%', end: 'top 5%', scrub: 1.5 },
+          })
+          .to(q('.contact__label'), { autoAlpha: 1, x: 0, duration: 0.6 }, 0)
+          .to(q('.contact__lead'), { autoAlpha: 1, y: 0, duration: 0.8 }, 0.15)
+          .to(lines[0], { scaleX: 1, duration: 0.6 }, 0.6)
+
+        // Cada servicio: flecha → texto → la línea que lo cierra por debajo.
+        services.forEach((service: HTMLElement, i: number) => {
+          const at = 0.85 + i * 0.45
+          tl.to(arrows[i], { autoAlpha: 1, x: 0, y: 0, duration: 0.5 }, at)
+            .to(service, { opacity: 1, x: 0, duration: 0.5 }, at + 0.05)
+            .to(lines[i + 1], { scaleX: 1, duration: 0.6 }, at + 0.15)
+        })
+
+        tl.to(q('.contact__btn'), { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.3')
+      })
+    },
+    { scope: root },
+  )
+
   return (
-    <section className="contact" id="conversemos">
+    <section className="contact" id="conversemos" ref={root}>
       <div className="stage">
         <div className="contact__photo">
           <img src={asset('/img/roberto-retrato.webp')} alt="Roberto Bazán" loading="lazy" />

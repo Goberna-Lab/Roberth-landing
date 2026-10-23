@@ -128,5 +128,5 @@ export const FOOTER_COLUMNS = [
 export const SOCIALS = [
   { label: 'robazfer', icon: a('/svg/ico-fb.svg'), href: 'https://www.facebook.com/robazfer', name: 'Facebook', iconTop: 46, textTop: 48.4 },
   { label: 'roberth.estratega', icon: a('/svg/ico-ig.svg'), href: 'https://www.instagram.com/roberth.estratega', name: 'Instagram', iconTop: 91, textTop: 92.4 },
-  { label: 'robazfer', icon: a('/svg/ico-in.svg'), href: 'https://www.linkedin.com/in/robazfer', name: 'LinkedIn', iconTop: 134.71, textTop: 134.4 },
+  { label: 'robazfer', icon: a('/svg/ico-in.svg'), href: 'https://www.linkedin.com/in/robazfer/', name: 'LinkedIn', iconTop: 134.71, textTop: 134.4 },
 ]
