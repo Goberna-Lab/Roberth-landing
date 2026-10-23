@@ -577,8 +577,7 @@
   height: 100vh;
   height: 100lvh;
   object-fit: cover;
-  object-position: 62% 50%;
-  opacity: 0.63;
+  object-position: 80% 50%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -595,6 +594,8 @@
   font-family: var(--font-display);
   letter-spacing: -0.028em;
   color: var(--paper);
+  /* Sombra tenue para despegar el texto de la foto sin que se note. */
+  text-shadow: 0 2px 12px rgba(1, 10, 19, 0.35);
 }
 
 .m-power__lead {
