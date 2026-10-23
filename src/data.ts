@@ -3,7 +3,7 @@
 /** Reemplazar con el número real (formato internacional, sin "+"). */
 const a = (p: string)=>`${import.meta.env.BASE_URL}${p.replace(/^\//,'')}`
 
-export const WHATSAPP_URL = 'https://wa.me/'
+export const WHATSAPP_URL = 'https://wa.me/51956687505'
 
 export const NAV = [
   { label: 'EXPERIENCIA', href: '#experiencia', x: 852 },
