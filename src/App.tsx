@@ -83,7 +83,7 @@ function Hero() {
         <ul className="hero__roles">
           <li style={{ left: 200 }}>Consultor Político</li>
           <li style={{ left: 463 }}>Asesor Legal</li>
-          <li style={{ left: 661 }}>Escritor conferencista</li>
+          <li style={{ left: 661 }}>Escritor. Conferencista</li>
         </ul>
         <span className="hero__dot" style={{ left: 425 }} />
         <span className="hero__dot" style={{ left: 623 }} />
