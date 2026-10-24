@@ -15,10 +15,12 @@ import {
   NAV,
   SERVICES,
   SOCIALS,
+  TALKS,
   WHATSAPP_URL,
 } from './data.ts'
 import { CarouselArrow } from './icons.tsx'
 import { HeroSignature } from './shared/HeroSignature.tsx'
+import { QuoteModal } from './shared/QuoteModal.tsx'
 import { useIsMobile } from './shared/useIsMobile.ts'
 import { Words } from './shared/Words.tsx'
 import MobileApp from './mobile/MobileApp.tsx'
@@ -521,8 +523,8 @@ function Talks() {
           <br />
           nuevos escenarios del poder y la toma de decisiones.
         </p>
-        <a href="#conversemos" className="btn btn--light talks__btn">
-          <span className="hero__btn-label">Cotiza conferencias</span>
+        <a href={TALKS.cta.href} className="btn btn--light talks__btn">
+          <span className="hero__btn-label">{TALKS.cta.label}</span>
           <img className="btn__icons" src={asset('/svg/btn-cotiza-icons.svg')} alt="" />
         </a>
       </div>
@@ -686,5 +688,10 @@ function DesktopApp() {
 
 /** Escritorio (lienzo de 1920px) desde 1024px; por debajo, la versión mobile. */
 export default function App() {
-  return useIsMobile() ? <MobileApp /> : <DesktopApp />
+  return (
+    <>
+      {useIsMobile() ? <MobileApp /> : <DesktopApp />}
+      <QuoteModal />
+    </>
+  )
 }

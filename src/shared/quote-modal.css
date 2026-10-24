@@ -1,0 +1,439 @@
+/*
+ * Formulario "Cotiza conferencias" (QuoteModal). Vive en <body>, fuera del
+ * lienzo escalado, así que todas las medidas son px reales: el mismo modal
+ * sirve para escritorio y mobile.
+ */
+
+.qmodal {
+  --q-navy: #01041c;
+  --q-line: #c9d0d6;
+  --q-muted: #6b7380;
+  --q-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  width: min(1080px, calc(100vw - 48px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--navy-800);
+  box-shadow: 0 30px 80px rgba(1, 4, 28, 0.45);
+}
+
+.qmodal[open] {
+  animation: qmodal-in 520ms var(--q-ease) both;
+}
+
+.qmodal::backdrop {
+  background: rgba(1, 4, 28, 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.qmodal[open]::backdrop {
+  animation: qmodal-fade 400ms ease both;
+}
+
+@keyframes qmodal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+}
+
+@keyframes qmodal-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.qmodal__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  max-height: calc(100dvh - 48px);
+}
+
+/* ---------- Columna de imagen ---------- */
+
+.qmodal__aside {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--q-navy);
+  color: var(--paper);
+}
+
+.qmodal__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 46% 30%;
+}
+
+/*
+ * Mismo velo azul de "Pensamiento en voz alta": arriba se ve Roberto en el
+ * atril y desde la mitad la foto se funde en azul para que el texto se lea.
+ */
+.qmodal__aside::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Por encima de la foto (que va después en el HTML) y debajo del texto. */
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(1, 4, 28, 0.2) 0%,
+      rgba(1, 4, 28, 0.35) 30%,
+      rgba(1, 4, 28, 0.88) 52%,
+      rgba(1, 4, 28, 0.97) 100%
+    ),
+    linear-gradient(90deg, rgba(1, 4, 28, 0.35), rgba(1, 4, 28, 0));
+}
+
+.qmodal__aside-body {
+  position: relative;
+  z-index: 2;
+  padding: 40px 40px 44px;
+}
+
+.qmodal__label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+}
+
+.qmodal__title {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -0.028em;
+}
+
+.qmodal__title span {
+  display: block;
+  color: #c9a15a;
+}
+
+.qmodal__text {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(247, 249, 252, 0.82);
+}
+
+.qmodal__formats {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(201, 161, 90, 0.35);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(247, 249, 252, 0.9);
+}
+
+.qmodal__formats li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qmodal__formats li::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* ---------- Formulario ---------- */
+
+.qmodal__form {
+  display: grid;
+  gap: 26px;
+  align-content: start;
+  padding: 48px 52px 36px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.qmodal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px 32px;
+}
+
+.qmodal__field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.qmodal__field > span,
+.qmodal__field legend {
+  padding: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--q-muted);
+}
+
+.qmodal__field input,
+.qmodal__field select,
+.qmodal__field textarea {
+  width: 100%;
+  padding: 8px 0 10px;
+  border: 0;
+  border-bottom: 1px solid var(--q-line);
+  border-radius: 0;
+  background: transparent;
+  font: inherit;
+  /* 16px evita el zoom automático de iOS al enfocar. */
+  font-size: 16px;
+  color: var(--navy-800);
+  outline: none;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+/*
+ * Una línea, como los demás campos (la raya queda a la misma distancia de su
+ * etiqueta); crece sola al escribir donde hay field-sizing, y si no, con la esquina.
+ */
+.qmodal__field textarea {
+  field-sizing: content;
+  min-height: 0;
+  max-height: 160px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+@supports (field-sizing: content) {
+  .qmodal__field textarea {
+    resize: none;
+  }
+}
+
+.qmodal__field select {
+  appearance: none;
+  padding-right: 28px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a9803c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    right 2px center / 14px no-repeat;
+  cursor: pointer;
+}
+
+.qmodal__field select:has(option[value='']:checked) {
+  color: var(--q-muted);
+}
+
+.qmodal__field input:focus,
+.qmodal__field select:focus,
+.qmodal__field textarea:focus {
+  border-bottom-color: var(--gold);
+  box-shadow: 0 1px 0 var(--gold);
+}
+
+.qmodal__field :user-invalid {
+  border-bottom-color: #b4483c;
+  box-shadow: 0 1px 0 #b4483c;
+}
+
+/* Píldoras de una sola elección. */
+.qmodal__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.qmodal__pill {
+  position: relative;
+  cursor: pointer;
+}
+
+.qmodal__pill input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.qmodal__pill span {
+  display: block;
+  padding: 9px 18px;
+  border: 1px solid var(--q-line);
+  border-radius: 999px;
+  font-size: 14px;
+  color: #3c3c44;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+}
+
+.qmodal__pill:hover span {
+  border-color: var(--gold);
+}
+
+.qmodal__pill input:checked + span {
+  border-color: var(--navy-900);
+  background: var(--navy-900);
+  color: var(--paper);
+}
+
+.qmodal__pill input:focus-visible + span {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.qmodal__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  height: 58px;
+  margin-top: 4px;
+  border-radius: 6px;
+  background: var(--gold);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--navy-900);
+  transition: background-color 0.25s;
+}
+
+.qmodal__submit svg {
+  transition: transform 0.3s var(--q-ease);
+}
+
+.qmodal__submit:hover {
+  background: #b88d45;
+}
+
+.qmodal__submit:hover svg {
+  transform: translateX(4px);
+}
+
+.qmodal__submit:focus-visible {
+  outline: 2px solid var(--navy-900);
+  outline-offset: 3px;
+}
+
+.qmodal__note {
+  margin-top: -12px;
+  font-size: 12.5px;
+  text-align: center;
+  color: var(--q-muted);
+}
+
+.qmodal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(1, 4, 28, 0.06);
+  color: var(--navy-800);
+  transition: background-color 0.25s;
+}
+
+.qmodal__close:hover {
+  background: rgba(1, 4, 28, 0.12);
+}
+
+.qmodal__close:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- Tablet y teléfono: pantalla completa, imagen arriba ---------- */
+
+@media (max-width: 859.98px) {
+  .qmodal {
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+
+  .qmodal__inner {
+    display: block;
+    height: 100%;
+    max-height: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .qmodal__aside {
+    min-height: 260px;
+  }
+
+  /* Aquí el texto cubre toda la franja: velo más parejo. */
+  .qmodal__aside::before {
+    background: linear-gradient(180deg, rgba(1, 4, 28, 0.6) 0%, rgba(1, 4, 28, 0.82) 55%, rgba(1, 4, 28, 0.96) 100%);
+  }
+
+  .qmodal__aside-body {
+    padding: 72px 24px 28px;
+  }
+
+  .qmodal__title {
+    font-size: clamp(26px, 7vw, 34px);
+  }
+
+  .qmodal__formats {
+    display: none;
+  }
+
+  .qmodal__form {
+    padding: 32px 24px calc(32px + env(safe-area-inset-bottom, 0px));
+    overflow: visible;
+  }
+
+  .qmodal__close {
+    top: calc(14px + env(safe-area-inset-top, 0px));
+    right: 14px;
+    background: rgba(247, 249, 252, 0.16);
+    color: var(--paper);
+    backdrop-filter: blur(6px);
+  }
+
+  .qmodal__close:hover {
+    background: rgba(247, 249, 252, 0.28);
+  }
+}
+
+@media (max-width: 559.98px) {
+  .qmodal__grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qmodal[open],
+  .qmodal[open]::backdrop {
+    animation: none;
+  }
+}

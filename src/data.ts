@@ -223,8 +223,23 @@ export const TALKS = {
   titleLight: 'Ideas que salen del',
   titleGold: 'escritorio.',
   text: 'Conferencias, medios, masterclasses y espacios especializados donde comparte análisis y herramientas para comprender los nuevos escenarios del poder y la toma de decisiones.',
-  cta: { label: 'Cotiza conferencias', href: '#conversemos' },
+  cta: { label: 'Cotiza conferencias', href: '#cotizar' },
   background: a('/img/conferencias.webp'),
+}
+
+/** Formulario "Cotiza conferencias": cualquier enlace a #cotizar lo abre. */
+export const QUOTE = {
+  anchor: '#cotizar',
+  label: 'COTIZA CONFERENCIAS',
+  titleLight: 'Llevemos las ideas',
+  titleGold: 'a tu escenario.',
+  text: 'Cuéntanos sobre tu evento y preparamos una propuesta a la medida de tu audiencia.',
+  /** Las mismas conferencias del desplegable del banner y de la columna CONFERENCIAS del pie. */
+  conferences: FOOTER_COLUMNS.find((col) => col.title === 'CONFERENCIAS')?.links ?? [],
+  eventTypes: ['Conferencia magistral', 'Masterclass', 'Panel o foro', 'Entrevista o medio', 'Formación in-company'],
+  modalities: ['Presencial', 'Virtual', 'Híbrido'],
+  submit: 'COTIZA CONFERENCIAS',
+  note: 'Al enviar se abrirá WhatsApp con tu solicitud lista para mandar.',
 }
 
 export const CONTACT = {
