@@ -7,12 +7,14 @@ import {
   BOOK_AUTOSCROLL_SPEED,
   BOOK_STEP,
   BOOKS,
+  bookCover,
   EXPERIENCE,
   EXPERIENCE_LAYOUT,
   FOOTER_COLUMNS,
   HEADER,
   HERO,
   NAV,
+  QUOTE,
   SERVICES,
   SOCIALS,
   TALKS,
@@ -69,7 +71,7 @@ function Header({ active }: { active?: string }) {
             ))}
           </ul>
         </nav>
-        <a href="#conversemos" className="btn btn--outline header__cta">
+        <a href={QUOTE.anchor} className="btn btn--outline header__cta">
           {HEADER.cta}
         </a>
       </div>
@@ -106,7 +108,7 @@ function Hero() {
           <span className="hero__btn-label">Ver libros</span>
           <img className="btn__icons" src={asset('/svg/btn-verlibros-icons.svg')} alt="" />
         </a>
-        <a href="#conversemos" className="btn btn--light hero__btn hero__btn--talks">
+        <a href={HERO.ctaTalks.href} className="btn btn--light hero__btn hero__btn--talks">
           <span className="hero__btn-label">Cotiza conferencias</span>
           <img className="btn__icons" src={asset('/svg/btn-cotiza-icons.svg')} alt="" />
         </a>
@@ -355,6 +357,29 @@ function Books() {
     }
   }, [])
 
+  /*
+   * Al pasar el mouse, la portada se inclina hacia el cursor y un brillo lo
+   * sigue (--rx/--ry/--gx/--gy). Se mide sobre el <li>, que no se transforma,
+   * para que la propia inclinación no altere la medida.
+   */
+  const tilt = (e: React.PointerEvent<HTMLLIElement>) => {
+    if (e.pointerType !== 'mouse') return
+    const li = e.currentTarget
+    const cover = li.querySelector<HTMLElement>('.book__media')
+    if (!cover) return
+    const r = li.getBoundingClientRect()
+    const clamp = (v: number) => Math.min(1, Math.max(0, v))
+    const x = clamp(((e.clientX - r.left) / r.width) * (li.offsetWidth / cover.offsetWidth))
+    const y = clamp(((e.clientY - r.top) / r.height) * (li.offsetHeight / cover.offsetHeight))
+    li.style.setProperty('--ry', `${((x - 0.5) * 14).toFixed(2)}deg`)
+    li.style.setProperty('--rx', `${((0.5 - y) * 14).toFixed(2)}deg`)
+    li.style.setProperty('--gx', `${(x * 100).toFixed(1)}%`)
+    li.style.setProperty('--gy', `${(y * 100).toFixed(1)}%`)
+  }
+  const untilt = (e: React.PointerEvent<HTMLLIElement>) => {
+    for (const v of ['--rx', '--ry', '--gx', '--gy']) e.currentTarget.style.removeProperty(v)
+  }
+
   const move = (dir: 1 | -1) => {
     const el = viewport.current
     if (!el) return
@@ -399,15 +424,26 @@ function Books() {
         <div className="books__viewport" ref={viewport}>
           <ul className="books__track">
             {BOOKS.map((book, i) => (
-              <li key={book.cover} className="book" style={{ left: book.x }}>
-                <img
-                  className="book__cover"
-                  src={typeof book.cover === "string" && book.cover.startsWith("/") ? asset(book.cover) : asset(`/img/${book.cover}.webp`)}
-                  alt={book.title.replace('\n', ' ')}
-                  loading="lazy"
-                  width={317}
-                  height={439}
-                />
+              <li key={book.cover} className="book" style={{ left: book.x }} onPointerMove={tilt} onPointerLeave={untilt}>
+                {/* La portada también lleva a la tienda; para lectores de pantalla basta el enlace de abajo. */}
+                <a
+                  href={book.url}
+                  className="book__media"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  style={{ '--cover': `url(${bookCover(book)})` } as React.CSSProperties}
+                >
+                  <img
+                    className="book__cover"
+                    src={bookCover(book)}
+                    alt={book.title.replace('\n', ' ')}
+                    loading="lazy"
+                    width={317}
+                    height={439}
+                  />
+                </a>
                 <span className="book__num">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="book__title">
                   <Lines text={book.title} />
@@ -454,7 +490,7 @@ function Audiobooks() {
             <h3 className="book__title">
               <Lines text={item.title} />
             </h3>
-            <a href="#" className="more-link book__link">
+            <a href={item.url} className="more-link book__link" target="_blank" rel="noopener noreferrer">
               CONOCER PUBLICACIÓN
               <img src={asset('/svg/link-conocer.svg')} alt="" width={13.18} height={10.98} />
             </a>

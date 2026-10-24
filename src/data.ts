@@ -93,15 +93,21 @@ export const BOOK_STEP = 442
 /** Velocidad del scroll automático del carrusel (px de diseño por segundo). */
 export const BOOK_AUTOSCROLL_SPEED = 28
 
+/** Los audiolibros aún no tienen página propia: WhatsApp con la consulta ya escrita. */
+const audiobookUrl = (name: string) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola Roberto, quiero información sobre el audiolibro "${name}".`)}`
+
 export const AUDIOBOOKS = [
   {
     title: 'AUDIOLIBRO EL PODER DE LA ORATORIA E\nIMAGEN POLÍTICA',
+    url: audiobookUrl('El poder de la oratoria e imagen política'),
     cover: a('/img/audio-oratoria.webp'),
     img: { x: 960, y: 90, w: 175, h: 219 },
     top: 134.5,
   },
   {
     title: 'AUDIOLIBRO MANUAL DE INTELIGENCIA\nY CONTRAINTELIGENCIA',
+    url: audiobookUrl('Manual de inteligencia y contrainteligencia'),
     cover: a('/img/audio-inteligencia.webp'),
     img: { x: 960, y: 370, w: 185, h: 277 },
     top: 455.5,
@@ -148,7 +154,9 @@ export const HERO = {
   person: a('/img/hero-roberto.webp'),
   background: a('/img/hero-bg.webp'),
   ctaBooks: { label: 'Ver libros', href: '#publicaciones' },
-  ctaTalks: { label: 'Cotiza conferencias', href: '#conversemos' },
+  ctaTalks: { label: 'Cotiza conferencias', href: '#cotizar' },
+  /** Mobile: aparece bajo el desplegable de conferencias y abre WhatsApp. */
+  ctaSend: 'Solicitar cotización',
 }
 
 export const ABOUT = {
@@ -214,8 +222,6 @@ export const AUDIOBOOKS_INTRO = {
   title: 'El conocimiento también se escucha.',
   text: 'Una forma de explorar ideas, ampliar perspectivas y profundizar en el pensamiento político y estratégico.',
   cta: 'CONOCER PUBLICACIÓN',
-  /** Los audiolibros aún no tienen página de destino. */
-  href: '#',
 }
 
 export const TALKS = {

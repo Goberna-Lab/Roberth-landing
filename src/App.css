@@ -8,6 +8,11 @@
   position: relative;
 }
 
+/* Al llegar por un ancla, la sección empieza justo bajo la cabecera fija. */
+.page section[id] {
+  scroll-margin-top: 76px;
+}
+
 .stage {
   position: relative;
   width: 1920px;
@@ -842,11 +847,16 @@
   left: 1658px;
 }
 
+/*
+ * El viewport sobresale 40px a los lados y 36px arriba (los libros se
+ * desplazan lo mismo) para que la portada ampliada en hover y su sombra no
+ * se recorten contra el borde del carrusel.
+ */
 .books__viewport {
-  left: 331px;
-  top: 388px;
-  width: 1256px;
-  height: 620px;
+  left: 291px;
+  top: 352px;
+  width: 1336px;
+  height: 656px;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -858,26 +868,73 @@
 
 .books__track {
   position: relative !important;
-  width: 3440px;
+  width: 3520px;
   height: 100%;
 }
 
 .book {
   position: absolute !important;
-  top: 0;
+  top: 36px;
   width: 400px;
-  height: 100%;
+  height: 620px;
+  margin-left: 40px;
 }
 
 .book > * {
   position: absolute;
 }
 
-.book__cover {
+.book__media {
   left: 0;
   top: 0;
   width: 317px;
   height: 439px;
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Las portadas son PNG con transparencia: la sombra sigue la silueta del libro. */
+.book__cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: filter 0.35s;
+}
+
+/* Brillo que sigue al cursor, recortado a la forma de la portada (--cover). */
+.book__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 30%), rgba(255, 255, 255, 0.35), transparent 55%);
+  mask: var(--cover) center / 100% 100% no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+
+@media (hover: hover) {
+  .book:hover .book__media {
+    transform: perspective(1000px) translateY(-8px) scale(1.07) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  }
+
+  .book:hover .book__cover {
+    filter: drop-shadow(0 24px 22px rgba(9, 25, 51, 0.35));
+  }
+
+  .book:hover .book__media::after {
+    opacity: 1;
+  }
+
+  .book:hover .book__link img {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book:hover .book__media {
+    transform: none;
+  }
 }
 
 .book__num {

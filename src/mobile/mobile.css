@@ -352,6 +352,8 @@
   position: relative;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
+  /* minmax(0): un tema largo en el desplegable no ensancha la columna. */
+  grid-template-columns: minmax(0, 1fr);
   /*
    * --m-hero-extra: alto de la lista de temas abierta. El hero crece hacia
    * abajo en esa medida para que el botón tocado y Roberto no se muevan.
@@ -509,10 +511,48 @@
 .m-hero__ctas {
   position: relative;
   z-index: 1;
-  display: grid;
+  /* Flex y no grid: en flex el margen negativo de .m-hero__send sí anula el gap. */
+  display: flex;
+  flex-direction: column;
   gap: 12px;
   padding-top: 32px;
   padding-bottom: calc(clamp(24px, 6vw, 48px) + var(--m-safe-b));
+}
+
+/*
+ * "Solicitar cotización" aparece al abrir "Cotiza conferencias" (o con un
+ * tema ya elegido): se despliega de 0 a su alto (0fr → 1fr) al ritmo de la
+ * lista y del hero. El margen negativo anula el gap mientras está cerrado; al
+ * abrirse, el margen del botón pone esa separación.
+ */
+.m-hero__send {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: -12px;
+  transition: grid-template-rows var(--m-select-t) var(--m-ease);
+}
+
+.m-hero__send.is-shown {
+  grid-template-rows: 1fr;
+}
+
+.m-hero__send-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.m-hero__send .m-btn {
+  margin-top: 12px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity calc(var(--m-select-t) * 0.8) ease,
+    transform var(--m-select-t) var(--m-ease);
+}
+
+.m-hero__send.is-shown .m-btn {
+  opacity: 1;
+  transform: none;
 }
 
 /*
@@ -585,10 +625,22 @@
 
 .m-select__button svg {
   flex: none;
+}
+
+/* Con el estilo de .m-btn (hero), el texto también va en una línea. */
+.m-select .m-btn > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m-select__chevron {
+  flex: none;
   transition: transform 0.25s var(--m-ease);
 }
 
-.m-select.is-open .m-select__button svg {
+.m-select.is-open .m-select__chevron {
   transform: rotate(180deg);
 }
 
@@ -1351,11 +1403,18 @@
 
   /* Como en escritorio: Ver libros a la izquierda; tema y cotizar a la derecha. */
   .m-hero__ctas {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 300px));
     grid-template-areas:
       'books topic'
       '. quote';
     justify-content: center;
+    /* Sin gap entre filas: la segunda solo tiene .m-hero__send, que trae su margen. */
+    row-gap: 0;
+  }
+
+  .m-hero__ctas .m-hero__send {
+    margin-top: 0;
   }
 
   /* Al abrir la lista crece su fila: los botones no se estiran con ella. */
@@ -1375,8 +1434,10 @@
     grid-area: quote;
   }
 
+  /* Todos llenan su columna, también los que van dentro del desplegable o del revelado. */
   .m-hero__ctas .m-btn {
     min-width: 0;
+    width: 100%;
   }
 
   .m-hero__roles {

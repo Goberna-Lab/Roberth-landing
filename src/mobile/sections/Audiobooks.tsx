@@ -23,7 +23,7 @@ export function Audiobooks() {
               <div>
                 <span className="m-book__num">{String(i + 1).padStart(2, '0')}</span>
                 <h3 className="m-book__title">{oneLine(item.title)}</h3>
-                <a href={AUDIOBOOKS_INTRO.href} className="m-more">
+                <a href={item.url} className="m-more" target="_blank" rel="noopener noreferrer">
                   {AUDIOBOOKS_INTRO.cta}
                   <IconArrowRight size={16} />
                 </a>

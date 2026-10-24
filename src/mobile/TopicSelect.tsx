@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 
 type Props = {
   placeholder: string
@@ -7,6 +7,12 @@ type Props = {
   onChange: (value: string) => void
   /** Alto que ocupa la lista abierta (0 al cerrarse), para que el hero crezca. */
   onListHeight?: (px: number) => void
+  /** Clases del botón (por defecto, el estilo contorno de .m-select__button). */
+  buttonClassName?: string
+  /** Icono a la izquierda del texto del botón. */
+  icon?: ReactNode
+  /** Alto que aparece bajo el desplegable al abrirse (p. ej. un botón que se revela). */
+  revealBelow?: number
 }
 
 /**
@@ -14,7 +20,16 @@ type Props = {
  * se abre debajo del botón, dentro del flujo. Teclado: flechas, Inicio/Fin,
  * Enter/Espacio para elegir y Escape para cerrar; también cierra al tocar fuera.
  */
-export function TopicSelect({ placeholder, options, value, onChange, onListHeight }: Props) {
+export function TopicSelect({
+  placeholder,
+  options,
+  value,
+  onChange,
+  onListHeight,
+  buttonClassName = 'm-select__button',
+  icon,
+  revealBelow = 0,
+}: Props) {
   const id = useId()
   const root = useRef<HTMLDivElement>(null)
   const button = useRef<HTMLButtonElement>(null)
@@ -38,9 +53,9 @@ export function TopicSelect({ placeholder, options, value, onChange, onListHeigh
     const height = inner.scrollHeight
     onListHeight?.(height)
     el.focus({ preventScroll: true })
-    // Lo que quedará bajo la pantalla al terminar (lista + Cotiza conferencias).
+    // Lo que quedará bajo la pantalla al terminar (lista + lo que hay debajo).
     const next = root.current?.nextElementSibling
-    const bottom = (next ?? el).getBoundingClientRect().bottom + (next ? height : 0)
+    const bottom = (next ?? el).getBoundingClientRect().bottom + (next ? height : 0) + revealBelow
     const overflow = bottom + 16 - window.innerHeight
     if (overflow > 0) window.scrollBy({ top: overflow, behavior: 'smooth' })
     const onPointer = (e: PointerEvent) => {
@@ -48,7 +63,7 @@ export function TopicSelect({ placeholder, options, value, onChange, onListHeigh
     }
     document.addEventListener('pointerdown', onPointer)
     return () => document.removeEventListener('pointerdown', onPointer)
-  }, [open, onListHeight])
+  }, [open, onListHeight, revealBelow])
 
   const show = () => {
     setActive(Math.max(0, value ? options.indexOf(value) : 0))
@@ -87,7 +102,7 @@ export function TopicSelect({ placeholder, options, value, onChange, onListHeigh
       <button
         ref={button}
         type="button"
-        className="m-select__button"
+        className={buttonClassName}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={`${id}-list`}
@@ -99,8 +114,9 @@ export function TopicSelect({ placeholder, options, value, onChange, onListHeigh
           }
         }}
       >
+        {icon}
         <span>{value ?? placeholder}</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
+        <svg className="m-select__chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden="true">
           <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>

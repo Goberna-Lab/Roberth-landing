@@ -35,6 +35,14 @@ export const IconCalendar = (p: IconProps) => (
   </Icon>
 )
 
+/** Globo de conversación: acciones que abren WhatsApp. */
+export const IconChat = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M20.2 11.6a8.2 8.2 0 0 1-12 7.3l-4.4 1.3 1.3-4.2a8.2 8.2 0 1 1 15.1-4.4Z" />
+    <path d="M8.6 10.4h6.8M8.6 13.6h4.4" />
+  </Icon>
+)
+
 export const IconArrowRight = (p: IconProps) => (
   <Icon {...p}>
     <path d="M4.5 12h15M14 6.5l5.5 5.5-5.5 5.5" />

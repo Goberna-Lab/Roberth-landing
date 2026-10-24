@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { FOOTER_COLUMNS, HERO, WHATSAPP_URL } from '../../data.ts'
 import { HeroSignature } from '../../shared/HeroSignature.tsx'
-import { IconArrowRight, IconBook, IconCalendar } from '../icons.tsx'
+import { IconArrowRight, IconBook, IconCalendar, IconChat } from '../icons.tsx'
 import { TopicSelect } from '../TopicSelect.tsx'
 
 /** Temas de conferencia: los mismos que la columna CONFERENCIAS del pie. */
@@ -17,14 +17,26 @@ const quoteUrl = (topic: string | null) =>
  * Hero vertical en dos zonas: arriba la firma y los roles; abajo, el escenario
  * donde Roberto ocupa todo el alto que queda (así su cabeza nunca queda bajo
  * los textos, sea cual sea el alto del teléfono) y los dos CTA sobre su torso.
+ * "Cotiza conferencias" es un desplegable de temas: al abrirlo aparece debajo
+ * "Solicitar cotización", que abre WhatsApp con el tema elegido.
  */
 export function Hero() {
   const [topic, setTopic] = useState<string | null>(null)
   // Alto de la lista de temas abierta: el hero crece hacia abajo en esa medida.
   const [listHeight, setListHeight] = useState(0)
+  // "Solicitar cotización" se ve con la lista abierta o con un tema ya elegido.
+  const showSend = listHeight > 0 || topic !== null
+  const send = useRef<HTMLDivElement>(null)
+  const [sendHeight, setSendHeight] = useState(0)
+  useLayoutEffect(() => {
+    // Alto del botón con su separación; se mide aunque esté plegado.
+    const inner = send.current?.firstElementChild
+    if (inner) setSendHeight(inner.scrollHeight)
+  }, [])
+  const extra = listHeight + (showSend ? sendHeight : 0)
 
   return (
-    <section className="m-hero" id="inicio" style={{ '--m-hero-extra': `${listHeight}px` } as React.CSSProperties}>
+    <section className="m-hero" id="inicio" style={{ '--m-hero-extra': `${extra}px` } as React.CSSProperties}>
       <div className="m-hero__media" aria-hidden="true">
         <div className="m-hero__bg" data-parallax="18">
           <img src={HERO.background} alt="" width={1920} height={880} fetchPriority="high" />
@@ -54,17 +66,24 @@ export function Hero() {
             <IconArrowRight size={20} />
           </a>
           <TopicSelect
-            placeholder="Seleccione conferencias"
+            placeholder={HERO.ctaTalks.label}
             options={TOPICS}
             value={topic}
             onChange={setTopic}
             onListHeight={setListHeight}
+            buttonClassName="m-btn m-btn--gold"
+            icon={<IconCalendar />}
+            revealBelow={topic === null ? sendHeight : 0}
           />
-          <a href={quoteUrl(topic)} target="_blank" rel="noreferrer" className="m-btn m-btn--gold">
-            <IconCalendar />
-            <span>{HERO.ctaTalks.label}</span>
-            <IconArrowRight size={20} />
-          </a>
+          <div className={`m-hero__send${showSend ? ' is-shown' : ''}`} ref={send} inert={!showSend}>
+            <div className="m-hero__send-inner">
+              <a href={quoteUrl(topic)} target="_blank" rel="noreferrer" className="m-btn m-btn--gold">
+                <IconChat />
+                <span>{HERO.ctaSend}</span>
+                <IconArrowRight size={20} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

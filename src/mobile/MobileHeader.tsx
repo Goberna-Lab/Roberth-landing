@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { HEADER, NAV, SOCIALS } from '../data.ts'
+import { HEADER, NAV, QUOTE, SOCIALS } from '../data.ts'
 import { goToAnchor } from './anchors.ts'
 import { IconClose, IconMenu } from './icons.tsx'
 
@@ -116,7 +116,8 @@ function MobileMenu({ onClose, returnFocus }: { onClose: () => void; returnFocus
             </li>
           ))}
         </ul>
-        <a href="#conversemos" className="m-btn m-btn--gold m-menu__cta" onClick={(e) => choose(e, '#conversemos')}>
+        {/* QuoteModal abre el formulario al hacer clic en cualquier enlace a #cotizar. */}
+        <a href={QUOTE.anchor} className="m-btn m-btn--gold m-menu__cta" onClick={onClose}>
           {HEADER.cta}
         </a>
       </nav>
