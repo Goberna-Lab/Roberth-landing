@@ -21,6 +21,8 @@
   --m-safe-l: env(safe-area-inset-left, 0px);
   --m-section-y: clamp(72px, 18vw, 120px);
   --m-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Despliegue de la lista de temas y crecimiento del hero (mismo ritmo). */
+  --m-select-t: 420ms;
 
   overflow-x: clip;
   font-size: 16px;
@@ -350,11 +352,21 @@
   position: relative;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  min-height: 640px;
-  height: 100vh;
-  height: 100svh;
-  max-height: 1100px;
+  /*
+   * --m-hero-extra: alto de la lista de temas abierta. El hero crece hacia
+   * abajo en esa medida para que el botón tocado y Roberto no se muevan.
+   */
+  min-height: calc(640px + var(--m-hero-extra, 0px));
+  height: calc(100vh + var(--m-hero-extra, 0px));
+  height: calc(100svh + var(--m-hero-extra, 0px));
+  max-height: calc(1100px + var(--m-hero-extra, 0px));
   overflow: hidden;
+  /* clip: recorta sin ser contenedor de scroll (nada lo desplaza por dentro). */
+  overflow: clip;
+  transition:
+    height var(--m-select-t) var(--m-ease),
+    min-height var(--m-select-t) var(--m-ease),
+    max-height var(--m-select-t) var(--m-ease);
   background: #010a13;
   color: var(--paper);
 }
@@ -385,10 +397,13 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--m-hero-extra, 0px);
   margin-inline: auto;
   width: auto;
-  height: 100%;
+  height: calc(100% - var(--m-hero-extra, 0px));
+  transition:
+    bottom var(--m-select-t) var(--m-ease),
+    height var(--m-select-t) var(--m-ease);
   max-width: none;
   animation: hero-enter 1400ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
 }
@@ -531,6 +546,107 @@
     top: 50%;
     margin-top: -3px;
   }
+}
+
+/*
+ * Desplegable de temas de conferencia (hero), como el diseño: la lista se abre
+ * debajo del botón, dentro del flujo, y empuja "Cotiza conferencias" hacia abajo.
+ */
+.m-select {
+  position: relative;
+}
+
+.m-select__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 54px;
+  padding: 12px 16px;
+  border: 1px solid rgba(212, 167, 85, 0.85);
+  border-radius: 6px;
+  background: rgba(1, 4, 28, 0.35);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--paper);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* El tema elegido va en una línea (en tablet el botón mide 300px). */
+.m-select__button span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m-select__button svg {
+  flex: none;
+  transition: transform 0.25s var(--m-ease);
+}
+
+.m-select.is-open .m-select__button svg {
+  transform: rotate(180deg);
+}
+
+/* Se despliega de 0 a su alto natural (0fr → 1fr), al ritmo del hero. */
+.m-select__drop {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--m-select-t) var(--m-ease);
+}
+
+.m-select.is-open .m-select__drop {
+  grid-template-rows: 1fr;
+}
+
+.m-select__drop-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.m-select__list {
+  margin-top: 4px;
+  padding: 10px 8px;
+  border: 1px solid rgba(120, 140, 180, 0.45);
+  border-radius: 6px;
+  background: rgba(14, 18, 36, 0.78);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity calc(var(--m-select-t) * 0.8) ease,
+    transform var(--m-select-t) var(--m-ease);
+}
+
+.m-select.is-open .m-select__list {
+  opacity: 1;
+  transform: none;
+}
+
+.m-select__option {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--paper);
+  cursor: pointer;
+}
+
+.m-select__option.is-active {
+  background: rgba(70, 90, 135, 0.35);
+  color: #c69a52;
+}
+
+.m-select__option[aria-selected='true'] {
+  color: #c69a52;
 }
 
 /* ---------- Sobre Roberth ---------- */
@@ -1233,9 +1349,30 @@
     width: 100%;
   }
 
+  /* Como en escritorio: Ver libros a la izquierda; tema y cotizar a la derecha. */
   .m-hero__ctas {
     grid-template-columns: repeat(2, minmax(0, 300px));
+    grid-template-areas:
+      'books topic'
+      '. quote';
     justify-content: center;
+  }
+
+  /* Al abrir la lista crece su fila: los botones no se estiran con ella. */
+  .m-hero__ctas > * {
+    align-self: start;
+  }
+
+  .m-hero__ctas > :nth-child(1) {
+    grid-area: books;
+  }
+
+  .m-hero__ctas > :nth-child(2) {
+    grid-area: topic;
+  }
+
+  .m-hero__ctas > :nth-child(3) {
+    grid-area: quote;
   }
 
   .m-hero__ctas .m-btn {
@@ -1282,6 +1419,10 @@
   .m-menu__nav li,
   .m-menu__cta {
     animation: none;
+  }
+
+  .m-app {
+    --m-select-t: 0ms;
   }
 
   .m-app .m-btn,

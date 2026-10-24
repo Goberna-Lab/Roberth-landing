@@ -1,6 +1,17 @@
-import { HERO } from '../../data.ts'
+import { useState } from 'react'
+import { FOOTER_COLUMNS, HERO, WHATSAPP_URL } from '../../data.ts'
 import { HeroSignature } from '../../shared/HeroSignature.tsx'
 import { IconArrowRight, IconBook, IconCalendar } from '../icons.tsx'
+import { TopicSelect } from '../TopicSelect.tsx'
+
+/** Temas de conferencia: los mismos que la columna CONFERENCIAS del pie. */
+const TOPICS = FOOTER_COLUMNS.find((col) => col.title === 'CONFERENCIAS')?.links ?? []
+
+/** WhatsApp con el mensaje ya escrito, incluido el tema si se eligió. */
+const quoteUrl = (topic: string | null) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(
+    topic ? `Hola Roberto, quiero cotizar la conferencia "${topic}".` : 'Hola Roberto, quiero cotizar una conferencia.',
+  )}`
 
 /**
  * Hero vertical en dos zonas: arriba la firma y los roles; abajo, el escenario
@@ -8,8 +19,12 @@ import { IconArrowRight, IconBook, IconCalendar } from '../icons.tsx'
  * los textos, sea cual sea el alto del teléfono) y los dos CTA sobre su torso.
  */
 export function Hero() {
+  const [topic, setTopic] = useState<string | null>(null)
+  // Alto de la lista de temas abierta: el hero crece hacia abajo en esa medida.
+  const [listHeight, setListHeight] = useState(0)
+
   return (
-    <section className="m-hero" id="inicio">
+    <section className="m-hero" id="inicio" style={{ '--m-hero-extra': `${listHeight}px` } as React.CSSProperties}>
       <div className="m-hero__media" aria-hidden="true">
         <div className="m-hero__bg" data-parallax="18">
           <img src={HERO.background} alt="" width={1920} height={880} fetchPriority="high" />
@@ -38,7 +53,14 @@ export function Hero() {
             <span>{HERO.ctaBooks.label}</span>
             <IconArrowRight size={20} />
           </a>
-          <a href={HERO.ctaTalks.href} className="m-btn m-btn--light">
+          <TopicSelect
+            placeholder="Seleccione conferencias"
+            options={TOPICS}
+            value={topic}
+            onChange={setTopic}
+            onListHeight={setListHeight}
+          />
+          <a href={quoteUrl(topic)} target="_blank" rel="noreferrer" className="m-btn m-btn--gold">
             <IconCalendar />
             <span>{HERO.ctaTalks.label}</span>
             <IconArrowRight size={20} />
