@@ -10,11 +10,10 @@ export const WHATSAPP_URL = 'https://wa.me/51956687505'
  * el botón, con la fila apoyada en el borde derecho del contenido (1720).
  */
 export const NAV = [
-  { label: 'BIOGRAFÍA', href: '#roberth', x: 773.5 },
-  { label: 'PUBLICACIONES', href: '#publicaciones', x: 934 },
-  { label: 'CONFERENCIAS', href: '#conferencias', x: 1113 },
-  { label: 'BLOG', href: '#', x: 1252 },
-  { label: 'FORMULARIO', href: '#', x: 1381.5 },
+  { label: 'BIOGRAFÍA', href: '#roberth', x: 931.5 },
+  { label: 'PUBLICACIONES', href: '#publicaciones', x: 1092 },
+  { label: 'CONFERENCIAS', href: '#conferencias', x: 1271 },
+  { label: 'BLOG', href: '#', x: 1410 },
 ]
 
 export const EXPERIENCE = [
