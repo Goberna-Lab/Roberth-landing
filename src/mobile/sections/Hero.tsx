@@ -18,14 +18,16 @@ export function Hero() {
       </div>
 
       <div className="m-wrap m-hero__content">
-        <h1 className="m-hero__title">
-          <HeroSignature />
-        </h1>
-        <ul className="m-hero__roles">
-          {HERO.roles.map((role) => (
-            <li key={role}>{role}</li>
-          ))}
-        </ul>
+        <div className="m-hero__intro">
+          <h1 className="m-hero__title">
+            <HeroSignature />
+          </h1>
+          <ul className="m-hero__roles">
+            {HERO.roles.map((role) => (
+              <li key={role}>{role}</li>
+            ))}
+          </ul>
+        </div>
 
         <div className="m-hero__ctas">
           <a href={HERO.ctaBooks.href} className="m-btn m-btn--gold">

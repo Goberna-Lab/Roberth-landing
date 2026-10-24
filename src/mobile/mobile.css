@@ -381,7 +381,7 @@
   bottom: 0;
   margin-inline: auto;
   width: auto;
-  height: 66%;
+  height: 76%;
   max-width: none;
   animation: hero-enter 1400ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
 }
@@ -410,9 +410,26 @@
   padding-bottom: calc(clamp(24px, 6vw, 48px) + var(--m-safe-b));
 }
 
-/* Firma y roles centrados: mismo aire a cada lado. */
+/*
+ * Firma y roles centrados, con un degradado difuminado detrás del mismo azul
+ * casi negro que hay tras los botones, para que se lean sobre la foto.
+ */
+.m-hero__intro {
+  position: relative;
+  isolation: isolate;
+}
+
+.m-hero__intro::before {
+  content: '';
+  position: absolute;
+  inset: -40px -15% -48px;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(1, 4, 28, 0.7), rgba(1, 4, 28, 0.35) 60%, rgba(1, 4, 28, 0));
+  pointer-events: none;
+}
+
 .m-hero__title {
-  width: min(84%, 400px);
+  width: min(96%, 540px);
   margin-inline: auto;
 }
 
@@ -421,13 +438,13 @@
   height: auto;
 }
 
-/* Texto contenido para que no llegue a la cabeza de Roberto. */
+/* Roles pequeños y algo más abajo, separados de la firma. */
 .m-hero__roles {
   display: grid;
   justify-items: center;
   gap: 2px;
-  margin-top: clamp(12px, 3.6vw, 20px);
-  font-size: clamp(11px, 3vw, 13px);
+  margin-top: clamp(20px, 6vw, 36px);
+  font-size: clamp(10px, 2.7vw, 12px);
   font-weight: 300;
   line-height: 1.5;
   letter-spacing: 0.06em;
