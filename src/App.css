@@ -169,10 +169,10 @@
 }
 
 .header__cta {
-  left: 1509px;
-  top: 12px;
-  width: 211px;
-  height: 48px;
+  left: 1491px;
+  top: 10px;
+  width: 229px;
+  height: 56px;
   border-color: #d4a755;
 }
 
@@ -292,9 +292,16 @@
   }
 }
 
-.hero__roles li {
+/* Roles en fila separados por puntos: ~25px de texto a cada punto. */
+.hero .hero__roles {
   position: absolute;
+  left: 200px;
   top: 441.6px;
+  display: flex;
+}
+
+.hero .hero__roles li {
+  position: relative;
   font-size: 18px;
   font-weight: 300;
   line-height: 21.78px;
@@ -303,10 +310,18 @@
   white-space: nowrap;
 }
 
-.hero__dot {
-  top: 448px;
+.hero .hero__roles li + li {
+  padding-left: 50px;
+}
+
+.hero .hero__roles li + li::before {
+  content: '';
+  position: absolute;
+  left: 21px;
+  top: 50%;
   width: 8px;
   height: 8px;
+  margin-top: -4px;
   border-radius: 50%;
   background: #fff;
 }

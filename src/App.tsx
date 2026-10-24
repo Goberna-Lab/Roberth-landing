@@ -10,6 +10,8 @@ import {
   EXPERIENCE,
   EXPERIENCE_LAYOUT,
   FOOTER_COLUMNS,
+  HEADER,
+  HERO,
   NAV,
   SERVICES,
   SOCIALS,
@@ -54,7 +56,7 @@ function Header() {
           </ul>
         </nav>
         <a href="#conversemos" className="btn btn--outline header__cta">
-          CONVERSEMOS
+          {HEADER.cta}
         </a>
       </div>
     </header>
@@ -81,12 +83,10 @@ function Hero() {
           <HeroSignature />
         </h1>
         <ul className="hero__roles">
-          <li style={{ left: 200 }}>Consultor Político</li>
-          <li style={{ left: 463 }}>Asesor Legal</li>
-          <li style={{ left: 661 }}>Escritor. Conferencista</li>
+          {HERO.roles.map((role) => (
+            <li key={role}>{role}</li>
+          ))}
         </ul>
-        <span className="hero__dot" style={{ left: 425 }} />
-        <span className="hero__dot" style={{ left: 623 }} />
 
         <a href="#publicaciones" className="btn btn--gold hero__btn hero__btn--books">
           <span className="hero__btn-label">Ver libros</span>
@@ -148,7 +148,9 @@ function About() {
         </h2>
         <span className="about__rule" />
         <span className="about__rule-dot" />
-        <p className="body18 about__p1">Es consultor político, abogado de políticos</p>
+        <p className="body18 about__p1">
+          Es socio fundador del <strong>GRUPO GOBERNA</strong> y actual <strong>CEO</strong>
+        </p>
         <p className="body18 about__p2">
           Su carrera la desarrolla como escritor y conferencista en materia de
           <br />

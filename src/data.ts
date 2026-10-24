@@ -5,12 +5,16 @@ const a = (p: string)=>`${import.meta.env.BASE_URL}${p.replace(/^\//,'')}`
 
 export const WHATSAPP_URL = 'https://wa.me/51956687505'
 
+/*
+ * x = centro de cada enlace en el lienzo de 1920: 61px entre enlaces y hasta
+ * el botón, con la fila apoyada en el borde derecho del contenido (1720).
+ */
 export const NAV = [
-  { label: 'EXPERIENCIA', href: '#experiencia', x: 852 },
-  { label: 'PENSAMIENTO', href: '#roberth', x: 1001 },
-  { label: 'PUBLICACIONES', href: '#publicaciones', x: 1162 },
-  { label: 'CONFERENCIAS', href: '#conferencias', x: 1327 },
-  { label: 'BLOG', href: '#', x: 1453 },
+  { label: 'BIOGRAFÍA', href: '#roberth', x: 773.5 },
+  { label: 'PUBLICACIONES', href: '#publicaciones', x: 934 },
+  { label: 'CONFERENCIAS', href: '#conferencias', x: 1113 },
+  { label: 'BLOG', href: '#', x: 1252 },
+  { label: 'FORMULARIO', href: '#', x: 1381.5 },
 ]
 
 export const EXPERIENCE = [
@@ -137,7 +141,7 @@ export const SOCIALS = [
  * mobile (src/mobile/). El escritorio aún tiene estos textos en su JSX.
  */
 
-export const HEADER = { logo: 'Roberth Estratega', cta: 'CONVERSEMOS' }
+export const HEADER = { logo: 'Roberth Estratega', cta: 'COTIZA CONFERENCIAS' }
 
 export const HERO = {
   name: 'Roberto Bazán',
@@ -152,7 +156,13 @@ export const ABOUT = {
   label: 'UNA MIRADA MULTIDIMENSIONAL',
   titleTop: 'Roberth',
   titleBottom: 'Estratega',
-  lead: 'Es consultor político, abogado de políticos',
+  /** Tramos de la frase; los marcados con strong van en negrita. */
+  lead: [
+    { text: 'Es socio fundador del ' },
+    { text: 'GRUPO GOBERNA', strong: true },
+    { text: ' y actual ' },
+    { text: 'CEO', strong: true },
+  ],
   text: 'Su carrera la desarrolla como escritor y conferencista en materia de tecnología, inteligencia y operaciones psicológicas, y Lawfare.',
   ctas: [
     { label: 'LEER MIS ARTÍCULOS', href: '#blog' },

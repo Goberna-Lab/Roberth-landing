@@ -18,7 +18,7 @@ export function About() {
         </h2>
         <span className="m-rule" data-line aria-hidden="true" />
         <p className="m-lead" data-reveal>
-          {ABOUT.lead}
+          {ABOUT.lead.map((part) => (part.strong ? <strong key={part.text}>{part.text}</strong> : part.text))}
         </p>
         <p className="m-text" data-reveal>
           {ABOUT.text}

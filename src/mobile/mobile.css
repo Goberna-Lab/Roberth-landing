@@ -84,9 +84,12 @@
 
 .m-lead {
   font-size: clamp(17px, 4.6vw, 20px);
-  font-weight: 600;
   line-height: 1.45;
   color: var(--navy-900);
+}
+
+.m-lead strong {
+  font-weight: 700;
 }
 
 .m-text {
