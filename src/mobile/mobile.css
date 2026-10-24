@@ -345,7 +345,8 @@
 
 .m-hero {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   min-height: 640px;
   height: 100vh;
   height: 100svh;
@@ -374,14 +375,17 @@
 }
 
 .m-hero__person {
-  /* Centrada: left/right 0 + margin auto centra la imagen con su ancho natural. */
+  /*
+   * Ocupa todo el alto del escenario (lo que queda bajo firma y roles).
+   * Centrada: left/right 0 + margin auto centra la imagen con su ancho natural.
+   */
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   margin-inline: auto;
   width: auto;
-  height: 76%;
+  height: 100%;
   max-width: none;
   animation: hero-enter 1400ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
 }
@@ -402,12 +406,29 @@
     linear-gradient(90deg, rgba(1, 4, 28, 0.5) 0%, rgba(1, 4, 28, 0) 60%);
 }
 
-.m-hero__content {
+.m-hero__head {
+  position: relative;
+  z-index: 1;
+  padding-top: calc(var(--m-header) + var(--m-safe-t) + clamp(28px, 8vw, 64px));
+}
+
+/* Escenario: Roberto de pie y los CTA al pie, sobre un degradado propio. */
+.m-hero__stage {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-top: calc(var(--m-header) + var(--m-safe-t) + clamp(28px, 8vw, 64px));
-  padding-bottom: calc(clamp(24px, 6vw, 48px) + var(--m-safe-b));
+  justify-content: flex-end;
+  min-height: 0;
+  margin-top: clamp(8px, 3vw, 20px);
+}
+
+.m-hero__stage::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(1, 4, 28, 0) 0%, rgba(1, 4, 28, 0.8) 55%, rgba(1, 4, 28, 0.94) 100%);
+  pointer-events: none;
 }
 
 /*
@@ -422,7 +443,8 @@
 .m-hero__intro::before {
   content: '';
   position: absolute;
-  inset: -40px -15% -48px;
+  /* Abajo no se extiende: debajo empieza la cabeza de Roberto. */
+  inset: -40px -15% -16px;
   z-index: -1;
   background: radial-gradient(closest-side, rgba(1, 4, 28, 0.7), rgba(1, 4, 28, 0.35) 60%, rgba(1, 4, 28, 0));
   pointer-events: none;
@@ -444,7 +466,7 @@
   justify-items: center;
   gap: 2px;
   margin-top: clamp(20px, 6vw, 36px);
-  font-size: clamp(10px, 2.7vw, 12px);
+  font-size: clamp(11px, 2.9vw, 12px);
   font-weight: 300;
   line-height: 1.5;
   letter-spacing: 0.06em;
@@ -467,10 +489,45 @@
 }
 
 .m-hero__ctas {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 12px;
-  margin-top: auto;
   padding-top: 32px;
+  padding-bottom: calc(clamp(24px, 6vw, 48px) + var(--m-safe-b));
+}
+
+/*
+ * Teléfono: los cuatro roles en dos filas, con el punto entre las dos
+ * columnas como en la fila de escritorio. Así ocupan dos líneas, no cuatro.
+ */
+@media (max-width: 639.98px) {
+  .m-hero__roles {
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    column-gap: 26px;
+  }
+
+  .m-hero__roles li:nth-child(odd) {
+    justify-self: end;
+  }
+
+  .m-hero__roles li:nth-child(even) {
+    position: relative;
+    justify-self: start;
+  }
+
+  .m-hero__roles li::before {
+    display: none;
+  }
+
+  .m-hero__roles li:nth-child(even)::before {
+    display: block;
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    margin-top: -3px;
+  }
 }
 
 /* ---------- Sobre Roberth ---------- */
@@ -1175,14 +1232,11 @@
 
   .m-hero__ctas {
     grid-template-columns: repeat(2, minmax(0, 300px));
+    justify-content: center;
   }
 
   .m-hero__ctas .m-btn {
     min-width: 0;
-  }
-
-  .m-hero__person {
-    height: 74%;
   }
 
   .m-hero__roles {

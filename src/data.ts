@@ -141,7 +141,7 @@ export const HEADER = { logo: 'Roberth Estratega', cta: 'CONVERSEMOS' }
 
 export const HERO = {
   name: 'Roberto Bazán',
-  roles: ['Consultor político', 'Asesor legal', 'Escritor. Conferencista'],
+  roles: ['Consultor político', 'Asesor legal', 'Escritor', 'Conferencista'],
   person: a('/img/hero-roberto.webp'),
   background: a('/img/hero-bg.webp'),
   ctaBooks: { label: 'Ver libros', href: '#publicaciones' },
