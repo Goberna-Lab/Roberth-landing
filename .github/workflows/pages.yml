@@ -32,6 +32,9 @@ jobs:
       - run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Build
+        # SITE_URL: la vista previa al compartir (og:/twitter:) apunta a Pages.
+        env:
+          SITE_URL: https://goberna-lab.github.io/Roberth-landing/
         run: npx tsc -b && npx vite build --base=/Roberth-landing/
 
       - uses: actions/upload-pages-artifact@v3
