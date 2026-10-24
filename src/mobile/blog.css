@@ -1,0 +1,224 @@
+/* Blog en mobile: sección de la landing y página de artículo. */
+
+.m-blog {
+  background: #fff;
+}
+
+.m-blog__heading span {
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.m-blog__list {
+  display: grid;
+  gap: 44px;
+  margin-top: 36px;
+}
+
+/* La tarjeta con "Compartir" abierto queda encima de la siguiente. */
+.m-blog__card {
+  position: relative;
+}
+
+.m-blog__card:has(.share.is-open) {
+  z-index: 3;
+}
+
+.m-blog__img {
+  display: block;
+  aspect-ratio: 482 / 362;
+  overflow: hidden;
+  background: var(--navy-700);
+}
+
+.m-blog__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.m-blog__day {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #4a4f53;
+}
+
+.m-blog__title {
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(19px, 5.2vw, 24px);
+  line-height: 1.25;
+  color: #091f46;
+  text-wrap: balance;
+}
+
+.m-blog__lead {
+  margin-top: 10px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4a4f53;
+}
+
+/* Pie de la tarjeta: fecha · Compartir · Leer artículo, sobre una línea gris. */
+.m-blog__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  gap: 8px 10px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #bcbcbc;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* La fecha ya va arriba ("23 OCTUBRE"): en el teléfono el pie queda en una línea. */
+.m-blog__date {
+  display: none;
+  color: #2e3135;
+}
+
+@media (min-width: 560px) {
+  .m-blog__date {
+    display: block;
+  }
+}
+
+.m-app .m-blog__share .share__btn {
+  gap: 6px;
+  font-size: 12px;
+}
+
+.m-app .m-blog__share .share__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* En el teléfono el panel se centra en la tarjeta (no en el botón) para no salirse. */
+.m-app .m-blog__share {
+  position: static;
+}
+
+.m-app .m-blog__share .share__panel {
+  max-width: 100%;
+}
+
+.m-app .m-blog__share .share__list a,
+.m-app .m-blog__share .share__list button {
+  min-width: 0;
+  padding-inline: 4px;
+  font-size: 12px;
+}
+
+.m-app .m-blog__share .share__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(64px, 1fr));
+}
+
+.m-blog__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--gold);
+}
+
+/* Fecha · minutos de lectura en la cabecera del artículo. */
+.m-app .m-post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--gold);
+}
+
+/* ---------- Artículo ---------- */
+
+.m-post__head {
+  padding: calc(var(--m-header) + var(--m-safe-t) + 40px) 0 32px;
+  background: var(--paper);
+  text-align: center;
+}
+
+.m-post__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(26px, 7vw, 40px);
+  line-height: 1.15;
+  color: #091f46;
+  text-wrap: balance;
+}
+
+.m-post__head .m-post-meta {
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.m-post__hero {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--navy-700);
+}
+
+.m-post__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.m-post__body {
+  padding-top: 36px;
+  padding-bottom: var(--m-section-y);
+}
+
+.m-post__lead {
+  margin-bottom: 24px;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(16px, 4.3vw, 18px);
+  line-height: 1.7;
+  color: var(--gold);
+}
+
+.m-post__h2 {
+  margin: 32px 0 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(21px, 5.8vw, 28px);
+  line-height: 1.2;
+  color: #2e3135;
+  text-wrap: balance;
+}
+
+.m-post__p {
+  font-size: clamp(16px, 4.3vw, 18px);
+  line-height: 1.75;
+  color: #2f3135;
+  text-wrap: pretty;
+}
+
+.m-post__p + .m-post__p {
+  margin-top: 14px;
+}
+
+.m-post__p strong {
+  font-weight: 700;
+}
+
+.m-post__back {
+  margin-top: 40px;
+}

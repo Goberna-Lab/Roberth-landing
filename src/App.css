@@ -1073,14 +1073,14 @@
   overflow: hidden;
 }
 
-/* Foto de la conferencia del prototipo: llena el panel, apoyada abajo. */
+/* Foto de la conferencia, encuadrada como en el XD (1350x888 corrida 101px). */
 .contact__photo img {
   position: absolute;
   inset: 0;
   width: 960px;
   height: 888px;
   object-fit: cover;
-  object-position: 50% 100%;
+  object-position: 26% 50%;
 }
 
 .contact__shade {

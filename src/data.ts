@@ -13,7 +13,7 @@ export const NAV = [
   { label: 'BIOGRAFÍA', href: '#roberth', x: 931.5 },
   { label: 'PUBLICACIONES', href: '#publicaciones', x: 1092 },
   { label: 'CONFERENCIAS', href: '#conferencias', x: 1271 },
-  { label: 'BLOG', href: '#', x: 1410 },
+  { label: 'BLOG', href: '#blog', x: 1410 },
 ]
 
 export const EXPERIENCE = [

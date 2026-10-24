@@ -1,0 +1,4 @@
+/** Texto con **negritas** (como en los párrafos de los artículos). */
+export function RichText({ text }: { text: string }) {
+  return text.split(/\*\*(.+?)\*\*/).map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part))
+}

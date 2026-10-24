@@ -18,15 +18,20 @@ import {
   TALKS,
   WHATSAPP_URL,
 } from './data.ts'
+import { ARTICLES, BLOG, articleHref, type Article } from './blog.ts'
 import { CarouselArrow } from './icons.tsx'
 import { HeroSignature } from './shared/HeroSignature.tsx'
 import { QuoteModal } from './shared/QuoteModal.tsx'
+import { RichText } from './shared/RichText.tsx'
+import { ShareMenu } from './shared/ShareMenu.tsx'
+import { useArticleRoute } from './shared/useArticleRoute.ts'
 import { useIsMobile } from './shared/useIsMobile.ts'
 import { Words } from './shared/Words.tsx'
 import MobileApp from './mobile/MobileApp.tsx'
 
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`
 import './App.css'
+import './blog.css'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -41,7 +46,8 @@ function Lines({ text }: { text: string }) {
   ))
 }
 
-function Header() {
+/** `active`: etiqueta del menú resaltada (BLOG dentro de un artículo). */
+function Header({ active }: { active?: string }) {
   return (
     <header className="header">
       <div className="stage">
@@ -51,8 +57,14 @@ function Header() {
         <nav aria-label="Principal">
           <ul>
             {NAV.map((item) => (
-              <li key={item.label} className="header__link" style={{ left: item.x }}>
-                <a href={item.href}>{item.label}</a>
+              <li
+                key={item.label}
+                className={`header__link${item.label === active ? ' header__link--active' : ''}`}
+                style={{ left: item.x }}
+              >
+                <a href={item.href} aria-current={item.label === active ? 'page' : undefined}>
+                  {item.label}
+                </a>
               </li>
             ))}
           </ul>
@@ -666,6 +678,139 @@ function WhatsApp() {
   )
 }
 
+const Calendar = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+    <rect x="3.5" y="5" width="17" height="15.5" rx="1.5" />
+    <path d="M3.5 9.5h17M8 3v4M16 3v4" strokeLinecap="round" />
+  </svg>
+)
+
+const Clock = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M12 7.5V12l3 2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+/** Fecha · minutos de lectura, en dorado (cabecera de artículo y tarjetas). */
+function ArticleMeta({ article, className }: { article: Article; className: string }) {
+  return (
+    <p className={className}>
+      <span>
+        <Calendar />
+        <time>{article.date}</time>
+      </span>
+      <span>
+        <Clock />
+        {article.minutes} MIN DE LECTURA
+      </span>
+    </p>
+  )
+}
+
+/** Blog (XD): tres tarjetas de 482px que suben una tras otra al entrar en pantalla. */
+function Blog() {
+  const sectionRef = useRevealOnScroll<HTMLElement>('.blog__card', BLOG_CARD_REVEAL)
+
+  return (
+    <section className="blog" id="blog" ref={sectionRef}>
+      <div className="stage">
+        <p className="blog__label">{BLOG.label}</p>
+        <h2 className="blog__title">
+          <span>{BLOG.titleGold}</span>
+          {'  '}
+          {BLOG.title}
+        </h2>
+        <p className="blog__text">{BLOG.text}</p>
+        {ARTICLES.map((article, i) => {
+          const href = articleHref(article.slug)
+          return (
+            <article
+              key={article.slug}
+              className="blog__card"
+              style={{ left: 200 + i * 519, transitionDelay: `${i * 120}ms` }}
+            >
+              <a href={href} className="blog__img" tabIndex={-1} aria-hidden="true">
+                <img src={article.image} alt="" loading="lazy" style={{ objectPosition: article.cardPosition }} />
+              </a>
+              <p className="blog__day">{article.day}</p>
+              <h3 className={`blog__card-title${article.cardCompact ? ' blog__card-title--compact' : ''}`}>
+                <a href={href}>
+                  {article.title[0]}
+                  <br />
+                  {article.title[1]}
+                </a>
+              </h3>
+              <p className="blog__excerpt">{article.excerpt}</p>
+              <span className="blog__rule" />
+              <p className="blog__date">{article.dateLong}</p>
+              <ShareMenu article={article} className="blog__share" />
+              <a href={href} className="blog__more">
+                {BLOG.cta}
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </article>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+const BLOG_CARD_REVEAL = { threshold: 0.3 }
+
+const SITE_TITLE = 'Roberth Estratega | Roberto Bazán'
+
+/** Página de artículo (blog.xd): título en franja clara, imagen y cuerpo de 1053px. */
+function ArticlePage({ article }: { article: Article }) {
+  useEffect(() => {
+    document.title = `${article.title.join(' ')} | Roberth Estratega`
+    return () => {
+      document.title = SITE_TITLE
+    }
+  }, [article])
+
+  return (
+    <div className="page">
+      <Header active="BLOG" />
+      <main>
+        <article className="post">
+          <header className="post__head">
+            <h1 className="post__title">
+              {article.title[0]}
+              <br />
+              {article.title[1]}
+            </h1>
+            <ArticleMeta article={article} className="post__meta" />
+          </header>
+          <div className="post__hero">
+            <img src={article.image} alt="" style={{ objectPosition: article.imagePosition }} />
+          </div>
+          <div className="post__body">
+            <p className="post__lead">{article.lead}</p>
+            {article.blocks.map((block, i) =>
+              block.type === 'h2' ? (
+                <h2 key={i} className="post__h2">
+                  {block.text}
+                </h2>
+              ) : (
+                <p key={i} className="post__p">
+                  <RichText text={block.text} />
+                </p>
+              ),
+            )}
+          </div>
+        </article>
+        <Contact />
+      </main>
+      <Footer />
+      <WhatsApp />
+    </div>
+  )
+}
+
 function DesktopApp() {
   return (
     <div className="page">
@@ -678,6 +823,7 @@ function DesktopApp() {
         <Books />
         <Audiobooks />
         <Talks />
+        <Blog />
         <Contact />
       </main>
       <Footer />
@@ -686,11 +832,18 @@ function DesktopApp() {
   )
 }
 
-/** Escritorio (lienzo de 1920px) desde 1024px; por debajo, la versión mobile. */
+/**
+ * Escritorio (lienzo de 1920px) desde 1024px; por debajo, la versión mobile.
+ * Un hash #/blog/<slug> abre ese artículo en lugar de la landing.
+ */
 export default function App() {
+  const article = useArticleRoute()
+  const isMobile = useIsMobile()
+  const desktop = article ? <ArticlePage key={article.slug} article={article} /> : <DesktopApp />
+
   return (
     <>
-      {useIsMobile() ? <MobileApp /> : <DesktopApp />}
+      {isMobile ? <MobileApp article={article} /> : desktop}
       <QuoteModal />
     </>
   )

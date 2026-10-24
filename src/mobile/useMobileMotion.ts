@@ -23,7 +23,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP)
  * Los estados iniciales se aplican aquí, solo con movimiento permitido: sin JS
  * o con movimiento reducido todo queda visible y quieto.
  */
-export function useMobileMotion(root: RefObject<HTMLElement | null>) {
+export function useMobileMotion(root: RefObject<HTMLElement | null>, page?: string) {
   useGSAP(
     () => {
       const mm = gsap.matchMedia()
@@ -138,6 +138,7 @@ export function useMobileMotion(root: RefObject<HTMLElement | null>) {
         })
       })
     },
-    { scope: root },
+    // Se rehace al cambiar de página (landing ↔ artículo): los elementos son otros.
+    { scope: root, dependencies: [page], revertOnUpdate: true },
   )
 }

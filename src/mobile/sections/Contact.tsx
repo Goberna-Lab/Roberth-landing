@@ -5,7 +5,7 @@ export function Contact() {
   return (
     <section className="m-contact" id="conversemos">
       <div className="m-contact__photo">
-        <img src={CONTACT.portrait} alt="Roberto Bazán en una conferencia" loading="lazy" width={710} height={578} data-unveil />
+        <img src={CONTACT.portrait} alt="Roberto Bazán en una conferencia" loading="lazy" width={1600} height={1053} data-unveil />
       </div>
       <div className="m-contact__panel">
         <div className="m-wrap">
