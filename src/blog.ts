@@ -20,10 +20,15 @@ export type Article = {
   excerpt: string
   /** Minutos de lectura (unas 220 palabras por minuto). */
   minutes: number
+  /** Franja de 1920×650 que muestra la cabecera de blog.xd. */
   image: string
-  /** Encuadre de la imagen de cabecera y de la tarjeta (object-position). */
+  /** Mobile: el recorte de la tarjeta del XD (4:3) a resolución original. */
+  imageMobile: string
+  /** Encuadre de la imagen de cabecera y de la tarjeta en escritorio (object-position). */
   imagePosition: string
   cardPosition: string
+  /** Velo dorado del XD sobre la imagen: desde abajo o desde la izquierda. */
+  tint?: 'bottom' | 'left'
   /** Título de tarjeta a 20px en lugar de 22 (el más largo, como en el XD). */
   cardCompact?: boolean
   blocks: ArticleBlock[]
@@ -40,8 +45,10 @@ export const ARTICLES: Article[] = [
     excerpt: 'Influir en lo que una persona siente, cree y decide puede tener consecuencias estratégicas.',
     minutes: 6,
     image: a('/img/blog/guerra-cognitiva.webp'),
-    imagePosition: '50% 62%',
-    cardPosition: '19.5% 32%',
+    imageMobile: a('/img/blog/guerra-cognitiva-m.webp'),
+    imagePosition: '57% 50%',
+    cardPosition: '57% 50%',
+    tint: 'bottom',
     cardCompact: true,
     blocks: [
       { type: 'p', text: 'Una noticia provoca indignación. Un video despierta miedo. Una afirmación aparece repetida en distintas cuentas hasta parecer una verdad ampliamente aceptada. Antes de comprobar su origen, miles de personas la comparten y contribuyen a ampliar su alcance.' },
@@ -99,8 +106,9 @@ export const ARTICLES: Article[] = [
     excerpt: 'La guerra psicológica, la influencia mediática y el uso estratégico del derecho forman parte de una concepción del poder',
     minutes: 6,
     image: a('/img/blog/tres-guerras.webp'),
-    imagePosition: '50% 33%',
-    cardPosition: '41.6% 0%',
+    imageMobile: a('/img/blog/tres-guerras-m.webp'),
+    imagePosition: '60% 50%',
+    cardPosition: '60% 50%',
     blocks: [
       { type: 'p', text: 'Imaginemos una escena en el mar de China Meridional: un buque transmite por altavoces un mensaje que afirma la soberanía china sobre las aguas en disputa. Al mismo tiempo, medios de comunicación y plataformas digitales difunden mapas, argumentos históricos y declaraciones oficiales que respaldan esa posición.' },
       { type: 'p', text: 'La escena permite entender una idea central de la estrategia: una disputa territorial también se desarrolla en la mente de quienes participan en ella y en la percepción de quienes la observan. La fuerza militar puede acompañarse de mensajes destinados a intimidar, argumentos que buscan legitimidad y relatos que intentan imponerse en la opinión pública.' },
@@ -154,8 +162,10 @@ export const ARTICLES: Article[] = [
     excerpt: 'La inteligencia artificial abre un debate que trasciende la tecnología: quién debe decidir, cómo se distribuirán sus beneficios',
     minutes: 6,
     image: a('/img/blog/especismo-maquinismo.webp'),
-    imagePosition: '50% 69%',
-    cardPosition: '18.5% 100%',
+    imageMobile: a('/img/blog/especismo-maquinismo-m.webp'),
+    imagePosition: '50% 50%',
+    cardPosition: '50% 50%',
+    tint: 'left',
     blocks: [
       { type: 'p', text: '¿Qué ocurriría si delegáramos decisiones políticas en máquinas capaces de analizar más información que cualquier equipo humano? ¿Quién tendría la última palabra ante un desacuerdo? ¿Y quién controlaría los sistemas de los que depende esa capacidad?' },
       { type: 'p', text: 'Estas preguntas permiten explorar una dimensión del debate sobre la inteligencia artificial: su relación con el poder.' },

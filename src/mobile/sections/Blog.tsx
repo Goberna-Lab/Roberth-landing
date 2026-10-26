@@ -3,6 +3,7 @@ import { RichText } from '../../shared/RichText.tsx'
 import { ShareMenu } from '../../shared/ShareMenu.tsx'
 import { IconArrowRight } from '../icons.tsx'
 import '../blog.css'
+import '../../shared/tint.css'
 
 /** Fecha · minutos de lectura, en dorado. */
 function Meta({ article }: { article: ArticleData }) {
@@ -34,8 +35,8 @@ export function Blog() {
             const href = articleHref(article.slug)
             return (
               <li key={article.slug} className="m-blog__card" data-reveal>
-                <a href={href} className="m-blog__img" tabIndex={-1} aria-hidden="true">
-                  <img src={article.image} alt="" loading="lazy" style={{ objectPosition: article.cardPosition }} />
+                <a href={href} className="m-blog__img" data-tint={article.tint} tabIndex={-1} aria-hidden="true">
+                  <img src={article.imageMobile} alt="" loading="lazy" />
                 </a>
                 <p className="m-blog__day">{article.day}</p>
                 <h3 className="m-blog__title">
@@ -71,8 +72,8 @@ export function Article({ article }: { article: ArticleData }) {
           <Meta article={article} />
         </div>
       </header>
-      <div className="m-post__hero">
-        <img src={article.image} alt="" style={{ objectPosition: article.imagePosition }} />
+      <div className="m-post__hero" data-tint={article.tint}>
+        <img src={article.imageMobile} alt="" />
       </div>
       <div className="m-wrap m-post__body">
         <p className="m-post__lead">{article.lead}</p>

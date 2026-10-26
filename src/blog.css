@@ -250,8 +250,10 @@
 }
 
 .post__hero {
-  height: 660px;
+  position: relative;
+  height: 650px;
   overflow: hidden;
+  --tint-reach: 52.2%;
   background: var(--navy-700);
 }
 

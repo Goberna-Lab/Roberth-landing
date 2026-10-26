@@ -34,6 +34,7 @@ import MobileApp from './mobile/MobileApp.tsx'
 const asset = (p: string) => `${import.meta.env.BASE_URL}${p.replace(/^\//, '')}`
 import './App.css'
 import './blog.css'
+import './shared/tint.css'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -766,7 +767,7 @@ function Blog() {
               className="blog__card"
               style={{ left: 200 + i * 519, transitionDelay: `${i * 120}ms` }}
             >
-              <a href={href} className="blog__img" tabIndex={-1} aria-hidden="true">
+              <a href={href} className="blog__img" data-tint={article.tint} tabIndex={-1} aria-hidden="true">
                 <img src={article.image} alt="" loading="lazy" style={{ objectPosition: article.cardPosition }} />
               </a>
               <p className="blog__day">{article.day}</p>
@@ -821,7 +822,7 @@ function ArticlePage({ article }: { article: Article }) {
             </h1>
             <ArticleMeta article={article} className="post__meta" />
           </header>
-          <div className="post__hero">
+          <div className="post__hero" data-tint={article.tint}>
             <img src={article.image} alt="" style={{ objectPosition: article.imagePosition }} />
           </div>
           <div className="post__body">

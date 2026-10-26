@@ -1,0 +1,25 @@
+/*
+ * Velo dorado de las imágenes del blog (blog.xd y la landing): degradado de
+ * #a87f3c a transparente en modo multiplicar, desde abajo o desde la izquierda.
+ * El contenedor ya va posicionado; --tint-reach es hasta dónde llega el lateral.
+ */
+
+[data-tint] {
+  isolation: isolate;
+}
+
+[data-tint]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+[data-tint='bottom']::after {
+  background: linear-gradient(to top, #a87f3c, rgb(168 127 60 / 0));
+}
+
+[data-tint='left']::after {
+  background: linear-gradient(to right, #a87f3c, rgb(168 127 60 / 0) var(--tint-reach, 60%));
+}
