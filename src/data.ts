@@ -93,21 +93,20 @@ export const BOOK_STEP = 442
 /** Velocidad del scroll automático del carrusel (px de diseño por segundo). */
 export const BOOK_AUTOSCROLL_SPEED = 28
 
-/** Los audiolibros aún no tienen página propia: WhatsApp con la consulta ya escrita. */
-const audiobookUrl = (name: string) =>
-  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola Roberto, quiero información sobre el audiolibro "${name}".`)}`
+/** Página de cada audiolibro en Amazon. */
+const AMAZON = 'https://www.amazon.com/-/es/'
 
 export const AUDIOBOOKS = [
   {
     title: 'AUDIOLIBRO EL PODER DE LA ORATORIA E\nIMAGEN POLÍTICA',
-    url: audiobookUrl('El poder de la oratoria e imagen política'),
+    url: AMAZON + 'Poder-Oratoria-Imagen-Pol%C3%ADtica-Edici%C3%B3n/dp/B0FQJZQYKZ',
     cover: a('/img/audio-oratoria.webp'),
     img: { x: 960, y: 90, w: 175, h: 219 },
     top: 134.5,
   },
   {
     title: 'AUDIOLIBRO MANUAL DE INTELIGENCIA\nY CONTRAINTELIGENCIA',
-    url: audiobookUrl('Manual de inteligencia y contrainteligencia'),
+    url: AMAZON + 'Manual-Inteligencia-Contrainteligencia-Edici%C3%B3n-elecciones/dp/B0F4DK5ZWG',
     cover: a('/img/audio-inteligencia.webp'),
     img: { x: 960, y: 370, w: 185, h: 277 },
     top: 455.5,
