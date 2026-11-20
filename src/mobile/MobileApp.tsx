@@ -4,7 +4,7 @@ import { MobileHeader } from './MobileHeader.tsx'
 import { useMobileMotion } from './useMobileMotion.ts'
 import { Hero } from './sections/Hero.tsx'
 import { About } from './sections/About.tsx'
-import { Power } from './sections/Power.tsx'
+import { Regret } from './sections/Regret.tsx'
 import { Experience } from './sections/Experience.tsx'
 import { Books } from './sections/Books.tsx'
 import { Audiobooks } from './sections/Audiobooks.tsx'
@@ -35,7 +35,7 @@ export default function MobileApp({ article }: { article: ArticleData | null }) 
             <>
               <Hero />
               <About />
-              <Power />
+              <Regret />
               <Experience />
               <Books />
               <Audiobooks />

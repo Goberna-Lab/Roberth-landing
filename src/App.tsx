@@ -15,6 +15,7 @@ import {
   HERO,
   NAV,
   QUOTE,
+  REGRET,
   SERVICES,
   SOCIALS,
   TALKS,
@@ -84,17 +85,7 @@ function Hero() {
   return (
     <section className="hero" id="inicio">
       <div className="hero__stage stage">
-        <img className="hero__bg" src={asset('/img/hero-bg.webp')} alt="" width={1920} height={880} fetchPriority="high" />
-        <div className="hero__shade" />
-        <div className="hero__person">
-          <img
-            src={asset('/img/hero-roberto.webp')}
-            alt="Roberto Bazán"
-            width={661}
-            height={993}
-            fetchPriority="high"
-          />
-        </div>
+        <img className="hero__bg" src={HERO.background} alt="" width={1920} height={1081} fetchPriority="high" />
 
         <h1 className="hero__title">
           <HeroSignature />
@@ -198,17 +189,46 @@ function About() {
   )
 }
 
-function Power() {
+/** Pensamiento estratégico · Regret Theory, sobre el capitolio en parallax fijo. */
+function Regret() {
+  const sectionRef = useRevealOnScroll<HTMLElement>()
+
   return (
-    <section className="power">
+    <section className="regret" ref={sectionRef}>
       <div className="stage">
-        <div className="power__img">
-          <img src={asset('/img/capitolio.webp')} alt="" loading="lazy" />
+        <div className="regret__img">
+          <img src={REGRET.background} alt="" loading="lazy" />
         </div>
-        <h2 className="power__title">
-          <span className="power__line-1">El poder se construye con </span>
-          <span className="power__line-2">CONOCIMIENTO</span>
+        <p className="regret__label">{REGRET.label}</p>
+        <h2 className="regret__title">
+          <span className="regret__title-1">{REGRET.titleLight}</span>
+          <span className="regret__title-2">{REGRET.titleGold}</span>
         </h2>
+        <div className="regret__body">
+          <p className="regret__theory">
+            <em>{REGRET.theory}</em> <em>{REGRET.theoryNote}</em>
+          </p>
+          {REGRET.paragraphs.map((lines, i) => (
+            <p key={i}>
+              {lines.map((line, j) => (
+                <span key={j}>
+                  {j > 0 && <br />}
+                  {i === 0 && j === 0 ? ' ' : ''}
+                  {line}
+                </span>
+              ))}
+            </p>
+          ))}
+        </div>
+        <span className="regret__hr" />
+        <img className="regret__mark regret__mark--open" src={REGRET.quoteOpen} alt="" width={60} height={40} />
+        <blockquote className="regret__quote">
+          {REGRET.quote[0]}
+          <br />
+          {REGRET.quote[1]} <span>{REGRET.quoteGold}</span>
+        </blockquote>
+        <img className="regret__mark regret__mark--close" src={REGRET.quoteClose} alt="" width={60} height={40} />
+        <img className="regret__signature" src={REGRET.signature} alt="Firma de Roberto Bazán" width={314} height={66} />
       </div>
     </section>
   )
@@ -855,7 +875,7 @@ function DesktopApp() {
       <main>
         <Hero />
         <About />
-        <Power />
+        <Regret />
         <Experience />
         <Books />
         <Audiobooks />

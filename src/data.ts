@@ -150,8 +150,7 @@ export const HEADER = { logo: 'Roberth Estratega', cta: 'COTIZA CONFERENCIAS' }
 export const HERO = {
   name: 'Roberto Bazán',
   roles: ['Consultor político', 'Asesor legal', 'Escritor', 'Conferencista'],
-  person: a('/img/hero-roberto.webp'),
-  background: a('/img/hero-bg.webp'),
+  background: a('/img/hero-oficina.webp'),
   ctaBooks: { label: 'Ver libros', href: '#publicaciones' },
   ctaTalks: { label: 'Cotiza conferencias', href: '#cotizar' },
   /** Mobile: aparece bajo el desplegable de conferencias y abre WhatsApp. */
@@ -184,10 +183,37 @@ export const ABOUT = {
   ],
 }
 
-export const POWER = {
-  lead: 'El poder se construye con',
-  word: 'CONOCIMIENTO',
+/**
+ * Pensamiento estratégico · Regret Theory (reemplaza a "El poder se construye
+ * con CONOCIMIENTO"). Cada párrafo va partido en las líneas del XD: escritorio
+ * respeta los cortes y mobile los une.
+ */
+export const REGRET = {
+  label: 'PENSAMIENTO ESTRATÉGICO · REGRET THEORY',
+  titleLight: 'El precio de no',
+  titleGold: 'arriesgarse',
+  theory: 'La Regret Theory',
+  theoryNote: '(Teoría del Arrepentimiento)',
+  paragraphs: [
+    ['Plantea que nuestras decisiones también están condicionadas', 'por la posibilidad de lamentar aquello que nunca intentamos.'],
+    [
+      'Como fundador y CEO de Grupo Goberna, he aprendido que el',
+      'liderazgo exige discernir entre la prudencia necesaria y la',
+      'indecisión que limita las oportunidades.',
+    ],
+    [
+      'Invertir, innovar y expandir horizontes requiere visión estratégica,',
+      'rigor en la evaluación del riesgo y determinación para actuar en',
+      'escenarios de incertidumbre.',
+    ],
+    ['Prefiero asumir las consecuencias de una decisión fundamentada', 'antes que permitir que el temor al error determine mi futuro.'],
+  ],
+  quote: ['El fracaso puede costarnos dinero.', 'La indecisión puede costarnos'],
+  quoteGold: 'el futuro.',
   background: a('/img/capitolio.webp'),
+  quoteOpen: a('/svg/comilla-abre.svg'),
+  quoteClose: a('/svg/comilla-cierra.svg'),
+  signature: a('/svg/firma-regret.svg'),
 }
 
 export const EXPERIENCE_INTRO = {

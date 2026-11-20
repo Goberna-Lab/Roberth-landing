@@ -391,25 +391,6 @@
   animation: hero-settle 1800ms var(--m-ease) both;
 }
 
-.m-hero__person {
-  /*
-   * Ocupa todo el alto del escenario (lo que queda bajo firma y roles).
-   * Centrada: left/right 0 + margin auto centra la imagen con su ancho natural.
-   */
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: var(--m-hero-extra, 0px);
-  margin-inline: auto;
-  width: auto;
-  height: calc(100% - var(--m-hero-extra, 0px));
-  transition:
-    bottom var(--m-select-t) var(--m-ease),
-    height var(--m-select-t) var(--m-ease);
-  max-width: none;
-  animation: hero-enter 1400ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
-}
-
 .m-hero__shade {
   position: absolute;
   inset: 0;
@@ -792,21 +773,15 @@
   aspect-ratio: 16 / 9;
 }
 
-/* ---------- El poder se construye con conocimiento ---------- */
+/* ---------- Pensamiento estratégico · Regret Theory ---------- */
 
-/* Ocupa toda la pantalla: svh descuenta la barra del navegador. */
-.m-power {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 460px;
-  height: 100vh;
-  height: 100svh;
+.m-regret {
   overflow: hidden;
   background: #010a13;
+  color: var(--paper);
 }
 
-.m-power__bg {
+.m-regret__bg {
   position: absolute;
   inset: 0;
   /* Recorta también a la imagen fija (overflow no recorta position: fixed). */
@@ -818,7 +793,7 @@
  * pantalla y la sección pasa por encima como una ventana. lvh la mantiene
  * cubriendo la pantalla también cuando se oculta la barra del navegador.
  */
-.m-power__bg img {
+.m-regret__bg img {
   position: fixed;
   top: 0;
   left: 0;
@@ -827,37 +802,112 @@
   height: 100lvh;
   object-fit: cover;
   object-position: 80% 50%;
+  opacity: 0.32;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .m-power__bg img {
+  .m-regret__bg img {
     position: absolute;
     height: 100%;
   }
 }
 
-.m-power__title {
+.m-regret__inner {
   position: relative;
-  display: grid;
-  gap: 4px;
-  font-family: var(--font-display);
-  letter-spacing: -0.028em;
-  color: var(--paper);
-  /* Sombra tenue para despegar el texto de la foto sin que se note. */
-  text-shadow: 0 2px 12px rgba(1, 10, 19, 0.35);
 }
 
-.m-power__lead {
-  font-weight: 700;
-  font-size: clamp(22px, 6.2vw, 40px);
-  line-height: 1.2;
+.m-regret__title {
+  display: grid;
+  margin-top: 14px;
+  font-family: var(--font-display);
+  letter-spacing: -0.028em;
+  line-height: 1.12;
+}
+
+.m-regret__title-1 {
+  font-weight: 500;
+  font-size: clamp(32px, 9vw, 60px);
+  color: var(--paper);
+}
+
+.m-regret__title-2 {
+  font-weight: 800;
+  font-size: clamp(32px, 9vw, 60px);
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.m-regret__body {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  font-size: clamp(15px, 4vw, 17px);
+  line-height: 1.7;
+  color: var(--paper);
+  text-wrap: pretty;
+}
+
+.m-regret__theory em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.m-regret__hr {
+  display: block;
+  height: 1px;
+  margin-block: 36px 44px;
+  background: var(--gold);
+  transform-origin: left center;
+}
+
+.m-regret__quote {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  padding-left: clamp(34px, 9vw, 70px);
+  max-width: 640px;
+}
+
+.m-regret__quote blockquote {
+  margin: 0;
+  font-family: 'Bodoni Moda', 'Bodoni 72', Didot, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(26px, 7.4vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -0.028em;
   text-wrap: balance;
 }
 
-.m-power__word {
-  font-weight: 800;
-  font-size: clamp(28px, 10vw, 76px);
-  line-height: 1.15;
+.m-regret__quote-line {
+  display: block;
+}
+
+.m-regret__gold {
+  color: var(--gold);
+}
+
+.m-regret__mark {
+  width: clamp(30px, 8vw, 54px);
+  height: auto;
+}
+
+.m-regret__mark--open {
+  position: absolute;
+  left: 0;
+  top: -4px;
+}
+
+.m-regret__mark--close {
+  justify-self: end;
+  margin-top: 6px;
+}
+
+.m-regret__signature {
+  width: clamp(200px, 58vw, 314px);
+  height: auto;
+  margin-top: 8px;
 }
 
 /* ---------- Experiencia ---------- */
@@ -1475,7 +1525,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .m-hero__bg img,
-  .m-hero__person,
   .m-menu,
   .m-menu__nav li,
   .m-menu__cta {

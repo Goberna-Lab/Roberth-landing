@@ -197,40 +197,12 @@
   height: 880px;
 }
 
+/* Fondo del XD: 1920×1081, recortado por el banner de 880px desde y=100. */
 .hero__bg {
   left: 0;
-  top: 0;
+  top: -100px;
   width: 1920px;
-  height: 880px;
-}
-
-.hero__shade {
-  left: 0;
-  top: 0;
-  width: 1904px;
-  height: 880px;
-  background: linear-gradient(
-    90deg,
-    rgba(1, 4, 28, 0.631) 34.35%,
-    rgba(1, 4, 33, 0.576) 46.99%,
-    rgba(0, 5, 40, 0) 62.25%
-  );
-}
-
-.hero__person {
-  left: 1044px;
-  top: 99px;
-  width: 541px;
-  height: 781px;
-  overflow: hidden;
-}
-
-.hero__person img {
-  position: absolute;
-  left: -59px;
-  top: 0;
-  width: 661px;
-  height: 993px;
+  height: 1081px;
 }
 
 .hero__title {
@@ -267,10 +239,6 @@
   animation: hero-settle 1800ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.hero__person {
-  animation: hero-enter 1400ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
-}
-
 @keyframes hero-settle {
   from {
     transform: scale(1.06);
@@ -287,8 +255,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .signature__ink,
-  .hero__bg,
-  .hero__person {
+  .hero__bg {
     animation: none;
   }
 
@@ -571,19 +538,19 @@
   height: 384px;
 }
 
-/* ---------- El poder se construye con conocimiento ---------- */
+/* ---------- Pensamiento estratégico · Regret Theory ---------- */
 
-.power {
-  height: 700px;
+.regret {
+  height: 849px;
   overflow: hidden;
   background: #010a13;
 }
 
-.power__img {
+.regret__img {
   left: 248px;
   top: 0;
   width: 1672px;
-  height: 700px;
+  height: 849px;
   overflow: hidden;
   /* Recorta también a la imagen fija (overflow no recorta position: fixed). */
   clip-path: inset(0);
@@ -591,44 +558,152 @@
 
 /*
  * Parallax fijo sin JS: la imagen queda clavada a la pantalla y la sección
- * pasa por encima como una ventana. left = 248 - 121 del diseño, más el
- * centrado del lienzo en pantallas de más de 1920px.
+ * pasa por encima como una ventana. left = 380 del diseño, más el centrado
+ * del lienzo en pantallas de más de 1920px.
  */
-.power__img img {
+.regret__img img {
   position: fixed;
-  left: calc(127px + max(0px, (100vw - 1920px) / 2));
+  left: calc(380px + max(0px, (100vw - 1920px) / 2));
   top: 0;
-  width: 1930px;
-  height: max(1080px, var(--vh, 0px));
+  width: 1540px;
+  height: max(862px, var(--vh, 0px));
   object-fit: cover;
-  opacity: 0.63;
+  /* Con la altura de la pantalla la foto se agranda: así el capitolio queda donde en el XD. */
+  object-position: 80% 50%;
+  opacity: 0.32;
 }
 
-.power__title {
+.regret__label {
+  left: 200px;
+  top: 99.5px;
+  font-size: 17px;
+  line-height: 20.6px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.regret__title {
   inset: 0;
   font-family: var(--font-display);
+  letter-spacing: -0.028em;
+  white-space: nowrap;
+}
+
+.regret__title span {
+  position: absolute;
+}
+
+.regret__title-1 {
+  left: 200px;
+  top: 185.1px;
+  font-weight: 500;
+  font-size: 67px;
+  line-height: 81.67px;
+  color: var(--paper);
+}
+
+.regret__title-2 {
+  left: 201px;
+  top: 255.1px;
+  font-weight: 800;
+  font-size: 66px;
+  line-height: 80.45px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.regret__body {
+  left: 200px;
+  top: 356.2px;
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--paper);
+  white-space: nowrap;
+}
+
+.regret__theory em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.regret__hr {
+  left: 200px;
+  top: 748px;
+  width: 505px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.regret__mark {
+  width: 60px;
+  height: 40px;
+}
+
+.regret__mark--open {
+  left: 891.8px;
+  top: 377.4px;
+}
+
+.regret__mark--close {
+  left: 1641.9px;
+  top: 432.6px;
+}
+
+.regret__quote {
+  left: 968.9px;
+  top: 366px;
+  margin: 0;
+  font-family: 'Bodoni Moda', 'Bodoni 72', Didot, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 50px;
   letter-spacing: -0.028em;
   color: var(--paper);
   white-space: nowrap;
 }
 
-.power__title span {
-  position: absolute;
-  left: 200px;
+.regret__quote span {
+  color: var(--gold);
 }
 
-.power__line-1 {
-  top: 252px;
-  font-weight: 700;
-  font-size: 60px;
-  line-height: 73.14px;
+.regret__signature {
+  left: 940.8px;
+  top: 485.6px;
+  width: 313.6px;
+  height: 65.5px;
 }
 
-.power__line-2 {
-  top: 324px;
-  font-weight: 800;
-  font-size: 95px;
-  line-height: 115.81px;
+/* Entrada: el texto sube en cascada y la firma aparece al final. */
+.regret :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__signature) {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms ease,
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.regret__title-1 { transition-delay: 100ms; }
+.regret__title-2 { transition-delay: 200ms; }
+.regret__body { transition-delay: 300ms; }
+.regret__hr { transition-delay: 400ms; }
+.regret__mark--open, .regret__quote { transition-delay: 450ms; }
+.regret__mark--close { transition-delay: 600ms; }
+.regret__signature { transition-delay: 750ms; }
+
+.regret.is-in :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__signature) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .regret :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__signature) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ---------- Experiencia ---------- */

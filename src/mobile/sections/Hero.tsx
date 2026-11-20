@@ -39,7 +39,7 @@ export function Hero() {
     <section className="m-hero" id="inicio" style={{ '--m-hero-extra': `${extra}px` } as React.CSSProperties}>
       <div className="m-hero__media" aria-hidden="true">
         <div className="m-hero__bg" data-parallax="18">
-          <img src={HERO.background} alt="" width={1920} height={880} fetchPriority="high" />
+          <img src={HERO.background} alt="" width={1920} height={1081} fetchPriority="high" />
         </div>
         <div className="m-hero__shade" />
       </div>
@@ -58,7 +58,6 @@ export function Hero() {
       </div>
 
       <div className="m-hero__stage">
-        <img className="m-hero__person" src={HERO.person} alt="" width={1024} height={1536} fetchPriority="high" />
         <div className="m-wrap m-hero__ctas">
           <a href={HERO.ctaBooks.href} className="m-btn m-btn--gold">
             <IconBook />
