@@ -151,6 +151,8 @@ export const HERO = {
   name: 'Roberto Bazán',
   roles: ['Consultor político', 'Asesor legal', 'Escritor', 'Conferencista'],
   background: a('/img/hero-oficina.webp'),
+  /** Mobile (Marca personal-RB-mobile.xd): foto vertical propia. */
+  backgroundMobile: a('/img/hero-oficina-mobile.webp'),
   ctaBooks: { label: 'Ver libros', href: '#publicaciones' },
   ctaTalks: { label: 'Cotiza conferencias', href: '#cotizar' },
   /** Mobile: aparece bajo el desplegable de conferencias y abre WhatsApp. */

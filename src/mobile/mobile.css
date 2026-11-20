@@ -369,7 +369,7 @@
     height var(--m-select-t) var(--m-ease),
     min-height var(--m-select-t) var(--m-ease),
     max-height var(--m-select-t) var(--m-ease);
-  background: #010a13;
+  background: #0d0b09;
   color: var(--paper);
 }
 
@@ -383,6 +383,10 @@
   inset: -18px 0;
 }
 
+.m-hero__bg picture {
+  display: contents;
+}
+
 .m-hero__bg img {
   width: 100%;
   height: 100%;
@@ -391,26 +395,23 @@
   animation: hero-settle 1800ms var(--m-ease) both;
 }
 
+/* Degradado del XD: empieza a 249 de 932 y termina en el fondo #0d0b09. */
 .m-hero__shade {
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(1, 4, 28, 0.88) 0%,
-      rgba(1, 4, 28, 0.55) 34%,
-      rgba(1, 4, 28, 0) 52%,
-      rgba(1, 4, 28, 0) 62%,
-      rgba(1, 4, 28, 0.82) 86%,
-      rgba(1, 4, 28, 0.94) 100%
-    ),
-    linear-gradient(90deg, rgba(1, 4, 28, 0.5) 0%, rgba(1, 4, 28, 0) 60%);
+  inset: 26.7% 0 0;
+  background: linear-gradient(
+    178deg,
+    rgba(13, 11, 9, 0) 0%,
+    rgba(13, 11, 9, 0.533) 32%,
+    rgba(13, 11, 9, 0) 61.6%,
+    #0d0b09 100%
+  );
 }
 
 .m-hero__head {
   position: relative;
   z-index: 1;
-  padding-top: calc(var(--m-header) + var(--m-safe-t) + clamp(28px, 8vw, 64px));
+  padding-top: calc(var(--m-header) + var(--m-safe-t) + clamp(40px, 13vw, 88px));
 }
 
 /* Escenario: Roberto de pie y los CTA al pie, sobre un degradado propio. */
@@ -423,15 +424,6 @@
   margin-top: clamp(8px, 3vw, 20px);
 }
 
-.m-hero__stage::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: 48%;
-  background: linear-gradient(180deg, rgba(1, 4, 28, 0) 0%, rgba(1, 4, 28, 0.8) 55%, rgba(1, 4, 28, 0.94) 100%);
-  pointer-events: none;
-}
-
 /*
  * Firma y roles centrados, con un degradado difuminado detrás del mismo azul
  * casi negro que hay tras los botones, para que se lean sobre la foto.
@@ -439,16 +431,6 @@
 .m-hero__intro {
   position: relative;
   isolation: isolate;
-}
-
-.m-hero__intro::before {
-  content: '';
-  position: absolute;
-  /* Abajo no se extiende: debajo empieza la cabeza de Roberto. */
-  inset: -40px -15% -16px;
-  z-index: -1;
-  background: radial-gradient(closest-side, rgba(1, 4, 28, 0.7), rgba(1, 4, 28, 0.35) 60%, rgba(1, 4, 28, 0));
-  pointer-events: none;
 }
 
 .m-hero__title {
@@ -467,7 +449,7 @@
   justify-items: center;
   gap: 2px;
   margin-top: clamp(20px, 6vw, 36px);
-  font-size: clamp(11px, 2.9vw, 12px);
+  font-size: clamp(12px, 3.3vw, 14px);
   font-weight: 300;
   line-height: 1.5;
   letter-spacing: 0.06em;
@@ -486,7 +468,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--gold);
+  background: #fff;
 }
 
 .m-hero__ctas {
@@ -497,7 +479,7 @@
   flex-direction: column;
   gap: 12px;
   padding-top: 32px;
-  padding-bottom: calc(clamp(24px, 6vw, 48px) + var(--m-safe-b));
+  padding-bottom: calc(clamp(56px, 24vw, 104px) + var(--m-safe-b));
 }
 
 /*
@@ -537,23 +519,52 @@
 }
 
 /*
- * Teléfono: los cuatro roles en dos filas, con el punto entre las dos
- * columnas como en la fila de escritorio. Así ocupan dos líneas, no cuatro.
+ * Teléfono: los cuatro roles en dos filas centradas cada una por su lado,
+ * con el punto blanco entre los dos roles de la fila (como el XD mobile).
+ * El ::after ocupa una fila entera y, con order, cae entre el 2.º y el 3.º.
  */
 @media (max-width: 639.98px) {
+  /* XD mobile: la foto sube 110px de 932 y deja abajo el fondo oscuro. */
+  .m-hero__bg {
+    inset: auto 0;
+    top: calc(-11.8% - 18px);
+    height: calc(100% + 36px);
+  }
+
+  .m-hero__bg img {
+    object-position: 50% 0;
+  }
+
+  /* Botones de 300px centrados. */
+  .m-hero__ctas {
+    max-width: calc(300px + 2 * var(--m-gutter));
+  }
+
+  .m-hero__ctas .m-btn {
+    padding-inline: 34px 30px;
+  }
+
   .m-hero__roles {
-    grid-template-columns: repeat(2, auto);
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    column-gap: 26px;
+    column-gap: 30px;
+    row-gap: 8px;
   }
 
-  .m-hero__roles li:nth-child(odd) {
-    justify-self: end;
+  .m-hero__roles::after {
+    content: '';
+    flex-basis: 100%;
+    order: 2;
   }
 
-  .m-hero__roles li:nth-child(even) {
+  .m-hero__roles li {
     position: relative;
-    justify-self: start;
+    order: 1;
+  }
+
+  .m-hero__roles li:nth-child(n + 3) {
+    order: 3;
   }
 
   .m-hero__roles li::before {
@@ -563,7 +574,7 @@
   .m-hero__roles li:nth-child(even)::before {
     display: block;
     position: absolute;
-    left: -16px;
+    left: -18px;
     top: 50%;
     margin-top: -3px;
   }

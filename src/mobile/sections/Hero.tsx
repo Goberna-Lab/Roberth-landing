@@ -14,9 +14,8 @@ const quoteUrl = (topic: string | null) =>
   )}`
 
 /**
- * Hero vertical en dos zonas: arriba la firma y los roles; abajo, el escenario
- * donde Roberto ocupa todo el alto que queda (así su cabeza nunca queda bajo
- * los textos, sea cual sea el alto del teléfono) y los dos CTA sobre su torso.
+ * Hero vertical (Marca personal-RB-mobile.xd): arriba la firma y los roles;
+ * abajo, sobre la oficina, los dos CTA de 300px centrados.
  * "Cotiza conferencias" es un desplegable de temas: al abrirlo aparece debajo
  * "Solicitar cotización", que abre WhatsApp con el tema elegido.
  */
@@ -39,7 +38,11 @@ export function Hero() {
     <section className="m-hero" id="inicio" style={{ '--m-hero-extra': `${extra}px` } as React.CSSProperties}>
       <div className="m-hero__media" aria-hidden="true">
         <div className="m-hero__bg" data-parallax="18">
-          <img src={HERO.background} alt="" width={1920} height={1081} fetchPriority="high" />
+          <picture>
+            {/* Teléfono: foto vertical del XD mobile; tablet: la horizontal de escritorio. */}
+            <source media="(min-width: 640px)" srcSet={HERO.background} width={1920} height={1081} />
+            <img src={HERO.backgroundMobile} alt="" width={853} height={1844} fetchPriority="high" />
+          </picture>
         </div>
         <div className="m-hero__shade" />
       </div>
@@ -70,7 +73,7 @@ export function Hero() {
             value={topic}
             onChange={setTopic}
             onListHeight={setListHeight}
-            buttonClassName="m-btn m-btn--gold"
+            buttonClassName="m-btn m-btn--light"
             icon={<IconCalendar />}
             revealBelow={topic === null ? sendHeight : 0}
           />
