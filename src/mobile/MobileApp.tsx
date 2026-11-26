@@ -6,6 +6,7 @@ import { Hero } from './sections/Hero.tsx'
 import { About } from './sections/About.tsx'
 import { Regret } from './sections/Regret.tsx'
 import { Experience } from './sections/Experience.tsx'
+import { Susurro } from './sections/Susurro.tsx'
 import { Books } from './sections/Books.tsx'
 import { Audiobooks } from './sections/Audiobooks.tsx'
 import { Talks } from './sections/Talks.tsx'
@@ -37,6 +38,7 @@ export default function MobileApp({ article }: { article: ArticleData | null }) 
               <About />
               <Regret />
               <Experience />
+              <Susurro />
               <Books />
               <Audiobooks />
               <Talks />

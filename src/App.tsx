@@ -18,6 +18,8 @@ import {
   REGRET,
   SERVICES,
   SOCIALS,
+  SUSURRO,
+  susurroOrderUrl,
   TALKS,
   WHATSAPP_URL,
 } from './data.ts'
@@ -29,6 +31,7 @@ import { RichText } from './shared/RichText.tsx'
 import { ShareMenu } from './shared/ShareMenu.tsx'
 import { useArticleRoute } from './shared/useArticleRoute.ts'
 import { useIsMobile } from './shared/useIsMobile.ts'
+import { useSusurroPact } from './shared/useSusurroPact.ts'
 import { Words } from './shared/Words.tsx'
 import MobileApp from './mobile/MobileApp.tsx'
 
@@ -228,7 +231,7 @@ function Regret() {
           {REGRET.quote[1]} <span>{REGRET.quoteGold}</span>
         </blockquote>
         <img className="regret__mark regret__mark--close" src={REGRET.quoteClose} alt="" width={60} height={40} />
-        <img className="regret__signature" src={REGRET.signature} alt="Firma de Roberto Bazán" width={314} height={66} />
+        <p className="regret__author">{REGRET.author}</p>
       </div>
     </section>
   )
@@ -288,6 +291,72 @@ function Experience() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  )
+}
+
+/** Preventa de La Orden del Susurro: libros en el pedestal y compra a la derecha. */
+function Susurro() {
+  const sectionRef = useRevealOnScroll<HTMLElement>()
+  const { checkbox, accepted, warn, hintId, onAcceptedChange, onBuy } = useSusurroPact()
+
+  return (
+    <section className="susurro" id="susurro" ref={sectionRef} aria-label={`Preventa de ${SUSURRO.title}`}>
+      <div className="stage">
+        <img className="susurro__bg" src={SUSURRO.background} alt="" width={1920} height={900} loading="lazy" />
+        <img
+          className="susurro__books"
+          src={SUSURRO.books}
+          alt={SUSURRO.booksAlt}
+          width={1475}
+          height={1066}
+          loading="lazy"
+        />
+        <p className="susurro__price">
+          <span className="susurro__now">{SUSURRO.price}</span>
+          <s className="susurro__was">
+            <span className="sr-only">Antes </span>
+            {SUSURRO.oldPrice}
+          </s>
+        </p>
+        <p className="susurro__details">
+          <Lines text={SUSURRO.details.join('\n')} />
+        </p>
+        <span className="susurro__hr" />
+        <label className={`susurro__pact${warn ? ' is-warn' : ''}`}>
+          <input
+            ref={checkbox}
+            type="checkbox"
+            checked={accepted}
+            onChange={(e) => onAcceptedChange(e.target.checked)}
+            aria-describedby={warn ? hintId : undefined}
+          />
+          <span className="susurro__box" aria-hidden="true" />
+          <span className="susurro__pact-text">
+            <Lines text={SUSURRO.pact.join('\n')} />
+          </span>
+        </label>
+        <p className="susurro__hint" id={hintId} role="status">
+          {warn ? SUSURRO.pactHint : ''}
+        </p>
+        {SUSURRO.buy.map((b, i) => (
+          <a
+            key={b.format}
+            className={`susurro__buy susurro__buy--${b.variant}`}
+            style={{ left: 1062 + i * 338 }}
+            href={susurroOrderUrl(b.format)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={onBuy}
+          >
+            {b.label}
+          </a>
+        ))}
+        <p className="susurro__note">
+          <strong>{SUSURRO.noteGold}</strong>
+          <Lines text={SUSURRO.note.join('\n')} />
+        </p>
       </div>
     </section>
   )
@@ -877,6 +946,7 @@ function DesktopApp() {
         <About />
         <Regret />
         <Experience />
+        <Susurro />
         <Books />
         <Audiobooks />
         <Talks />

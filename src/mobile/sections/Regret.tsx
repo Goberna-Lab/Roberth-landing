@@ -33,7 +33,7 @@ export function Regret() {
             </span>
           </blockquote>
           <img className="m-regret__mark m-regret__mark--close" src={REGRET.quoteClose} alt="" width={60} height={40} />
-          <img className="m-regret__signature" src={REGRET.signature} alt="Firma de Roberto Bazán" width={314} height={66} />
+          <figcaption className="m-regret__author">{REGRET.author}</figcaption>
         </figure>
       </div>
     </section>

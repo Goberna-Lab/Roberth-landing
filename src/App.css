@@ -669,15 +669,19 @@
   color: var(--gold);
 }
 
-.regret__signature {
-  left: 940.8px;
-  top: 485.6px;
-  width: 313.6px;
-  height: 65.5px;
+/* Autor bajo la cita: mismo estilo que la etiqueta de la sección. */
+.regret__author {
+  left: 968px;
+  top: 493px;
+  font-size: 17px;
+  line-height: 20.6px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
 }
 
-/* Entrada: el texto sube en cascada y la firma aparece al final. */
-.regret :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__signature) {
+/* Entrada: el texto sube en cascada y el autor aparece al final. */
+.regret :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__author) {
   opacity: 0;
   transform: translateY(24px);
   transition:
@@ -691,15 +695,15 @@
 .regret__hr { transition-delay: 400ms; }
 .regret__mark--open, .regret__quote { transition-delay: 450ms; }
 .regret__mark--close { transition-delay: 600ms; }
-.regret__signature { transition-delay: 750ms; }
+.regret__author { transition-delay: 750ms; }
 
-.regret.is-in :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__signature) {
+.regret.is-in :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__author) {
   opacity: 1;
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .regret :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__signature) {
+  .regret :is(.regret__label, .regret__title-1, .regret__title-2, .regret__body, .regret__hr, .regret__mark, .regret__quote, .regret__author) {
     opacity: 1;
     transform: none;
     transition: none;
@@ -844,6 +848,254 @@
 
 @media (prefers-reduced-motion: reduce) {
   .exp :is(.exp__timeline, .exp__dot, .exp__divider, .exp__icon, .exp__item-title, .exp__item-text) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------- Preventa · La Orden del Susurro ---------- */
+
+.susurro {
+  --susurro-gold: #c3a259;
+  height: 900px;
+  overflow: hidden;
+  background: #05090e;
+  color: var(--paper);
+}
+
+.susurro__bg {
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 900px;
+}
+
+/*
+ * Libros del PNG del diseño sobre el pedestal: escala 0,682 del PNG de
+ * 1475px y posición medidas contra el render del XD.
+ * El fondo (susurro-bg.webp) ya lleva horneado el degradado oscuro del XD.
+ */
+.susurro__books {
+  left: 0;
+  top: 174px;
+  width: 1006px;
+  height: 727px;
+}
+
+/* Más ancho que el lienzo: la foto se funde con el fondo en vez de cortarse. */
+@media (min-width: 1940px) {
+  .susurro__bg {
+    mask-image: linear-gradient(90deg, transparent, #000 180px, #000 calc(100% - 180px), transparent);
+  }
+}
+
+.susurro__price {
+  left: 1168px;
+  top: 177px;
+  display: flex;
+  align-items: flex-start;
+  gap: 27px;
+  white-space: nowrap;
+}
+
+.susurro__now {
+  /* Corte de texto (opsz 11) en 800 y apretado: el más cercano al Bodoni del XD. */
+  font-family: 'Bodoni Moda Variable', 'Bodoni 72', Didot, serif;
+  font-variation-settings: 'opsz' 11;
+  font-weight: 800;
+  font-size: 93px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  word-spacing: 0.06em;
+  color: var(--susurro-gold);
+}
+
+.susurro__was {
+  margin-top: 30px;
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(247, 249, 252, 0.85);
+}
+
+.susurro__details {
+  left: 1062px;
+  top: 284px;
+  width: 656px;
+  font-size: 16.7px;
+  line-height: 32px;
+  text-align: center;
+  color: rgba(247, 249, 252, 0.88);
+  white-space: nowrap;
+}
+
+.susurro__hr {
+  left: 1062px;
+  top: 373px;
+  width: 656px;
+  height: 1px;
+  background: rgba(247, 249, 252, 0.3);
+}
+
+.susurro__pact {
+  left: 1062px;
+  top: 404px;
+  width: 656px;
+  height: 71px;
+  border: 1px solid rgba(247, 249, 252, 0.6);
+  cursor: pointer;
+}
+
+.susurro__pact:hover,
+.susurro__pact:has(input:checked) {
+  border-color: var(--susurro-gold);
+}
+
+.susurro__pact.is-warn {
+  border-color: var(--susurro-gold);
+  box-shadow: 0 0 0 3px rgba(195, 162, 89, 0.28);
+}
+
+/* La casilla real queda encima de la dibujada: clic, teclado y lector de pantalla. */
+.susurro__pact input {
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.susurro__box {
+  position: absolute;
+  left: 21px;
+  top: 23px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  transition: background-color 0.2s;
+}
+
+.susurro__box::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 3px;
+  width: 7px;
+  height: 13px;
+  border: solid var(--navy-800);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.susurro__pact input:checked + .susurro__box {
+  background: var(--susurro-gold);
+}
+
+.susurro__pact input:checked + .susurro__box::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.susurro__pact input:focus-visible + .susurro__box {
+  outline: 2px solid var(--susurro-gold);
+  outline-offset: 3px;
+}
+
+.susurro__pact-text {
+  position: absolute;
+  left: 61px;
+  top: 13px;
+  font-size: 14.7px;
+  line-height: 22px;
+  color: rgba(247, 249, 252, 0.9);
+  white-space: nowrap;
+}
+
+.susurro__hint {
+  left: 1062px;
+  top: 484px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--susurro-gold);
+  white-space: nowrap;
+}
+
+.susurro__buy {
+  top: 517px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 318px;
+  height: 70px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.susurro__buy--gold {
+  background: var(--susurro-gold);
+  color: var(--navy-800);
+}
+
+.susurro__buy--gold:hover {
+  filter: brightness(1.08);
+}
+
+.susurro__buy--outline {
+  border-color: var(--paper);
+  background: rgba(9, 17, 22, 0.08);
+  color: var(--paper);
+}
+
+.susurro__buy--outline:hover {
+  background: rgba(247, 249, 252, 0.1);
+}
+
+.susurro__note {
+  left: 1062px;
+  top: 621px;
+  font-size: 12.8px;
+  line-height: 21px;
+  color: rgba(247, 249, 252, 0.85);
+  white-space: nowrap;
+}
+
+.susurro__note strong {
+  font-weight: 700;
+  color: var(--susurro-gold);
+}
+
+/* Entrada: la columna de compra sube en cascada; el retraso solo afecta a la entrada. */
+.susurro :is(.susurro__price, .susurro__details, .susurro__hr, .susurro__pact, .susurro__buy, .susurro__note) {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 700ms ease var(--d, 0ms),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+    border-color 0.25s,
+    box-shadow 0.25s,
+    background-color 0.25s,
+    color 0.25s,
+    filter 0.25s;
+}
+
+.susurro__details { --d: 100ms; }
+.susurro__hr { --d: 200ms; }
+.susurro__pact { --d: 250ms; }
+.susurro__buy { --d: 350ms; }
+.susurro__note { --d: 450ms; }
+
+.susurro.is-in :is(.susurro__price, .susurro__details, .susurro__hr, .susurro__pact, .susurro__buy, .susurro__note) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .susurro :is(.susurro__price, .susurro__details, .susurro__hr, .susurro__pact, .susurro__buy, .susurro__note) {
     opacity: 1;
     transform: none;
     transition: none;

@@ -215,7 +215,8 @@ export const REGRET = {
   background: a('/img/capitolio.webp'),
   quoteOpen: a('/svg/comilla-abre.svg'),
   quoteClose: a('/svg/comilla-cierra.svg'),
-  signature: a('/svg/firma-regret.svg'),
+  /** XD del 25/11: el nombre en texto reemplaza a la firma manuscrita bajo la cita. */
+  author: 'R.J. BAZAN',
 }
 
 export const EXPERIENCE_INTRO = {
@@ -240,6 +241,42 @@ export const BOOKS_INTRO = {
   text: 'Una producción editorial especializada en estrategia política, campañas electorales, inteligencia, comunicación y los nuevos escenarios de disputa por el poder.',
   background: a('/img/pilares.webp'),
 }
+
+/**
+ * Banner de preventa de "La Orden del Susurro" (LANDING-RB-1920X1080, XD del
+ * 25/11), entre Experiencia y Publicaciones. La compra va por WhatsApp con el
+ * formato ya elegido, y solo después de aceptar la condición.
+ */
+export const SUSURRO = {
+  title: 'La Orden del Susurro',
+  price: 'US$ 20',
+  oldPrice: 'US$ 35',
+  details: [
+    'Preventa del 15 al 30 de noviembre · Físico o digital · Entrega 15 de diciembre Incluye',
+    'las siete cartas y tu número de iniciado · Alumnos de Goberna: audiolibro gratis',
+  ],
+  pact: ['Acepto este conocimiento con una sola condición: no dañar', 'jamás a otro.'],
+  pactHint: 'Acepta la condición para continuar con tu compra.',
+  buy: [
+    { label: 'Comprar fisico', format: 'físico', variant: 'gold' },
+    { label: 'Comprar digital $00', format: 'digital', variant: 'outline' },
+  ] as const,
+  noteGold: 'R. J. Bazan no es el autor de este libro:',
+  note: [
+    ' es su compilador. Consultor político, asesor legal y fundador de',
+    'Goberna. Autor de Guerra Electoral y Manual de Operaciones Psicológicas y Psicosociales, entre otros.',
+  ],
+  background: a('/img/susurro-bg.webp'),
+  /** Escritorio: los libros (PNG del diseño, con transparencia) en su propia capa sobre el fondo. */
+  books: a('/img/susurro-libros.webp'),
+  /** Mobile y tablet: los libros ya montados sobre el pedestal; el texto va debajo. */
+  booksMobile: a('/img/susurro-libros-mobile.webp'),
+  booksAlt: 'Portada y contraportada de La Orden del Susurro: las técnicas prohibidas de la hermandad que domina la mente humana, de R. J. Bazan',
+}
+
+/** Mensaje de WhatsApp para comprar La Orden del Susurro en el formato dado. */
+export const susurroOrderUrl = (format: string) =>
+  `${WHATSAPP_URL}?text=${encodeURIComponent(`Hola, quiero comprar en preventa "La Orden del Susurro" en formato ${format}.`)}`
 
 /** Portada de un libro del carrusel. */
 export const bookCover = (book: Book) => a(`/img/${book.cover}.webp`)
