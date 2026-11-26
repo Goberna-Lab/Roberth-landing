@@ -269,8 +269,10 @@ export const SUSURRO = {
   background: a('/img/susurro-bg.webp'),
   /** Escritorio: los libros (PNG del diseño, con transparencia) en su propia capa sobre el fondo. */
   books: a('/img/susurro-libros.webp'),
-  /** Mobile y tablet: los libros ya montados sobre el pedestal; el texto va debajo. */
-  booksMobile: a('/img/susurro-libros-mobile.webp'),
+  /** Mobile y tablet: recorte del fondo alrededor del pedestal; los libros van encima en su capa. */
+  backgroundMobile: a('/img/susurro-bg-mobile.webp'),
+  /** Textura de niebla en mosaico horizontal (sin costura) para la niebla animada. */
+  fog: a('/img/susurro-niebla.webp'),
   booksAlt: 'Portada y contraportada de La Orden del Susurro: las técnicas prohibidas de la hermandad que domina la mente humana, de R. J. Bazan',
 }
 

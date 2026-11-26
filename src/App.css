@@ -881,11 +881,110 @@
   top: 174px;
   width: 1006px;
   height: 727px;
+  /* Halo dorado pegado a la silueta: despega el libro del fondo oscuro. */
+  filter: drop-shadow(0 0 26px rgba(226, 186, 104, 0.3));
+}
+
+/*
+ * Aura detrás de los libros: luz dorada que respira y los separa del fondo.
+ * Va entre el fondo y el PNG, así que nunca tapa el libro.
+ */
+.susurro__aura {
+  left: 20px;
+  top: 110px;
+  width: 1040px;
+  height: 900px;
+  background:
+    radial-gradient(closest-side, rgba(236, 196, 112, 0.75), rgba(205, 166, 90, 0.34) 42%, rgba(195, 162, 89, 0.08) 72%, transparent 100%),
+    radial-gradient(closest-side, rgba(120, 170, 220, 0.22), transparent 100%);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Niebla: dos capas (detrás y delante de los libros) que se deslizan a distinta velocidad. */
+.susurro__mist {
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 900px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.susurro__fog {
+  position: absolute;
+  left: 0;
+  background-repeat: repeat-x;
+}
+
+.susurro__fog--back {
+  top: 600px;
+  width: 3520px;
+  height: 360px;
+  background-size: 1600px 360px;
+  opacity: 0.28;
+}
+
+/* Delante: más baja y tenue, a la altura de la base; se apaga antes de la columna de compra. */
+.susurro__fog--front {
+  top: 700px;
+  width: 3920px;
+  height: 260px;
+  background-size: 2000px 260px;
+  opacity: 0.26;
+}
+
+.susurro__mist--front {
+  mask-image: linear-gradient(90deg, #000 0, #000 52%, transparent 70%);
+}
+
+.susurro.is-live .susurro__aura {
+  animation: susurro-aura 7s ease-in-out infinite alternate;
+}
+
+.susurro.is-live .susurro__fog--back {
+  animation: susurro-drift 80s linear infinite;
+}
+
+.susurro.is-live .susurro__fog--front {
+  --drift: -2000px;
+  animation: susurro-drift 55s linear infinite reverse;
+}
+
+@keyframes susurro-aura {
+  from {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes susurro-drift {
+  to {
+    transform: translateX(var(--drift, -1600px));
+  }
+}
+
+/* Sin movimiento: el banner queda tal cual el XD, sin aura ni niebla. */
+@media (prefers-reduced-motion: reduce) {
+  .susurro__aura,
+  .susurro__mist {
+    display: none;
+  }
+
+  .susurro__books {
+    filter: none;
+  }
 }
 
 /* Más ancho que el lienzo: la foto se funde con el fondo en vez de cortarse. */
 @media (min-width: 1940px) {
-  .susurro__bg {
+  .susurro__bg,
+  .susurro__mist:not(.susurro__mist--front) {
     mask-image: linear-gradient(90deg, transparent, #000 180px, #000 calc(100% - 180px), transparent);
   }
 }

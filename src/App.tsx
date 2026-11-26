@@ -301,10 +301,38 @@ function Susurro() {
   const sectionRef = useRevealOnScroll<HTMLElement>()
   const { checkbox, accepted, warn, hintId, onAcceptedChange, onBuy } = useSusurroPact()
 
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const q = gsap.utils.selector(sectionRef)
+        // El fondo llega acercado y se asienta en el encuadre del XD al quedar
+        // a la vista. El zoom se ancla en la base de los libros: no se despegan del pedestal.
+        gsap.fromTo(
+          q('.susurro__bg'),
+          { scale: 1.1 },
+          {
+            scale: 1,
+            ease: 'none',
+            transformOrigin: '540px 790px',
+            scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'top 15%', scrub: 1 },
+          },
+        )
+        // Aura y niebla solo se animan mientras el banner está en pantalla.
+        ScrollTrigger.create({ trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', toggleClass: 'is-live' })
+      })
+    },
+    { scope: sectionRef },
+  )
+
   return (
     <section className="susurro" id="susurro" ref={sectionRef} aria-label={`Preventa de ${SUSURRO.title}`}>
       <div className="stage">
         <img className="susurro__bg" src={SUSURRO.background} alt="" width={1920} height={900} loading="lazy" />
+        <div className="susurro__aura" aria-hidden="true" />
+        <div className="susurro__mist" aria-hidden="true">
+          <span className="susurro__fog susurro__fog--back" style={{ backgroundImage: `url(${SUSURRO.fog})` }} />
+        </div>
         <img
           className="susurro__books"
           src={SUSURRO.books}
@@ -313,6 +341,9 @@ function Susurro() {
           height={1066}
           loading="lazy"
         />
+        <div className="susurro__mist susurro__mist--front" aria-hidden="true">
+          <span className="susurro__fog susurro__fog--front" style={{ backgroundImage: `url(${SUSURRO.fog})` }} />
+        </div>
         <p className="susurro__price">
           <span className="susurro__now">{SUSURRO.price}</span>
           <s className="susurro__was">

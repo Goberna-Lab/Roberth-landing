@@ -1027,19 +1027,123 @@
 }
 
 /* Los libros sobre el pedestal, fundidos con el fondo por los lados y por abajo. */
-/* Tope de 600px: en tablet los libros no tapan la pantalla y no se estiran más allá de su resolución. */
+/*
+ * Escena de los libros por capas, como en escritorio: fondo, aura, niebla de
+ * atrás, libros y niebla de delante. Tope de 600px: en tablet no tapa la
+ * pantalla ni se estira más allá de su resolución. Las medidas en % salen
+ * del lienzo de 1920 (recorte 120..900 × 200..900 a 1040px de ancho).
+ */
 .m-susurro__books {
   position: relative;
   max-width: 600px;
   margin: 0 auto;
-}
-
-.m-susurro__books img {
-  width: 100%;
+  aspect-ratio: 1040 / 933;
+  overflow: hidden;
   mask-image:
     linear-gradient(180deg, transparent 0, #000 14%, #000 72%, transparent 100%),
     linear-gradient(90deg, transparent 0, #000 12%, #000 88%, transparent 100%);
   mask-composite: intersect;
+}
+
+.m-susurro__books > * {
+  position: absolute;
+}
+
+.m-susurro__bg {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.m-susurro__book {
+  left: -15.385%;
+  top: -3.751%;
+  width: 128.94%;
+  max-width: none;
+  filter: drop-shadow(0 0 14px rgba(226, 186, 104, 0.3));
+}
+
+.m-susurro__aura {
+  left: -12.8%;
+  top: -12.9%;
+  width: 133.4%;
+  height: 128.6%;
+  background:
+    radial-gradient(closest-side, rgba(236, 196, 112, 0.75), rgba(205, 166, 90, 0.34) 42%, rgba(195, 162, 89, 0.08) 72%, transparent 100%),
+    radial-gradient(closest-side, rgba(120, 170, 220, 0.22), transparent 100%);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+.m-susurro__mist {
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Cada capa mide la escena más una baldosa: se desplaza una baldosa y vuelve sin salto. */
+.m-susurro__fog {
+  position: absolute;
+  left: 0;
+  background-repeat: repeat-x;
+}
+
+.m-susurro__fog--back {
+  top: 57.2%;
+  width: 305%;
+  height: 51.4%;
+  background-size: 67.2% 100%;
+  opacity: 0.28;
+}
+
+.m-susurro__fog--front {
+  top: 71.5%;
+  width: 356%;
+  height: 37.2%;
+  background-size: 71.9% 100%;
+  opacity: 0.26;
+}
+
+.m-susurro.is-live .m-susurro__aura {
+  animation: m-susurro-aura 7s ease-in-out infinite alternate;
+}
+
+.m-susurro.is-live .m-susurro__fog--back {
+  --drift: -67.2%;
+  animation: m-susurro-drift 80s linear infinite;
+}
+
+.m-susurro.is-live .m-susurro__fog--front {
+  --drift: -71.9%;
+  animation: m-susurro-drift 55s linear infinite reverse;
+}
+
+@keyframes m-susurro-aura {
+  from {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes m-susurro-drift {
+  to {
+    transform: translateX(var(--drift));
+  }
+}
+
+/* Sin movimiento: sin aura, niebla ni halo, como el diseño quieto. */
+@media (prefers-reduced-motion: reduce) {
+  .m-susurro__aura,
+  .m-susurro__mist {
+    display: none;
+  }
+
+  .m-susurro__book {
+    filter: none;
+  }
 }
 
 .m-susurro__inner {

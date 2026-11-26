@@ -67,6 +67,8 @@ function audit() {
   const all = [...document.querySelectorAll('.m-app *')].filter(visible)
   for (const el of all) {
     if (el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue
+    // Texto solo para lectores de pantalla: va recortado a 1px a propósito.
+    if (el.closest('.sr-only')) continue
     const rect = el.getBoundingClientRect()
     if (rect.width === 0 || rect.height === 0) continue
 
