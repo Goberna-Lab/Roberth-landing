@@ -4,7 +4,7 @@
 // rastreadores de vista previa (WhatsApp, Facebook, LinkedIn, X) no ejecutan JavaScript ni
 // leen lo que va después del `#`: siempre ven el index.html de la portada y muestran su
 // imagen. Cada página generada es el MISMO index.html con las etiquetas og:/twitter:/canonical
-// de ESA nota, más un redirect inmediato a la SPA (#/blog/<slug>) para las personas.
+// de ESA nota. La SPA (useArticleRoute) reconoce la ruta /blog/<slug>/ y abre la nota: no hay redirect.
 //
 // Las notas salen de Bravo (/v1/public/articles) y de los artículos locales de src/blog.ts
 // (respaldo). Si Bravo no responde, se generan solo las locales y el build NO falla: una nota
@@ -145,11 +145,7 @@ function pagina(a, liviana) {
     `<meta name="twitter:description" content="${esc(a.description)}" />`,
     `<meta name="twitter:image" content="${esc(imagen)}" />`,
   ].filter(Boolean)
-  // Las personas siguen entrando a la SPA: el redirect va antes que nada, en cuanto cargue el <head>.
-  const redirect = `<script>location.replace('/#/blog/${a.slug}')</script>`
-  const noscript = `<noscript><meta http-equiv="refresh" content="0;url=/#/blog/${a.slug}" /></noscript>`
-  // charset primero: mis etiquetas llevan tildes y el navegador/rastreador lo busca en los primeros 1024 bytes.
-  return sinVistaPrevia.replace(/<head>/i, `<head>\n    <meta charset="UTF-8" />\n    ${redirect}\n    ${noscript}\n    ${tags.join('\n    ')}`)
+  return sinVistaPrevia.replace(/<head>/i, `<head>\n    <meta charset="UTF-8" />\n    ${tags.join('\n    ')}`)
 }
 
 const remotos = await deBravo()

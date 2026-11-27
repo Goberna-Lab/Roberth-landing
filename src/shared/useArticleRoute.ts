@@ -1,30 +1,58 @@
 import { useEffect, useState } from 'react'
-import { ARTICLE_PREFIX, type Article } from '../blog.ts'
+import { ARTICLE_PREFIX } from '../blog.ts'
 import { useArticles } from '../bravo.ts'
 
-const fromHash = (hash: string, articles: Article[]) =>
-  hash.startsWith(ARTICLE_PREFIX) ? (articles.find((a) => a.slug === hash.slice(ARTICLE_PREFIX.length)) ?? null) : null
+const PATH_RE = /^\/blog\/([a-z0-9-]+)\/?$/
 
 /**
- * Artículo abierto según el hash (#/blog/<slug>); null = la landing. Hash y
- * no rutas: el sitio es estático (vps2 y GitHub Pages) y así no necesita
- * reglas de reescritura en el servidor.
+ * Slug que pide la URL, o null para la landing:
+ *  - /blog/<slug>/   la URL limpia (la que se comparte; cada nota tiene su página con su vista previa)
+ *  - #/blog/<slug>   enlaces viejos y los de la propia landing (se convierten a la limpia)
+ *  - #blog, #inicio… un ancla de la landing: manda sobre la ruta (así «BLOG» del menú sale de la nota)
+ */
+function slugFromLocation() {
+  const { hash, pathname } = location
+  if (hash.startsWith(ARTICLE_PREFIX)) return hash.slice(ARTICLE_PREFIX.length)
+  if (hash.length >= 2) return null
+  return PATH_RE.exec(pathname)?.[1] ?? null
+}
+
+/**
+ * Artículo abierto según la URL; null = la landing. La barra del navegador muestra siempre
+ * /blog/<slug>/ (con `replaceState`, sin agregar entradas al historial) para que copiar el
+ * enlace de la barra funcione al pegarlo en WhatsApp y las redes: ellas no leen el `#`.
+ * El sitio es estático: build genera dist/blog/<slug>/index.html (scripts/paginas-articulos.mjs).
  *
  * Al abrir un artículo sube al inicio; al volver a la landing con un ancla
  * (p. ej. el BLOG del menú, #blog) baja hasta ella una vez montada.
  */
 export function useArticleRoute() {
   const articles = useArticles()
-  const [hash, setHash] = useState(() => location.hash)
+  const [slug, setSlug] = useState(slugFromLocation)
   // Derivado de la lista vigente: un enlace directo a una nota de Bravo funciona
   // en cuanto la lista llega (y antes de eso muestra la landing).
-  const article = fromHash(hash, articles)
+  const article = slug ? (articles.find((a) => a.slug === slug) ?? null) : null
 
   useEffect(() => {
-    const onHash = () => setHash(location.hash)
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    const onChange = () => setSlug(slugFromLocation())
+    window.addEventListener('hashchange', onChange)
+    window.addEventListener('popstate', onChange)
+    return () => {
+      window.removeEventListener('hashchange', onChange)
+      window.removeEventListener('popstate', onChange)
+    }
   }, [])
+
+  // Deja en la barra la URL que corresponde a lo que se ve.
+  useEffect(() => {
+    if (article) {
+      const limpia = `/blog/${article.slug}/`
+      if (location.pathname !== limpia || location.hash) history.replaceState(null, '', `${limpia}${location.search}`)
+    } else if (!slug && PATH_RE.test(location.pathname)) {
+      // Salió de una nota hacia un ancla de la landing (/blog/x/#blog → /#blog).
+      history.replaceState(null, '', `/${location.search}${location.hash}`)
+    }
+  }, [article, slug])
 
   useEffect(() => {
     if (article) {
