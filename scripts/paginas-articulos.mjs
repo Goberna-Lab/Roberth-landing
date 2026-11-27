@@ -10,7 +10,8 @@
 // (respaldo). Si Bravo no responde, se generan solo las locales y el build NO falla: una nota
 // nueva aparece en la próxima publicación (Bravo reconstruye el sitio al publicar).
 
-import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
+import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'node:fs'
+import sharp from 'sharp'
 
 const SITE = 'https://roberthestratega.com'
 const API = 'https://bravo.goberna.us/v1/public/articles?tenant=roberth'
@@ -29,7 +30,7 @@ function locales() {
   const str = `'((?:[^'\\\\]|\\\\.)*)'`
   const un = (s) => s.replace(/\\'/g, "'")
   const re = new RegExp(
-    `slug:\\s*${str},\\s*title:\\s*\\[\\s*${str},\\s*${str}\\s*\\],[\\s\\S]*?excerpt:\\s*${str},[\\s\\S]*?image:\\s*a\\(${str}\\)`,
+    `slug:\\s*${str},\\s*title:\\s*\\[\\s*${str},\\s*${str}\\s*\\],[\\s\\S]*?excerpt:\\s*${str},[\\s\\S]*?image:\\s*a\\(${str}\\),[\\s\\S]*?imagePosition:\\s*${str}`,
     'g',
   )
   return [...src.matchAll(re)].map((m) => ({
@@ -37,6 +38,9 @@ function locales() {
     title: `${un(m[2])} ${un(m[3])}`.trim(),
     description: un(m[4]),
     image: absoluta(m[5]),
+    // Archivo local (public/…): se lee de disco, sin red.
+    archivo: `public${m[5].startsWith('/') ? '' : '/'}${m[5]}`,
+    posicion: m[6],
   }))
 }
 
@@ -54,6 +58,7 @@ async function deBravo() {
         title: limpio(a.seo_title || a.title),
         description: limpio(a.seo_description || a.excerpt) || limpio(a.body_html).slice(0, 200),
         image: a.og_image_url || a.cover_image_url || '',
+        posicion: a.cover_position || '',
       }))
   } catch (e) {
     console.warn(`[paginas-articulos] Bravo no respondió (${e.message}): solo artículos locales`)
@@ -68,10 +73,57 @@ const sinVistaPrevia = base
   .replace(/<link\s[^>]*rel="canonical"[^>]*>/gi, '')
   .replace(/<meta\s[^>]*?(?:property|name)="(?:og:[^"]*|twitter:[^"]*|description)"[^>]*>/gi, '')
 
-function pagina(a) {
+const OG_W = 1200
+const OG_H = 630
+
+/**
+ * Imagen de vista previa liviana, alojada en el propio sitio. WhatsApp descarta las imágenes
+ * de más o menos 300–600 KB (la portada de una nota fácilmente pesa 800 KB+) y entonces muestra
+ * el título sin foto. Se recorta a 1200×630 respetando el encuadre elegido en el panel
+ * ("X% Y%") y se guarda como JPG de calidad media: ~100–150 KB. Si algo falla, se devuelve
+ * null y la página usa la imagen original.
+ */
+async function imagenLiviana(a) {
+  try {
+    let entrada
+    if (a.archivo && existsSync(a.archivo)) {
+      entrada = readFileSync(a.archivo)
+    } else if (/^https?:\/\//i.test(a.image)) {
+      const r = await fetch(a.image, { signal: AbortSignal.timeout(20000) })
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      entrada = Buffer.from(await r.arrayBuffer())
+    } else {
+      return null
+    }
+    const m = /^(\d{1,3}(?:\.\d+)?)% (\d{1,3}(?:\.\d+)?)%$/.exec(a.posicion || '')
+    const px = m ? Math.min(100, Number(m[1])) / 100 : 0.5
+    const py = m ? Math.min(100, Number(m[2])) / 100 : 0.3
+    const redimensionada = await sharp(entrada)
+      .rotate()
+      .resize(OG_W, OG_H, { fit: 'outside' })
+      .toBuffer({ resolveWithObject: true })
+    const { width, height } = redimensionada.info
+    const salida = await sharp(redimensionada.data)
+      .extract({
+        left: Math.round((width - OG_W) * px),
+        top: Math.round((height - OG_H) * py),
+        width: OG_W,
+        height: OG_H,
+      })
+      .jpeg({ quality: 80, mozjpeg: true })
+      .toBuffer()
+    writeFileSync(`dist/blog/${a.slug}/og.jpg`, salida)
+    return `${SITE}/blog/${a.slug}/og.jpg`
+  } catch (e) {
+    console.warn(`[paginas-articulos] sin imagen liviana para ${a.slug} (${e.message}): se usa la original`)
+    return null
+  }
+}
+
+function pagina(a, liviana) {
   const url = `${SITE}/blog/${a.slug}/`
   const titulo = `${a.title} | ${SITE_NAME}`
-  const imagen = a.image ? absoluta(a.image) : `${SITE}/og-image.jpg`
+  const imagen = liviana || (a.image ? absoluta(a.image) : `${SITE}/og-image.jpg`)
   const propias = a.image
   const tags = [
     `<title>${esc(titulo)}</title>`,
@@ -84,7 +136,9 @@ function pagina(a) {
     `<meta property="og:title" content="${esc(titulo)}" />`,
     `<meta property="og:description" content="${esc(a.description)}" />`,
     `<meta property="og:image" content="${esc(imagen)}" />`,
-    propias ? `<meta property="og:image:type" content="${mime(imagen)}" />` : '',
+    propias ? `<meta property="og:image:type" content="${liviana ? 'image/jpeg' : mime(imagen)}" />` : '',
+    liviana ? `<meta property="og:image:width" content="${OG_W}" />` : '',
+    liviana ? `<meta property="og:image:height" content="${OG_H}" />` : '',
     `<meta property="og:image:alt" content="${esc(a.title)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${esc(titulo)}" />`,
@@ -106,7 +160,8 @@ for (const a of [...remotos, ...locales()]) {
   if (vistos.has(a.slug)) continue
   vistos.add(a.slug)
   mkdirSync(`dist/blog/${a.slug}`, { recursive: true })
-  writeFileSync(`dist/blog/${a.slug}/index.html`, pagina(a))
+  const liviana = a.image ? await imagenLiviana(a) : null
+  writeFileSync(`dist/blog/${a.slug}/index.html`, pagina(a, liviana))
   total++
 }
 console.log(`[paginas-articulos] ${total} páginas (${remotos.length} de Bravo, ${total - remotos.length} locales)`)
