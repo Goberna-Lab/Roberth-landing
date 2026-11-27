@@ -38,6 +38,37 @@
       content="Consultor político, asesor legal, escritor y conferencista. Estrategia, inteligencia y conocimiento aplicado a la toma de decisiones."
     />
     <meta name="twitter:image" content="https://roberthestratega.com/og-image.jpg" />
+    <!-- Datos del libro en preventa para Google. Copia de SUSURRO en src/data.ts:
+         si cambian precio, fechas o textos, actualizar aquí también. Falta la
+         oferta digital: el precio del XD ("$00") es de relleno. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": ["Book", "Product"],
+        "@id": "https://roberthestratega.com/#susurro",
+        "name": "La Orden del Susurro",
+        "url": "https://roberthestratega.com/#susurro",
+        "image": "https://roberthestratega.com/img/susurro-libros.webp",
+        "description": "Preventa del 15 al 30 de noviembre, en físico o digital, con entrega el 15 de diciembre. Incluye las siete cartas y tu número de iniciado. Compilado por R. J. Bazan.",
+        "inLanguage": "es",
+        "datePublished": "2026-12-15",
+        "editor": {
+          "@type": "Person",
+          "name": "R. J. Bazan",
+          "jobTitle": "Consultor político y asesor legal",
+          "url": "https://roberthestratega.com/"
+        },
+        "offers": {
+          "@type": "Offer",
+          "name": "Preventa en físico",
+          "price": "20.00",
+          "priceCurrency": "USD",
+          "priceValidUntil": "2026-11-30",
+          "availability": "https://schema.org/PreOrder",
+          "url": "https://roberthestratega.com/#susurro"
+        }
+      }
+    </script>
     <link rel="preload" as="image" href="/img/hero-bg.webp" fetchpriority="high" />
     <link rel="preload" as="image" href="/img/hero-roberto.webp" fetchpriority="high" />
   </head>
