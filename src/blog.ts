@@ -36,6 +36,8 @@ export type Article = {
   html?: string
   /** Imagen propia de la tarjeta (4:3, artículos de Bravo); si falta, se usa `image`/`imageMobile`. */
   card?: string
+  /** Encuadre elegido en el panel de Bravo (object-position "X% Y%"); ausente = el de CSS. */
+  frame?: { cover?: string; card?: string }
 }
 
 export const ARTICLES: Article[] = [
