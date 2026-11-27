@@ -38,7 +38,12 @@ export function Blog() {
             return (
               <li key={article.slug} className="m-blog__card" data-reveal>
                 <a href={href} className="m-blog__img" data-tint={article.tint} tabIndex={-1} aria-hidden="true">
-                  <img src={article.card ?? article.imageMobile} alt="" loading="lazy" />
+                  <img
+                    src={article.card ?? article.imageMobile}
+                    alt=""
+                    loading="lazy"
+                    style={article.frame?.card ? { objectPosition: article.frame.card } : undefined}
+                  />
                 </a>
                 <p className="m-blog__day">{article.day}</p>
                 <h3 className="m-blog__title">
@@ -75,7 +80,11 @@ export function Article({ article }: { article: ArticleData }) {
         </div>
       </header>
       <div className="m-post__hero" data-tint={article.tint}>
-        <img src={article.imageMobile} alt="" />
+        <img
+          src={article.imageMobile}
+          alt=""
+          style={article.frame?.cover ? { objectPosition: article.frame.cover } : undefined}
+        />
       </div>
       <div className="m-wrap m-post__body">
         <p className="m-post__lead">{article.lead}</p>

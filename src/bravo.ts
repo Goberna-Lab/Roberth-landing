@@ -25,6 +25,9 @@ type BravoArticle = {
   body_html: string | null
   cover_image_url: string | null
   card_image_url?: string | null
+  /** Encuadre de las imágenes (object-position "X% Y%"); la API omite la clave si no hay. */
+  cover_position?: string | null
+  card_position?: string | null
   published_at: string
 }
 
@@ -64,9 +67,10 @@ const toArticle = (post: BravoArticle): Article => {
     // Móvil: la cabecera del artículo usa la portada (16:10); la tarjeta, su imagen propia.
     imageMobile: image,
     card: post.card_image_url ?? image,
-    // 30% desde arriba: la franja es muy apaisada (1920×650) y centrar corta las cabezas.
-    imagePosition: 'center 30%',
-    cardPosition: 'center',
+    // 15% desde arriba: la franja es muy apaisada (1920×650) y centrar corta las cabezas.
+    imagePosition: post.cover_position ?? 'center 15%',
+    cardPosition: post.card_position ?? 'center',
+    frame: { cover: post.cover_position ?? undefined, card: post.card_position ?? undefined },
     blocks: [],
     html,
   }
