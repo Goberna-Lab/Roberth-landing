@@ -1283,6 +1283,11 @@
   font-size: 17px;
 }
 
+/* Un solo botón: también a todo el ancho en tablet (.m-btns pasa a 2 columnas). */
+.m-btns.m-susurro__btns {
+  grid-template-columns: 1fr;
+}
+
 .m-susurro__buy--gold {
   background: var(--susurro-gold);
   color: var(--navy-800);

@@ -1122,36 +1122,24 @@
   white-space: nowrap;
 }
 
+/* Un solo botón (solo físico): ocupa el ancho de la condición. */
 .susurro__buy {
+  left: 1062px;
   top: 517px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 318px;
+  width: 656px;
   height: 70px;
-  border: 1px solid transparent;
   border-radius: 5px;
+  background: var(--susurro-gold);
+  color: var(--navy-800);
   font-weight: 500;
   font-size: 18px;
 }
 
-.susurro__buy--gold {
-  background: var(--susurro-gold);
-  color: var(--navy-800);
-}
-
-.susurro__buy--gold:hover {
+.susurro__buy:hover {
   filter: brightness(1.08);
-}
-
-.susurro__buy--outline {
-  border-color: var(--paper);
-  background: rgba(9, 17, 22, 0.08);
-  color: var(--paper);
-}
-
-.susurro__buy--outline:hover {
-  background: rgba(247, 249, 252, 0.1);
 }
 
 .susurro__note {

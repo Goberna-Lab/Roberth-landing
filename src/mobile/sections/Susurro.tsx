@@ -79,18 +79,15 @@ export function Susurro() {
           {warn ? SUSURRO.pactHint : ''}
         </p>
         <div className="m-btns m-susurro__btns" data-reveal>
-          {SUSURRO.buy.map((b) => (
-            <a
-              key={b.format}
-              className={`m-btn ${b.variant === 'gold' ? 'm-susurro__buy--gold' : 'm-btn--light'}`}
-              href={susurroOrderUrl(b.format)}
-              target="_blank"
-              rel="noreferrer"
-              onClick={onBuy}
-            >
-              {b.label}
-            </a>
-          ))}
+          <a
+            className="m-btn m-susurro__buy--gold"
+            href={susurroOrderUrl(SUSURRO.buy.format)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={onBuy}
+          >
+            {SUSURRO.buy.label}
+          </a>
         </div>
         <p className="m-susurro__note" data-reveal>
           <strong>{SUSURRO.noteGold}</strong>

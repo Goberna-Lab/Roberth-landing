@@ -252,15 +252,13 @@ export const SUSURRO = {
   price: 'US$ 20',
   oldPrice: 'US$ 35',
   details: [
-    'Preventa del 15 al 30 de noviembre · Físico o digital · Entrega 15 de diciembre Incluye',
+    'Preventa del 15 al 30 de noviembre · Libro\u00a0físico · Entrega 15 de diciembre Incluye',
     'las siete cartas y tu número de iniciado · Alumnos de Goberna: audiolibro gratis',
   ],
   pact: ['Acepto este conocimiento con una sola condición: no dañar', 'jamás a otro.'],
   pactHint: 'Acepta la condición para continuar con tu compra.',
-  buy: [
-    { label: 'Comprar fisico', format: 'físico', variant: 'gold' },
-    { label: 'Comprar digital $00', format: 'digital', variant: 'outline' },
-  ] as const,
+  /** Solo se vende en físico: la versión digital se descartó. */
+  buy: { label: 'Comprar físico', format: 'físico' },
   noteGold: 'R. J. Bazan no es el autor de este libro:',
   note: [
     ' es su compilador. Consultor político, asesor legal y fundador de',

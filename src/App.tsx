@@ -377,19 +377,15 @@ function Susurro() {
         <p className="susurro__hint" id={hintId} role="status">
           {warn ? SUSURRO.pactHint : ''}
         </p>
-        {SUSURRO.buy.map((b, i) => (
-          <a
-            key={b.format}
-            className={`susurro__buy susurro__buy--${b.variant}`}
-            style={{ left: 1062 + i * 338 }}
-            href={susurroOrderUrl(b.format)}
-            target="_blank"
-            rel="noreferrer"
-            onClick={onBuy}
-          >
-            {b.label}
-          </a>
-        ))}
+        <a
+          className="susurro__buy"
+          href={susurroOrderUrl(SUSURRO.buy.format)}
+          target="_blank"
+          rel="noreferrer"
+          onClick={onBuy}
+        >
+          {SUSURRO.buy.label}
+        </a>
         <p className="susurro__note">
           <strong>{SUSURRO.noteGold}</strong>
           <Lines text={SUSURRO.note.join('\n')} />
