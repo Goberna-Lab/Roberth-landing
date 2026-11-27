@@ -64,8 +64,8 @@ const toArticle = (post: BravoArticle): Article => {
     // Móvil: la cabecera del artículo usa la portada (16:10); la tarjeta, su imagen propia.
     imageMobile: image,
     card: post.card_image_url ?? image,
-    // 30% desde arriba: la franja es muy apaisada (1920×650) y centrar corta las cabezas.
-    imagePosition: 'center 30%',
+    // 15% desde arriba: la franja es muy apaisada (1920×650) y centrar corta las cabezas.
+    imagePosition: 'center 15%',
     cardPosition: 'center',
     blocks: [],
     html,
