@@ -1,8 +1,8 @@
-import { SIGNATURE_STROKES, SIGNATURE_VIEWBOX } from './signature.ts'
+import { SIGNATURE_HEIGHT, SIGNATURE_STROKES, SIGNATURE_VIEWBOX, SIGNATURE_WIDTH } from './signature.ts'
 
 /** Ritmo de la escritura: unidades de contorno por milisegundo. */
 const INK_SPEED = 1.3
-/** La firma empieza a escribirse mientras Roberto entra al banner. */
+/** La firma empieza a escribirse mientras el fondo del banner se asienta. */
 const INK_START = 600
 
 /**
@@ -19,6 +19,14 @@ const SIGNATURE_TIMED = SIGNATURE_STROKES.reduce<{ delay: number; strokes: (type
 ).strokes
 
 /**
+ * Área de cada máscara: la de la firma más el grosor del lápiz. Sin ella, la
+ * máscara usa su área por defecto (medida desde el origen 0,0) y deja fuera
+ * los trazos, que están en coordenadas del escenario.
+ */
+const [VX, VY, VW, VH] = SIGNATURE_VIEWBOX.split(' ').map(Number)
+const MASK_AREA = { x: VX - 10, y: VY - 10, width: VW + 20, height: VH + 20 }
+
+/**
  * Firma escrita a mano alzada. Cada trazo relleno se descubre con una máscara:
  * un trazo grueso que recorre el contorno del mismo path (pathLength=1), así el
  * "lápiz" avanza por donde va la letra.
@@ -30,14 +38,14 @@ export function HeroSignature() {
     <svg
       className="signature"
       viewBox={SIGNATURE_VIEWBOX}
-      width={662.94}
-      height={138.58}
+      width={SIGNATURE_WIDTH}
+      height={SIGNATURE_HEIGHT}
       role="img"
-      aria-label="Roberto Bazán"
+      aria-label="R.J. Bazan"
     >
       {strokes.map((s, i) => (
-        <g key={i} transform={`translate(${s.x} ${s.y})`}>
-          <mask id={`signature-ink-${i}`} maskUnits="userSpaceOnUse">
+        <g key={i}>
+          <mask id={`signature-ink-${i}`} maskUnits="userSpaceOnUse" {...MASK_AREA}>
             <path className="signature__ink" d={s.d} pathLength={1} style={s.timing} />
           </mask>
           <path d={s.d} fill="#f7f9fc" mask={`url(#signature-ink-${i})`} />

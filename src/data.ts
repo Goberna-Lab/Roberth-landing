@@ -148,7 +148,7 @@ export const SOCIALS = [
 export const HEADER = { logo: 'Roberth Estratega', cta: 'COTIZA CONFERENCIAS' }
 
 export const HERO = {
-  name: 'Roberto Bazán',
+  name: 'R.J. Bazan',
   roles: ['Consultor político', 'Asesor legal', 'Escritor', 'Conferencista'],
   background: a('/img/hero-oficina.webp'),
   /** Mobile (Marca personal-RB-mobile.xd): foto vertical propia. */
@@ -178,9 +178,9 @@ export const ABOUT = {
   icon: a('/svg/ico-columnas.svg'),
   background: a('/img/about-bg.webp'),
   photos: [
-    { src: a('/img/about-1.webp'), alt: 'Roberto Bazán junto a autoridades y consultores', width: 972, height: 652 },
-    { src: a('/img/about-3.webp'), alt: 'Roberto Bazán exponiendo', width: 612, height: 411 },
-    { src: a('/img/about-4.webp'), alt: 'Roberto Bazán en un encuentro internacional', width: 1024, height: 769 },
+    { src: a('/img/about-1.webp'), alt: 'R.J. Bazan junto a autoridades y consultores', width: 972, height: 652 },
+    { src: a('/img/about-3.webp'), alt: 'R.J. Bazan exponiendo', width: 612, height: 411 },
+    { src: a('/img/about-4.webp'), alt: 'R.J. Bazan en un encuentro internacional', width: 1024, height: 769 },
     { src: a('/img/about-2.webp'), alt: 'Conferencia ante un auditorio', width: 888, height: 570 },
   ],
 }
@@ -259,7 +259,7 @@ export const SUSURRO = {
   pactHint: 'Acepta la condición para continuar con tu compra.',
   /** Solo se vende en físico: la versión digital se descartó. */
   buy: { label: 'Comprar físico', format: 'físico' },
-  noteGold: 'R. J. Bazan no es el autor de este libro:',
+  noteGold: 'R.J. Bazan no es el autor de este libro:',
   note: [
     ' es su compilador. Consultor político, asesor legal y fundador de',
     'Goberna. Autor de Guerra Electoral y Manual de Operaciones Psicológicas y Psicosociales, entre otros.',
@@ -271,7 +271,7 @@ export const SUSURRO = {
   backgroundMobile: a('/img/susurro-bg-mobile.webp'),
   /** Textura de niebla en mosaico horizontal (sin costura) para la niebla animada. */
   fog: a('/img/susurro-niebla.webp'),
-  booksAlt: 'Portada y contraportada de La Orden del Susurro: las técnicas prohibidas de la hermandad que domina la mente humana, de R. J. Bazan',
+  booksAlt: 'Portada y contraportada de La Orden del Susurro: las técnicas prohibidas de la hermandad que domina la mente humana, de R.J. Bazan',
 }
 
 /** Mensaje de WhatsApp para comprar La Orden del Susurro en el formato dado. */

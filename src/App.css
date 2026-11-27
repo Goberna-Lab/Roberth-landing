@@ -205,9 +205,10 @@
   height: 1081px;
 }
 
+/* Mismo origen que SIGNATURE_VIEWBOX (src/shared/signature.ts). */
 .hero__title {
-  left: 200px;
-  top: 257px;
+  left: 199.75px;
+  top: 253.18px;
 }
 
 .signature {
@@ -1631,9 +1632,10 @@
   background: var(--navy-800);
 }
 
+/* Firma R.J. Bazan (mismos vectores que el hero): centrada donde iba la anterior. */
 .footer__sign {
   left: 200px;
-  top: 73.25px;
+  top: 71.03px;
 }
 
 .footer__col {

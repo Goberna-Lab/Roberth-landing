@@ -1,6 +1,6 @@
-# Roberth Estratega — landing de Roberto Bazán
+# Roberth Estratega — landing de R.J. Bazan
 
-Landing de una sola página para Roberto Bazán: consultor político, asesor legal,
+Landing de una sola página para R.J. Bazan: consultor político, asesor legal,
 escritor y conferencista. Publicada en GitHub Pages:
 https://goberna-lab.github.io/Roberth-landing/
 

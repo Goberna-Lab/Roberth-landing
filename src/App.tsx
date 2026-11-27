@@ -182,16 +182,16 @@ function About() {
         <span className="about__hr" />
 
         <figure className="about__photo about__photo--1">
-          <img src={asset('/img/about-1.webp')} alt="Roberto Bazán junto a autoridades y consultores" loading="lazy" />
+          <img src={asset('/img/about-1.webp')} alt="R.J. Bazan junto a autoridades y consultores" loading="lazy" />
         </figure>
         <figure className="about__photo about__photo--2">
           <img src={asset('/img/about-2.webp')} alt="Conferencia ante un auditorio" loading="lazy" />
         </figure>
         <figure className="about__photo about__photo--3">
-          <img src={asset('/img/about-3.webp')} alt="Roberto Bazán exponiendo" loading="lazy" />
+          <img src={asset('/img/about-3.webp')} alt="R.J. Bazan exponiendo" loading="lazy" />
         </figure>
         <figure className="about__photo about__photo--4">
-          <img src={asset('/img/about-4.webp')} alt="Roberto Bazán en un encuentro internacional" loading="lazy" />
+          <img src={asset('/img/about-4.webp')} alt="R.J. Bazan en un encuentro internacional" loading="lazy" />
         </figure>
       </div>
     </section>
@@ -756,7 +756,7 @@ function Contact() {
     <section className="contact" id="conversemos" ref={root}>
       <div className="stage">
         <div className="contact__photo">
-          <img src={asset('/img/contacto-conferencia.webp')} alt="Roberto Bazán en una conferencia" loading="lazy" />
+          <img src={asset('/img/contacto-conferencia.webp')} alt="R.J. Bazan en una conferencia" loading="lazy" />
         </div>
         <div className="contact__shade" />
         <div className="contact__panel" />
@@ -796,7 +796,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="stage">
-        <img className="footer__sign" src={asset('/svg/firma-footer.svg')} alt="Roberto Bazán" width={346.84} height={72.5} />
+        <img className="footer__sign" src={asset('/svg/firma-footer.svg')} alt="R.J. Bazan" width={346.84} height={76.95} />
         {FOOTER_COLUMNS.map((col) => (
           <div key={col.title} className="footer__col" style={{ left: col.x }}>
             <p className="footer__heading">{col.title}</p>
@@ -927,7 +927,7 @@ function Blog() {
 
 const BLOG_CARD_REVEAL = { threshold: 0.3 }
 
-const SITE_TITLE = 'Roberth Estratega | Roberto Bazán'
+const SITE_TITLE = 'Roberth Estratega | R.J. Bazan'
 
 /** Página de artículo (blog.xd): título en franja clara, imagen y cuerpo de 1053px. */
 function ArticlePage({ article }: { article: Article }) {

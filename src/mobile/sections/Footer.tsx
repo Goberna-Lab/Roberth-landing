@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="m-footer">
       <div className="m-wrap">
-        <img className="m-footer__sign" src={FOOTER.signature} alt="Roberto Bazán" width={347} height={73} loading="lazy" />
+        <img className="m-footer__sign" src={FOOTER.signature} alt="R.J. Bazan" width={347} height={77} loading="lazy" />
         <div className="m-footer__cols">
           {FOOTER_COLUMNS.map((col) => (
             <div key={col.title}>
