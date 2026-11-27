@@ -897,7 +897,7 @@ function Blog() {
               style={{ left: 200 + i * 519, transitionDelay: `${i * 120}ms` }}
             >
               <a href={href} className="blog__img" data-tint={article.tint} tabIndex={-1} aria-hidden="true">
-                <img src={article.image} alt="" loading="lazy" style={{ objectPosition: article.cardPosition }} />
+                <img src={article.card ?? article.image} alt="" loading="lazy" style={{ objectPosition: article.cardPosition }} />
               </a>
               <p className="blog__day">{article.day}</p>
               <h3 className={`blog__card-title${article.cardCompact ? ' blog__card-title--compact' : ''}`}>

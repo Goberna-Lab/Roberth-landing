@@ -61,7 +61,9 @@ const toArticle = (post: BravoArticle): Article => {
     excerpt: post.excerpt ?? '',
     minutes: Math.max(1, Math.round(words / 220)),
     image,
-    imageMobile: post.card_image_url ?? image,
+    // Móvil: la cabecera del artículo usa la portada (16:10); la tarjeta, su imagen propia.
+    imageMobile: image,
+    card: post.card_image_url ?? image,
     imagePosition: 'center',
     cardPosition: 'center',
     blocks: [],
