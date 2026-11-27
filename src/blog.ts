@@ -34,6 +34,8 @@ export type Article = {
   blocks: ArticleBlock[]
   /** Cuerpo en HTML (artículos de Bravo, ya sanitizado); si existe, reemplaza a `blocks`. */
   html?: string
+  /** Imagen propia de la tarjeta (4:3, artículos de Bravo); si falta, se usa `image`/`imageMobile`. */
+  card?: string
 }
 
 export const ARTICLES: Article[] = [

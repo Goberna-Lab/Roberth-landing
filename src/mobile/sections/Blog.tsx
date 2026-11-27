@@ -38,7 +38,7 @@ export function Blog() {
             return (
               <li key={article.slug} className="m-blog__card" data-reveal>
                 <a href={href} className="m-blog__img" data-tint={article.tint} tabIndex={-1} aria-hidden="true">
-                  <img src={article.imageMobile} alt="" loading="lazy" />
+                  <img src={article.card ?? article.imageMobile} alt="" loading="lazy" />
                 </a>
                 <p className="m-blog__day">{article.day}</p>
                 <h3 className="m-blog__title">
