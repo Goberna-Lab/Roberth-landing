@@ -1,0 +1,37 @@
+<!doctype html>
+<!--
+  Panel de Bravo de Roberto Bazán: https://roberthestratega.com/panel/
+
+  Vive en public/ a propósito: Vite lo copia tal cual a dist/, así NO pasa por el bundle de
+  React ni hereda el CSS de la landing (el bundle del panel trae su propio Tailwind y el CSS
+  del sitio le rompe el layout). El sitio no tiene fallback de SPA, por eso el panel necesita
+  existir como carpeta real con su index.html.
+
+  No opcional:
+    - el div tiene que ser id="bravo-admin" (mount point exacto del bundle).
+    - window.__BRAVO__ tiene que existir ANTES de cargar el bundle (orden de los <script>).
+    - el dominio tiene que estar en el CORS_ORIGIN de Bravo (ya agregados:
+      roberthestratega.com y www.roberthestratega.com).
+  El `tenant` es solo para mostrar: el aislamiento real lo da el JWT.
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <title>Panel — Roberto Bazán</title>
+  </head>
+  <body>
+    <div id="bravo-admin"></div>
+    <script>
+      window.__BRAVO__ = {
+        tenant: 'roberth',
+        apiUrl: 'https://bravo.goberna.us',
+        siteUrl: 'https://roberthestratega.com',
+        panelBundleUrl: 'https://bravo.goberna.us/bravo-admin.umd.js',
+      }
+    </script>
+    <script src="https://bravo.goberna.us/bravo-admin.umd.js"></script>
+  </body>
+</html>

@@ -224,3 +224,63 @@
 .m-post__back {
   margin-top: 40px;
 }
+
+/* Cuerpo HTML de las notas publicadas desde el panel de Bravo. */
+.m-post__html h2,
+.m-post__html h3 {
+  margin: 32px 0 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(21px, 5.8vw, 28px);
+  line-height: 1.2;
+  color: #2e3135;
+  text-wrap: balance;
+}
+
+.m-post__html p,
+.m-post__html li {
+  font-size: clamp(16px, 4.3vw, 18px);
+  line-height: 1.75;
+  color: #2f3135;
+  text-wrap: pretty;
+}
+
+.m-post__html p + p {
+  margin-top: 14px;
+}
+
+.m-post__html strong {
+  font-weight: 700;
+}
+
+.m-post__html ul,
+.m-post__html ol {
+  margin: 14px 0 14px 1.4em;
+}
+
+.m-post__html ul {
+  list-style: disc;
+}
+
+.m-post__html ol {
+  list-style: decimal;
+}
+
+.m-post__html a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.m-post__html img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+.m-post__html blockquote {
+  margin: 20px 0;
+  padding-left: 16px;
+  border-left: 3px solid var(--gold);
+  font-style: italic;
+}

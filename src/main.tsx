@@ -11,8 +11,10 @@ import '@fontsource-variable/bodoni-moda/opsz.css'
 import './index.css'
 import App from './App.tsx'
 import { initDesignScale } from './scale.ts'
+import { loadBravoArticles } from './bravo.ts'
 
 initDesignScale()
+void loadBravoArticles()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,4 +1,5 @@
-import { ARTICLES, BLOG, articleHref, type Article as ArticleData } from '../../blog.ts'
+import { BLOG, articleHref, type Article as ArticleData } from '../../blog.ts'
+import { useArticles } from '../../bravo.ts'
 import { RichText } from '../../shared/RichText.tsx'
 import { ShareMenu } from '../../shared/ShareMenu.tsx'
 import { IconArrowRight } from '../icons.tsx'
@@ -18,6 +19,7 @@ function Meta({ article }: { article: ArticleData }) {
 
 /** Sección Blog de la landing, como en el XD de escritorio, a una columna. */
 export function Blog() {
+  const articles = useArticles()
   return (
     <section className="m-blog m-section" id="blog">
       <div className="m-wrap">
@@ -31,7 +33,7 @@ export function Blog() {
           {BLOG.text}
         </p>
         <ul className="m-blog__list">
-          {ARTICLES.map((article) => {
+          {articles.map((article) => {
             const href = articleHref(article.slug)
             return (
               <li key={article.slug} className="m-blog__card" data-reveal>
@@ -40,7 +42,7 @@ export function Blog() {
                 </a>
                 <p className="m-blog__day">{article.day}</p>
                 <h3 className="m-blog__title">
-                  <a href={href}>{article.title.join(' ')}</a>
+                  <a href={href}>{article.title.filter(Boolean).join(' ')}</a>
                 </h3>
                 <p className="m-blog__lead">{article.excerpt}</p>
                 <div className="m-blog__foot">
@@ -67,7 +69,7 @@ export function Article({ article }: { article: ArticleData }) {
       <header className="m-post__head">
         <div className="m-wrap">
           <h1 className="m-post__title">
-            {article.title[0]} {article.title[1]}
+            {article.title.filter(Boolean).join(' ')}
           </h1>
           <Meta article={article} />
         </div>
@@ -77,6 +79,9 @@ export function Article({ article }: { article: ArticleData }) {
       </div>
       <div className="m-wrap m-post__body">
         <p className="m-post__lead">{article.lead}</p>
+        {article.html !== undefined ? (
+          <div className="m-post__html" dangerouslySetInnerHTML={{ __html: article.html }} />
+        ) : null}
         {article.blocks.map((block, i) =>
           block.type === 'h2' ? (
             <h2 key={i} className="m-post__h2">

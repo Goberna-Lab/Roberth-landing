@@ -32,6 +32,8 @@ export type Article = {
   /** Título de tarjeta a 20px en lugar de 22 (el más largo, como en el XD). */
   cardCompact?: boolean
   blocks: ArticleBlock[]
+  /** Cuerpo en HTML (artículos de Bravo, ya sanitizado); si existe, reemplaza a `blocks`. */
+  html?: string
 }
 
 export const ARTICLES: Article[] = [

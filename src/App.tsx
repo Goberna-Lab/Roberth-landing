@@ -23,7 +23,8 @@ import {
   TALKS,
   WHATSAPP_URL,
 } from './data.ts'
-import { ARTICLES, BLOG, articleHref, type Article } from './blog.ts'
+import { BLOG, articleHref, type Article } from './blog.ts'
+import { useArticles } from './bravo.ts'
 import { CarouselArrow } from './icons.tsx'
 import { HeroSignature } from './shared/HeroSignature.tsx'
 import { QuoteModal } from './shared/QuoteModal.tsx'
@@ -867,6 +868,8 @@ function ArticleMeta({ article, className }: { article: Article; className: stri
 
 /** Blog (XD): tres tarjetas de 482px que suben una tras otra al entrar en pantalla. */
 function Blog() {
+  // La landing muestra las 3 notas más recientes (el lienzo tiene 3 tarjetas fijas).
+  const articles = useArticles().slice(0, 3)
   const sectionRef = useRevealOnScroll<HTMLElement>('.blog__card', BLOG_CARD_REVEAL)
 
   return (
@@ -879,7 +882,7 @@ function Blog() {
           {BLOG.title}
         </h2>
         <p className="blog__text">{BLOG.text}</p>
-        {ARTICLES.map((article, i) => {
+        {articles.map((article, i) => {
           const href = articleHref(article.slug)
           return (
             <article
@@ -894,8 +897,12 @@ function Blog() {
               <h3 className={`blog__card-title${article.cardCompact ? ' blog__card-title--compact' : ''}`}>
                 <a href={href}>
                   {article.title[0]}
-                  <br />
-                  {article.title[1]}
+                  {article.title[1] && (
+                    <>
+                      <br />
+                      {article.title[1]}
+                    </>
+                  )}
                 </a>
               </h3>
               <p className="blog__excerpt">{article.excerpt}</p>
@@ -923,7 +930,7 @@ const SITE_TITLE = 'Roberth Estratega | Roberto Bazán'
 /** Página de artículo (blog.xd): título en franja clara, imagen y cuerpo de 1053px. */
 function ArticlePage({ article }: { article: Article }) {
   useEffect(() => {
-    document.title = `${article.title.join(' ')} | Roberth Estratega`
+    document.title = `${article.title.filter(Boolean).join(' ')} | Roberth Estratega`
     return () => {
       document.title = SITE_TITLE
     }
@@ -937,8 +944,12 @@ function ArticlePage({ article }: { article: Article }) {
           <header className="post__head">
             <h1 className="post__title">
               {article.title[0]}
-              <br />
-              {article.title[1]}
+              {article.title[1] && (
+                <>
+                  <br />
+                  {article.title[1]}
+                </>
+              )}
             </h1>
             <ArticleMeta article={article} className="post__meta" />
           </header>
@@ -947,6 +958,9 @@ function ArticlePage({ article }: { article: Article }) {
           </div>
           <div className="post__body">
             <p className="post__lead">{article.lead}</p>
+            {article.html !== undefined ? (
+              <div className="post__html" dangerouslySetInnerHTML={{ __html: article.html }} />
+            ) : null}
             {article.blocks.map((block, i) =>
               block.type === 'h2' ? (
                 <h2 key={i} className="post__h2">
