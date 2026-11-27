@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import type { Article as ArticleData } from '../blog.ts'
 import { MobileHeader } from './MobileHeader.tsx'
+import { useArticles } from '../bravo.ts'
 import { useMobileMotion } from './useMobileMotion.ts'
 import { Hero } from './sections/Hero.tsx'
 import { About } from './sections/About.tsx'
@@ -23,7 +24,9 @@ import './mobile.css'
 export default function MobileApp({ article }: { article: ArticleData | null }) {
   const root = useRef<HTMLDivElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
-  useMobileMotion(root, article?.slug)
+  const articles = useArticles()
+  // Las notas de Bravo llegan tras el primer render: se re-registran las animaciones.
+  useMobileMotion(root, article?.slug, articles.map((a) => a.slug).join())
 
   return (
     <div className="m-app" ref={root}>
