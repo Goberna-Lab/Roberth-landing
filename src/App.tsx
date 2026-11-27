@@ -117,7 +117,12 @@ function Hero() {
  * Marca con `is-in` la primera vez que entran en pantalla: el propio elemento
  * o, si se da `selector`, cada descendiente que coincida por separado.
  */
-function useRevealOnScroll<T extends HTMLElement>(selector?: string, options: IntersectionObserverInit = { threshold: 0.25 }) {
+function useRevealOnScroll<T extends HTMLElement>(
+  selector?: string,
+  options: IntersectionObserverInit = { threshold: 0.25 },
+  /** Cambia cuando cambian los elementos observados (p. ej. llegan las notas de Bravo). */
+  contentKey = '',
+) {
   const ref = useRef<T>(null)
   const { threshold, rootMargin } = options
 
@@ -137,7 +142,7 @@ function useRevealOnScroll<T extends HTMLElement>(selector?: string, options: In
     )
     targets.forEach((t) => io.observe(t))
     return () => io.disconnect()
-  }, [selector, threshold, rootMargin])
+  }, [selector, threshold, rootMargin, contentKey])
 
   return ref
 }
@@ -870,7 +875,8 @@ function ArticleMeta({ article, className }: { article: Article; className: stri
 function Blog() {
   // La landing muestra las 3 notas más recientes (el lienzo tiene 3 tarjetas fijas).
   const articles = useArticles().slice(0, 3)
-  const sectionRef = useRevealOnScroll<HTMLElement>('.blog__card', BLOG_CARD_REVEAL)
+  // Las notas de Bravo llegan después del primer render: se vuelve a observar al cambiar.
+  const sectionRef = useRevealOnScroll<HTMLElement>('.blog__card', BLOG_CARD_REVEAL, articles.map((x) => x.slug).join())
 
   return (
     <section className="blog" id="blog" ref={sectionRef}>
