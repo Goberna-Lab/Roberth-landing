@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { BLOG, articleHref, type Article } from '../blog.ts'
+import { BLOG, type Article } from '../blog.ts'
 import './share-menu.css'
 
 const ShareIcon = () => (
@@ -54,7 +54,8 @@ export function ShareMenu({ article, className = '' }: { article: Article; class
     }
   }, [open])
 
-  const url = `${location.origin}${location.pathname}${articleHref(article.slug)}`
+  // Página real de la nota (con su propia vista previa), no el hash: WhatsApp y las redes no leen el `#`.
+  const url = `${location.origin}/blog/${article.slug}/`
   const title = article.title.filter(Boolean).join(' ')
   const links = [
     { key: 'whatsapp', label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}` },
