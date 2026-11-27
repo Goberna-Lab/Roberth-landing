@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { QUOTE, TALKS, WHATSAPP_URL } from '../data.ts'
+import { sendLead } from '../bravo.ts'
 import './quote-modal.css'
 
 /** Solicitud en texto de WhatsApp (con *negritas*); omite los campos vacíos. */
@@ -82,7 +83,24 @@ export function QuoteModal() {
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
-    const text = encodeURIComponent(quoteMessage(new FormData(form)))
+    const data = new FormData(form)
+    const field = (name: string) => String(data.get(name) ?? '').trim()
+    // El lead se guarda en Bravo (panel de Roberto) además de abrir WhatsApp; no se
+    // espera la respuesta para no bloquear la ventana de WhatsApp (popup blockers).
+    sendLead({
+      name: field('nombre'),
+      email: field('correo'),
+      phone: field('telefono'),
+      message: field('mensaje'),
+      organizacion: field('organizacion'),
+      tipo_evento: field('tipo'),
+      tipo_conferencia: field('conferencia'),
+      modalidad: field('modalidad'),
+      fecha_tentativa: field('fecha'),
+      ciudad: field('ciudad'),
+      origen: 'Cotiza conferencias',
+    })
+    const text = encodeURIComponent(quoteMessage(data))
     window.open(`${WHATSAPP_URL}?text=${text}`, '_blank', 'noopener,noreferrer')
     form.reset()
     setOpen(false)

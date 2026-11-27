@@ -55,7 +55,7 @@ export function ShareMenu({ article, className = '' }: { article: Article; class
   }, [open])
 
   const url = `${location.origin}${location.pathname}${articleHref(article.slug)}`
-  const title = article.title.join(' ')
+  const title = article.title.filter(Boolean).join(' ')
   const links = [
     { key: 'whatsapp', label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}` },
     { key: 'facebook', label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}` },
