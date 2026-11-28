@@ -821,9 +821,9 @@ function Footer() {
             </li>
           ))}
         </ul>
-        <a className="footer__qr" href={WHATSAPP_URL} target="_blank" rel="noreferrer" aria-label="Escríbenos por WhatsApp">
+        <div className="footer__qr">
           <img src={asset('/img/qr.png')} alt="Código QR de contacto" width={110} height={110} />
-        </a>
+        </div>
       </div>
     </footer>
   )
